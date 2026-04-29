@@ -7,5 +7,8 @@ export async function GET() {
 export async function POST(req: Request) {
     const data = await req.json();
     const { name } = data;
-    return NextResponse.json({ message: `Data from ${name} received successfully!`, data });
+    return NextResponse.json({
+        message: `Data from ${name} received successfully!`,
+        data,
+    });
 }

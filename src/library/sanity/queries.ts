@@ -1,4 +1,4 @@
-import { groq } from "next-sanity"
+import { groq } from "next-sanity";
 
 export const allProjectsQuery = groq`
     *[_type == "project"] | order(order asc) {
@@ -33,7 +33,7 @@ export const allProjectsQuery = groq`
             "slug": slug.current,
             language
         }
-    }`
+    }`;
 
 export const singleProjectQuery = groq`
     *[_type == "project" && slug.current == $slug][0]{
@@ -68,7 +68,7 @@ export const singleProjectQuery = groq`
             "slug": slug.current,
             language
         }
-    }`
+    }`;
 
 export const pageQuery = groq`
   *[_type == "page" && slug.current == $slug][0]{
@@ -86,4 +86,4 @@ export const pageQuery = groq`
     phone,
     address
   }
-`
+`;
