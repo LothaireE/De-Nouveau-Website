@@ -51,7 +51,20 @@ export const page = defineType({
             options: {
                 hotspot: true,
             },
+            fields: [
+                {
+                    name: "caption",
+                    type: "string",
+                    title: "Caption",
+                },
+                {
+                    name: "alt",
+                    type: "string",
+                    title: "Alternative text",
+                },
+            ],
         }),
+
         defineField({
             name: "heroImage",
             title: "Image hero",
@@ -59,6 +72,18 @@ export const page = defineType({
             options: {
                 hotspot: true,
             },
+            fields: [
+                {
+                    name: "caption",
+                    type: "string",
+                    title: "Caption",
+                },
+                {
+                    name: "alt",
+                    type: "string",
+                    title: "Alternative text",
+                },
+            ],
             description: "ne sera utilisé que pour home ?",
             hidden: ({ document }) => document?.pageType !== "homepage",
         }),

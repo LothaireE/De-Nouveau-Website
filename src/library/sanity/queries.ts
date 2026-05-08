@@ -35,14 +35,18 @@ export const allProjectsQuery = groq`
         }
     }`;
 
+//            "galleryImages": galleryImages[].asset->url,
+// "coverImage": coverImage.asset->url,
+// "galleryImages": galleryImages[],
+// "coverImage": coverImage.asset->url,
 export const singleProjectQuery = groq`
     *[_type == "project" && slug.current == $slug][0]{
         _id,
         _createdAt,
         title,
         "slug": slug.current,
-        "coverImage": coverImage.asset->url,
-        "galleryImages": galleryImages[].asset->url,
+        coverImage,
+        galleryImages,
         video,
         shortDescription,
         longDescription,
@@ -87,3 +91,11 @@ export const pageQuery = groq`
     address
   }
 `;
+
+export const navQuery = groq`
+ *[_type == "project"] | order(order asc) {
+        _id,
+        _createdAt,
+        title,
+        "slug": slug.current,
+    }`;

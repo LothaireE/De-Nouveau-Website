@@ -16,6 +16,9 @@ export type SanityImage = {
         _ref: string;
         _type: "reference";
     };
+    _key?: string;
+    alt?: string;
+    caption?: string;
 };
 
 export type Page = {
@@ -26,7 +29,7 @@ export type Page = {
     pageType?: "homepage" | "about" | "contact";
     intro?: string;
     content?: PortableTextBlock[];
-    heroImage?: SanityImage;
+    heroImage: SanityImage;
     portrait?: SanityImage;
     heroVideoUrl?: string;
     email?: string;

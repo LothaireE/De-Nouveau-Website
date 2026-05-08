@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import Link from "next/link";
+import FloatingNav from "@/components/navigation/FloatingNav";
+import { getNavProjects } from "@/library/sanity/fetchers";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -46,30 +47,19 @@ export const metadata: Metadata = {
 
 const LOCALE: "fr" | "en" = "fr";
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const navProjects = await getNavProjects();
     return (
         <html
             lang={LOCALE}
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
             <body className="min-h-full flex flex-col">
-                <nav>
-                    <ul className="flex gap-2 md:gap-4 sm:flex-col md:flex-row">
-                        <li>
-                            <Link href={"/"}>Home</Link>
-                        </li>
-                        <li>
-                            <Link href={"/about"}>About</Link>
-                        </li>
-                        <li>
-                            <Link href={"/contact"}>Contact</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <FloatingNav projects={navProjects} />
                 {children}
             </body>
         </html>

@@ -7,6 +7,24 @@ export const project = defineType({
     type: "document",
     fields: [
         defineField({
+            name: "projectLayout",
+            title: "Project layout",
+            type: "string",
+            options: {
+                list: [
+                    { title: "Default", value: "default" },
+                    { title: "Editorial", value: "editorial" },
+                    { title: "Gallery focused", value: "galleryFocused" },
+                    { title: "Minimal", value: "minimal" },
+                ],
+            },
+            initialValue: "default",
+            validation: (Rule) => Rule.required(),
+            description:
+                "Définit la mise en page du projet côté site : Default - page projet classique | Editorial - texte et images alternées | Gallery focused - galerie dominante, peu de texte | Minimal - titre et quelques images, très peu d’infos",
+        }),
+
+        defineField({
             name: "title",
             title: "Title",
             type: "string",
@@ -26,6 +44,18 @@ export const project = defineType({
             title: "Cover image",
             type: "image",
             options: { hotspot: true },
+            fields: [
+                {
+                    name: "caption",
+                    type: "string",
+                    title: "Caption",
+                },
+                {
+                    name: "alt",
+                    type: "string",
+                    title: "Alternative text",
+                },
+            ],
             validation: (Rule) => Rule.required(),
         }),
 
@@ -33,7 +63,26 @@ export const project = defineType({
             name: "galleryImages",
             title: "Gallery images",
             type: "array",
-            of: [{ type: "image", options: { hotspot: true } }],
+            of: [
+                {
+                    type: "image",
+                    options: {
+                        hotspot: true,
+                    },
+                    fields: [
+                        {
+                            name: "caption",
+                            type: "string",
+                            title: "Caption",
+                        },
+                        {
+                            name: "alt",
+                            type: "string",
+                            title: "Alternative text",
+                        },
+                    ],
+                },
+            ],
         }),
 
         defineField({
@@ -115,21 +164,6 @@ export const project = defineType({
         }),
 
         defineField({
-            name: "projectLayout",
-            title: "Project layout",
-            type: "string",
-            options: {
-                list: [
-                    { title: "Default", value: "default" },
-                    { title: "Editorial", value: "editorial" },
-                    { title: "Gallery focused", value: "galleryFocused" },
-                    { title: "Minimal", value: "minimal" },
-                ],
-            },
-            description: "Définit la mise en page du projet côté site",
-        }),
-
-        defineField({
             name: "order",
             title: "Order",
             type: "number",
@@ -166,6 +200,34 @@ export const project = defineType({
             title: "Translations",
             type: "array",
             of: [{ type: "reference", to: [{ type: "project" }] }],
+        }),
+
+        defineField({
+            name: "planImage",
+            title: "Plans",
+            type: "image",
+            options: { hotspot: true },
+            fields: [
+                {
+                    name: "caption",
+                    type: "string",
+                    title: "Caption",
+                },
+                {
+                    name: "alt",
+                    type: "string",
+                    title: "Alternative text",
+                },
+            ],
+        }),
+
+        defineField({
+            name: "planDetails",
+            title: "Détail des plans",
+            type: "array",
+            of: [{ type: "block" }],
+            description:
+                "Déscription des plans du projets (liste, paragraphes, etc...)",
         }),
     ],
 

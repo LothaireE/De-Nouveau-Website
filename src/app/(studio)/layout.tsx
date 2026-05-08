@@ -22,7 +22,10 @@ export default function RootLayout({
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
             <body className="h-full flex flex-col">
-                {/* reminder to add some style here */}
+                <div>
+                    TODO: Ajouter du style ici pour surligner le coter admin De
+                    Nouveau
+                </div>
                 {children}
             </body>
         </html>
