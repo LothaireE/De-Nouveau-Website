@@ -1,8 +1,8 @@
 import { createMetadata } from "@/library/seo";
-import { getPage } from "@/library/sanity/fetchers";
+import { getPage } from "@/library/payload/fetchers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PortableText } from "@portabletext/react";
+// import { PortableText } from "@portabletext/react";
 
 export const metadata = createMetadata({
     title: "Contacter De Nouveau",
@@ -31,7 +31,8 @@ export default async function ContactPage() {
                 <div className="flex flex-col justify-end gap-10">
                     {page.content && (
                         <div className="max-w-md text-base leading-relaxed text-neutral-700">
-                            <PortableText value={page.content} />
+                            {/* <PortableText value={page.content} /> */}{" "}
+                            page.content ici
                         </div>
                     )}
 

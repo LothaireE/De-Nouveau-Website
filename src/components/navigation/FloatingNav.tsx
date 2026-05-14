@@ -56,15 +56,17 @@ export default function FloatingNav({
                     </p>
 
                     <div className="space-y-2">
-                        {projects.map((project) => (
-                            <Link
-                                key={project._id}
-                                href={`/${project.slug}`}
-                                className="block truncate hover:text-studio-red-muted"
-                            >
-                                {project.title}
-                            </Link>
-                        ))}
+                        {projects.map((project) => {
+                            return (
+                                <Link
+                                    key={project._id}
+                                    href={`/${project.slug}`}
+                                    className="block truncate hover:text-studio-red-muted"
+                                >
+                                    {project.title}
+                                </Link>
+                            );
+                        })}
                     </div>
                 </div>
             </nav>

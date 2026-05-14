@@ -1,6 +1,5 @@
-import Image from "next/image";
-import { Project } from "@/types/Project";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
+import MediaImage from "@/components/MediaImage";
+import type { Project } from "@/payload-types";
 
 export default function GalleryFocusedProjectLayout({
     project,
@@ -31,36 +30,42 @@ export default function GalleryFocusedProjectLayout({
                     </p>
                 )}
             </header>
-
-            <Image
-                src={urlFor(project.coverImage).width(2200).url()}
-                alt={project.coverImage.alt ?? ""}
-                width={2200}
-                height={1400}
+            <MediaImage
+                media={project.coverImage}
+                size="hero"
+                fallbackAlt={project.title}
+                variant="full"
                 priority
+                quality={95}
                 className="mb-8 h-auto w-full object-cover"
             />
 
             {images.length > 0 && (
                 <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    {images.map((image, index) => {
+                    {images.map((item, index) => {
+                        const image = item.image;
+
+                        if (!image || typeof image === "number") return null;
+
                         const isWide = index % 5 === 0;
 
                         return (
                             <figure
-                                key={image._key}
+                                key={item.id ?? index}
                                 className={isWide ? "md:col-span-2" : undefined}
                             >
-                                <Image
-                                    src={urlFor(image)
-                                        .width(isWide ? 2200 : 1200)
-                                        .url()}
-                                    alt={
-                                        image.alt ||
-                                        `${project.title} ${index + 1}`
-                                    }
-                                    width={isWide ? 2200 : 1200}
-                                    height={isWide ? 1400 : 900}
+                                {/* <MediaImage
+                                    media={image}
+                                    size={isWide ? "hero" : "card"}
+                                    fallbackAlt={`${project.title} ${index + 1}`}
+                                    className="h-auto w-full object-cover"
+                                /> */}
+                                <MediaImage
+                                    media={image}
+                                    size={isWide ? "hero" : "card"}
+                                    fallbackAlt={`${project.title} ${index + 1}`}
+                                    variant={isWide ? "full" : "half"}
+                                    quality={90}
                                     className="h-auto w-full object-cover"
                                 />
 

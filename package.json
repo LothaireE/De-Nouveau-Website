@@ -2,23 +2,31 @@
     "name": "de-nouveau",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
         "format:fix": "prettier --write .",
-        "format:check": "prettier --check ."
+        "format:check": "prettier --check .",
+        "payload:types": "payload generate:types --config src/payload.config.ts",
+        "payload:importmap": "payload generate:importmap",
+        "payload:generate": "payload generate:types && payload generate:importmap"
     },
     "dependencies": {
-        "@portabletext/react": "^6.0.3",
-        "@sanity/image-url": "^2.1.1",
+        "@payloadcms/db-postgres": "^3.84.1",
+        "@payloadcms/next": "^3.84.1",
+        "@payloadcms/richtext-lexical": "^3.84.1",
+        "@payloadcms/storage-s3": "^3.84.1",
         "dotenv": "^17.4.2",
+        "graphql": "^16.14.0",
         "next": "16.2.4",
-        "next-sanity": "^12.3.1",
+        "payload": "^3.84.1",
         "react": "19.2.4",
         "react-dom": "19.2.4",
-        "sanity": "^5.22.0"
+        "sharp": "^0.34.5",
+        "slugify": "^1.6.9"
     },
     "devDependencies": {
         "@tailwindcss/postcss": "^4",
