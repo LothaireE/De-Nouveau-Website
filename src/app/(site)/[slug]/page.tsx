@@ -1,5 +1,5 @@
 import { ProjectRenderer } from "@/components/projects/ProjectsRenderer";
-import { getSingleProject } from "@/library/sanity/fetchers";
+import { getSingleProject } from "@/library/payload/fetchers";
 import { notFound } from "next/navigation";
 
 export default async function SingleProjectPage({

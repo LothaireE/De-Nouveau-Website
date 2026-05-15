@@ -1,13 +1,13 @@
-import { Page } from "@/types/Page";
-import Image from "next/image";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
-import { PortableText } from "@portabletext/react";
+import MediaImage from "@/components/MediaImage";
+import { RichText } from "@payloadcms/richtext-lexical/react";
+import type { Page } from "@/payload-types";
 
 export default function HomeHero({ content }: { content: Page | null }) {
     if (!content) return null;
 
     const hasHeroVideo = Boolean(content.heroVideoUrl);
-    const hasHeroImage = Boolean(content.heroImage);
+    const hasHeroImage =
+        content.heroImage && typeof content.heroImage !== "number";
 
     return (
         <section className="relative bg-studio-white px-4 sm:px-6">
@@ -15,7 +15,7 @@ export default function HomeHero({ content }: { content: Page | null }) {
                 <div className="relative h-[120vh] overflow-hidden bg-studio-cream">
                     {hasHeroVideo ? (
                         <video
-                            src={content.heroVideoUrl}
+                            src={content.heroVideoUrl || ""}
                             autoPlay
                             muted
                             loop
@@ -23,12 +23,11 @@ export default function HomeHero({ content }: { content: Page | null }) {
                             className="h-full w-full object-cover"
                         />
                     ) : hasHeroImage ? (
-                        <Image
-                            src={urlFor(content.heroImage).width(2400).url()}
-                            alt={content.heroImage.alt || content.title}
-                            width={2400}
-                            height={1600}
-                            priority
+                        <MediaImage
+                            media={content.heroImage}
+                            size="hero"
+                            fallbackAlt={content.title}
+                            priority={true}
                             className="h-full w-full object-cover"
                         />
                     ) : null}
@@ -49,7 +48,7 @@ export default function HomeHero({ content }: { content: Page | null }) {
 
                             {content.content && (
                                 <div className="mt-8 max-w-xl text-base leading-relaxed text-studio-black">
-                                    <PortableText value={content.content} />
+                                    <RichText data={content.content} />
                                 </div>
                             )}
                         </div>

@@ -1,9 +1,8 @@
-import { getPage } from "@/library/sanity/fetchers";
+import { getPage } from "@/library/payload/fetchers";
 import { createMetadata } from "@/library/seo";
-import { PortableText } from "@portabletext/react";
-import Image from "next/image";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
 import { notFound } from "next/navigation";
+import { RichText } from "@payloadcms/richtext-lexical/react";
+import MediaImage from "@/components/MediaImage";
 
 export const metadata = createMetadata({
     title: "À propos — De Nouveau",
@@ -21,6 +20,11 @@ export default async function AboutPage() {
 
     if (!about) notFound();
 
+    const portrait =
+        about.portrait && typeof about.portrait !== "number"
+            ? about.portrait
+            : null;
+
     return (
         <main className="px-6 py-16">
             <section className="grid min-h-[70vh] grid-cols-1 gap-16 md:grid-cols-2">
@@ -31,13 +35,12 @@ export default async function AboutPage() {
                 </div>
 
                 <div className="flex flex-col gap-12">
-                    {about.portrait && (
-                        <Image
-                            src={urlFor(about.portrait).width(1200).url()}
-                            alt={about.title}
-                            width={1200}
-                            height={1600}
-                            priority
+                    {portrait && (
+                        <MediaImage
+                            media={portrait}
+                            size="large"
+                            fallbackAlt={about.title}
+                            priority={true}
                             className="h-auto w-full object-cover"
                         />
                     )}
@@ -50,7 +53,7 @@ export default async function AboutPage() {
 
                     {about.content && (
                         <div className="prose prose-neutral max-w-xl">
-                            <PortableText value={about.content} />
+                            <RichText data={about.content} />
                         </div>
                     )}
                 </div>
