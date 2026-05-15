@@ -1,7 +1,5 @@
-import Image from "next/image";
-import { PortableText } from "@portabletext/react";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
-import type { Project } from "@/types/Project";
+import MediaImage from "@/components/MediaImage";
+import type { Project } from "@/payload-types";
 
 export default function EditorialProjectLayout({
     project,
@@ -9,22 +7,21 @@ export default function EditorialProjectLayout({
     project: Project;
 }) {
     const images = project.galleryImages ?? [];
-    const firstImage = images[0];
+    const firstImage = images[0]?.image;
     const middleImages = images.slice(1, 3);
     const remainingImages = images.slice(3);
 
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
             <section className="grid min-h-[75vh] grid-cols-1 gap-10 md:grid-cols-2 md:items-end">
-                <Image
-                    src={urlFor(project.coverImage).width(1400).url()}
-                    alt={project.title}
-                    width={1400}
-                    height={1800}
-                    priority
+                <MediaImage
+                    media={project.coverImage}
+                    size="hero"
+                    variant="half"
+                    priority={true}
+                    quality={95}
                     className="h-auto w-full object-cover"
                 />
-
                 <div className="pb-6">
                     <h1 className="max-w-xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
                         {project.title}
@@ -46,17 +43,18 @@ export default function EditorialProjectLayout({
 
             {project.longDescription && (
                 <section className="mx-auto my-24 max-w-2xl text-base leading-relaxed text-studio-moss">
-                    <PortableText value={project.longDescription} />
+                    longDescription ici
                 </section>
             )}
 
-            {firstImage && (
+            {firstImage && typeof firstImage !== "number" && (
                 <figure className="mx-auto my-20 max-w-5xl">
-                    <Image
-                        src={urlFor(firstImage).width(1800).url()}
-                        alt={firstImage.alt || project.title}
-                        width={1800}
-                        height={1200}
+                    <MediaImage
+                        media={firstImage}
+                        size="large"
+                        variant="contained"
+                        fallbackAlt={project.title}
+                        quality={90}
                         className="h-auto w-full object-cover"
                     />
 
@@ -70,54 +68,72 @@ export default function EditorialProjectLayout({
 
             {middleImages.length > 0 && (
                 <section className="mx-auto my-24 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
-                    {middleImages.map((image) => (
-                        <figure key={image._key}>
-                            <Image
-                                src={urlFor(image).width(1000).url()}
-                                alt={image.alt || project.title}
-                                width={1000}
-                                height={1200}
-                                className="h-auto w-full object-cover"
-                            />
+                    {middleImages.map((item, index) => {
+                        const image = item.image;
 
-                            {image.caption && (
-                                <figcaption className="mt-3 text-sm text-studio-wood">
-                                    {image.caption}
-                                </figcaption>
-                            )}
-                        </figure>
-                    ))}
+                        if (!image || typeof image === "number") return null;
+
+                        return (
+                            <figure key={item.id ?? index}>
+                                {/* <MediaImage
+                                    media={image}
+                                    size="card"
+                                    fallbackAlt={project.title}
+                                    className="h-auto w-full object-cover"
+                                /> */}
+                                <MediaImage
+                                    media={image}
+                                    size="card"
+                                    variant="half"
+                                    quality={90}
+                                    className="h-auto w-full object-cover"
+                                    fallbackAlt={project.title}
+                                />
+
+                                {image.caption && (
+                                    <figcaption className="mt-3 text-sm text-studio-wood">
+                                        {image.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    })}
                 </section>
             )}
 
             {remainingImages.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl space-y-20">
-                    {remainingImages.map((image, index) => (
-                        <figure
-                            key={image._key}
-                            className={
-                                index % 2 === 0
-                                    ? "mr-auto max-w-4xl"
-                                    : "ml-auto max-w-4xl"
-                            }
-                        >
-                            <Image
-                                src={urlFor(image).width(1600).url()}
-                                alt={
-                                    image.alt || `${project.title} ${index + 1}`
-                                }
-                                width={1600}
-                                height={1100}
-                                className="h-auto w-full object-cover"
-                            />
+                    {remainingImages.map((item, index) => {
+                        const image = item.image;
 
-                            {image.caption && (
-                                <figcaption className="mt-3 text-sm text-studio-wood">
-                                    {image.caption}
-                                </figcaption>
-                            )}
-                        </figure>
-                    ))}
+                        if (!image || typeof image === "number") return null;
+
+                        return (
+                            <figure
+                                key={item.id ?? index}
+                                className={
+                                    index % 2 === 0
+                                        ? "mr-auto max-w-4xl"
+                                        : "ml-auto max-w-4xl"
+                                }
+                            >
+                                <MediaImage
+                                    media={image}
+                                    size="large"
+                                    variant="contained"
+                                    quality={90}
+                                    fallbackAlt={`${project.title} ${index + 1}`}
+                                    className="h-auto w-full object-cover"
+                                />
+
+                                {image.caption && (
+                                    <figcaption className="mt-3 text-sm text-studio-wood">
+                                        {image.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    })}
                 </section>
             )}
 

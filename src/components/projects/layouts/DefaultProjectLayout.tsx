@@ -1,7 +1,5 @@
-import Image from "next/image";
-import { PortableText } from "@portabletext/react";
-import type { Project } from "@/types/Project";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
+import MediaImage from "@/components/MediaImage";
+import type { Project } from "@/payload-types";
 
 export default function DefaultProjectLayout({
     project,
@@ -14,13 +12,13 @@ export default function DefaultProjectLayout({
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
             <section className="grid min-h-[75vh] grid-cols-1 gap-10 md:grid-cols-2 md:items-end">
-                <Image
-                    src={urlFor(project.coverImage).width(1400).url()}
-                    alt={project.title}
-                    width={1400}
-                    height={1800}
-                    priority
+                <MediaImage
+                    media={project.coverImage}
+                    size="hero"
+                    priority={true}
+                    variant="half"
                     className="h-auto w-full object-cover"
+                    loading="eager"
                 />
 
                 <div className="pb-6">
@@ -43,71 +41,87 @@ export default function DefaultProjectLayout({
 
             {project.longDescription && (
                 <section className="mx-auto my-24 max-w-2xl text-base leading-relaxed text-studio-moss">
-                    <PortableText value={project.longDescription} />
+                    longDescription ici
                 </section>
             )}
 
-            {firstImages[0] && (
-                <figure className="mx-auto my-20 max-w-5xl">
-                    <Image
-                        src={urlFor(firstImages[0]).width(1800).url()}
-                        alt={firstImages[0].alt || project.title}
-                        width={1800}
-                        height={1200}
-                        className="h-auto w-full object-cover"
-                    />
+            {firstImages[0]?.image &&
+                typeof firstImages[0].image !== "number" && (
+                    <figure className="mx-auto my-20 max-w-5xl">
+                        <MediaImage
+                            media={firstImages[0].image}
+                            size="large"
+                            fallbackAlt={project.title}
+                            variant="contained"
+                            className="h-auto w-full object-cover"
+                        />
 
-                    {firstImages[0].caption && (
-                        <figcaption className="mt-3 text-sm text-studio-wood">
-                            {firstImages[0].caption}
-                        </figcaption>
-                    )}
-                </figure>
-            )}
+                        {firstImages[0].image.caption && (
+                            <figcaption className="mt-3 text-sm text-studio-wood">
+                                {firstImages[0].image.caption}
+                            </figcaption>
+                        )}
+                    </figure>
+                )}
 
             {firstImages.length > 1 && (
                 <section className="mx-auto my-20 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
-                    {firstImages.slice(1).map((image) => (
-                        <figure key={image._key}>
-                            <Image
-                                src={urlFor(image).width(1000).url()}
-                                alt={image.alt || project.title}
-                                width={1000}
-                                height={1200}
-                                className="h-auto w-full object-cover"
-                            />
+                    {firstImages.slice(1).map((item, index) => {
+                        const image = item.image;
 
-                            {image.caption && (
-                                <figcaption className="mt-3 text-sm text-studio-wood">
-                                    {image.caption}
-                                </figcaption>
-                            )}
-                        </figure>
-                    ))}
+                        if (!image || typeof image === "number") return null;
+
+                        return (
+                            <figure key={item.id ?? index}>
+                                <MediaImage
+                                    media={image}
+                                    size="card"
+                                    fallbackAlt={project.title}
+                                    variant="half"
+                                    className="h-auto w-full object-cover"
+                                />
+
+                                {image.caption && (
+                                    <figcaption className="mt-3 text-sm text-studio-wood">
+                                        {image.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    })}
                 </section>
             )}
 
             {remainingImages.length > 0 && (
                 <section className="mx-auto my-20 max-w-5xl space-y-16">
-                    {remainingImages.map((image, index) => (
-                        <figure key={image._key}>
-                            <Image
-                                src={urlFor(image).width(1800).url()}
-                                alt={
-                                    image.alt || `${project.title} ${index + 1}`
-                                }
-                                width={1800}
-                                height={1200}
-                                className="h-auto w-full object-cover"
-                            />
+                    {remainingImages.map((item, index) => {
+                        const image = item.image;
 
-                            {image.caption && (
-                                <figcaption className="mt-3 text-sm text-studio-wood">
-                                    {image.caption}
-                                </figcaption>
-                            )}
-                        </figure>
-                    ))}
+                        if (!image || typeof image === "number") return null;
+
+                        return (
+                            <figure key={item.id ?? index}>
+                                {/* <MediaImage
+                                    media={image}
+                                    size="large"
+                                    fallbackAlt={`${project.title} ${index + 1}`}
+                                    className="h-auto w-full object-cover"
+                                /> */}
+                                <MediaImage
+                                    media={image}
+                                    size="large"
+                                    variant="contained"
+                                    className="h-auto w-full object-cover"
+                                />
+
+                                {image.caption && (
+                                    <figcaption className="mt-3 text-sm text-studio-wood">
+                                        {image.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    })}
                 </section>
             )}
 
