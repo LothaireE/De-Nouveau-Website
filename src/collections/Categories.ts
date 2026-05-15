@@ -1,5 +1,5 @@
+import { formatSlug } from "@/library/payload/formatSlug";
 import type { CollectionConfig } from "payload";
-import slugify from "slugify";
 
 export const Categories: CollectionConfig = {
     slug: "categories",
@@ -22,25 +22,14 @@ export const Categories: CollectionConfig = {
             name: "slug",
             label: "Slug",
             type: "text",
-            required: true,
             unique: true,
             hooks: {
-                beforeValidate: [
-                    ({ value, data }) => {
-                        if (typeof value === "string" && value.length > 0) {
-                            return value;
-                        }
-
-                        if (data?.title && typeof data.title === "string") {
-                            return slugify(data.title, {
-                                lower: true,
-                                strict: true,
-                            });
-                        }
-
-                        return value;
-                    },
-                ],
+                beforeValidate: [formatSlug("title")],
+            },
+            admin: {
+                position: "sidebar",
+                description:
+                    "Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.",
             },
         },
     ],

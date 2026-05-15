@@ -249,7 +249,10 @@ export interface Page {
 export interface Category {
   id: number;
   title: string;
-  slug: string;
+  /**
+   * Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   */
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -264,7 +267,10 @@ export interface Project {
    */
   projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
   title: string;
-  slug: string;
+  /**
+   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   */
+  slug?: string | null;
   coverImage: number | Media;
   galleryImages?:
     | {
