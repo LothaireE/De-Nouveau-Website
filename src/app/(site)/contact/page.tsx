@@ -2,7 +2,6 @@ import { createMetadata } from "@/library/seo";
 import { getPage } from "@/library/payload/fetchers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-// import { PortableText } from "@portabletext/react";
 
 export const metadata = createMetadata({
     title: "Contacter De Nouveau",
