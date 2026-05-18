@@ -4,7 +4,7 @@ import MediaImage from "@/components/MediaImage";
 import type { Page } from "@/payload-types";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import TITLE_IMAGE from "../../../public/DE_NOUVEAU/SVG/DE_NOUVEAU_BLACK_CROPPED.svg";
+import TITLE_IMAGE from "../../../public/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
 import { useRef } from "react";
 
 export default function HomeHero({ content }: { content: Page | null }) {
@@ -26,9 +26,9 @@ export default function HomeHero({ content }: { content: Page | null }) {
     return (
         <section
             ref={sectionRef}
-            className="relative h-screen overflow-hidden px-4 sm:px-6"
+            className="relative min-h-svh overflow-hidden px-4 sm:px-6"
         >
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 h-full w-full">
                 {hasHeroVideo ? (
                     <video
                         src={content.heroVideoUrl || ""}
@@ -36,29 +36,29 @@ export default function HomeHero({ content }: { content: Page | null }) {
                         muted
                         loop
                         playsInline
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover object-bottom"
                     />
                 ) : hasHeroImage ? (
                     <MediaImage
                         media={content.heroImage}
-                        size="hero"
+                        // size="original"
                         fallbackAlt={content.title}
                         priority
-                        className="h-full w-full object-cover"
+                        variant="full"
+                        className="h-full w-full object-cover object-center"
                     />
                 ) : null}
             </div>
 
             <motion.div
                 style={{ y: logoY }}
-                // className="relative z-10 flex h-screen items-start  md:pl-12 lg:pl-20"
-                className="relative z-10 flex h-screen items-start  md:pl-6 lg:pl-10"
+                className="relative z-10 flex min-h-svh items-center md:items-start md:pl-6 lg:pl-10"
             >
-                <div className=" w-full max-w-xl p- md:max-w-2xl lg:max-w-3xl">
+                <div className="w-full max-w-xl md:max-w-2xl lg:max-w-3xl">
                     <Image
                         src={TITLE_IMAGE}
                         alt="De Nouveau, architecture et design"
-                        className="h-auto w-full "
+                        className="h-auto w-full"
                         priority
                     />
                 </div>

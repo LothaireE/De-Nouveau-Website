@@ -4,7 +4,7 @@ import type { Media } from "@/payload-types";
 type SizeKey = "thumbnail" | "card" | "hero" | "large";
 type Variant = "full" | "half" | "contained" | "grid" | "auto";
 
-type Props = {
+type MediaImageProps = {
     media?: Media | number | null;
     size?: SizeKey;
     variant?: Variant;
@@ -38,7 +38,7 @@ function getResponsive(variant: Variant, size: SizeKey) {
     }
 }
 
-function getMediaUrl(filename: string | null) {
+export function getMediaUrl(filename: string | null) {
     if (!filename) return null;
 
     const baseUrl = process.env.NEXT_PUBLIC_S3_PUBLIC_DEV_URL;
@@ -58,7 +58,7 @@ export default function MediaImage({
     priority = false,
     quality = 90,
     loading,
-}: Props) {
+}: MediaImageProps) {
     if (!media || typeof media === "number") return null;
 
     const selectedSize = media.sizes?.[size];

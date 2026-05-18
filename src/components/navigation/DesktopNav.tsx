@@ -4,15 +4,10 @@ import { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import LOGO from "../../../public/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
+import LOGO from "../../../public/DE_NOUVEAU/SVG/AAAA_WHITE_02.svg";
+import { frNavItems } from "@/library/navItems";
 
-const navItems = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Contact", href: "/contact" },
-];
-
-export default function FloatingNav({
+export default function DesktopNav({
     projects,
 }: {
     projects: NavProjectItem[];
@@ -66,8 +61,6 @@ export default function FloatingNav({
                     <Link href="/" className={logoClassName}>
                         <Image
                             src={LOGO}
-                            // width={50}
-                            // height={50}
                             alt="Logo De Nouveau"
                             className={logoImageClassName}
                         />
@@ -83,7 +76,7 @@ export default function FloatingNav({
                             </p> */}
 
                             <div className="space-y-2">
-                                {navItems.map((navItem) => (
+                                {frNavItems.map((navItem) => (
                                     <Link
                                         key={navItem.href}
                                         href={navItem.href}
