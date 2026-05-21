@@ -4,9 +4,8 @@ import type { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import LOGO_WHITE from "../../../public/DE_NOUVEAU/SVG/AAAA_WHITE_02.svg";
+// import LOGO_WHITE from "../../../public/DE_NOUVEAU/SVG/AAAA_WHITE_02.svg";
 import LOGO_BLACK from "../../../public/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
-
 import { frNavItems } from "@/library/navItems";
 
 export default function MobileNav({
@@ -44,6 +43,8 @@ export default function MobileNav({
         open ? "opacity-100" : "opacity-0"
     }`;
 
+    const logo = LOGO_BLACK; //open ? LOGO_BLACK : LOGO_WHITE;
+
     return (
         <aside className={navClassName}>
             <button
@@ -54,7 +55,7 @@ export default function MobileNav({
                 className="fixed right-4 top-4 z-50"
             >
                 <Image
-                    src={open ? LOGO_BLACK : LOGO_WHITE}
+                    src={logo}
                     alt="Logo De Nouveau"
                     className={logoImageClassName}
                 />
