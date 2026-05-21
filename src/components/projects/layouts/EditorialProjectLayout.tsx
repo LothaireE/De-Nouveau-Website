@@ -1,5 +1,6 @@
 import MediaImage from "@/components/MediaImage";
 import type { Project } from "@/payload-types";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 export default function EditorialProjectLayout({
     project,
@@ -43,7 +44,7 @@ export default function EditorialProjectLayout({
 
             {project.longDescription && (
                 <section className="mx-auto my-24 max-w-2xl text-base leading-relaxed text-studio-moss">
-                    longDescription ici
+                    <RichText data={project.longDescription} />
                 </section>
             )}
 

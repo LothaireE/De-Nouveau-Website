@@ -1,5 +1,6 @@
 import MediaImage from "@/components/MediaImage";
 import type { Project } from "@/payload-types";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 export default function DefaultProjectLayout({
     project,
@@ -22,7 +23,7 @@ export default function DefaultProjectLayout({
                 />
 
                 <div className="pb-6">
-                    <h1 className="max-w-xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
+                    <h1 className="max-w-2xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
                         {project.title}
                     </h1>
 
@@ -41,7 +42,7 @@ export default function DefaultProjectLayout({
 
             {project.longDescription && (
                 <section className="mx-auto my-24 max-w-2xl text-base leading-relaxed text-studio-moss">
-                    longDescription ici
+                    <RichText data={project.longDescription} />
                 </section>
             )}
 
@@ -55,7 +56,6 @@ export default function DefaultProjectLayout({
                             variant="contained"
                             className="h-auto w-full object-cover"
                         />
-
                         {firstImages[0].image.caption && (
                             <figcaption className="mt-3 text-sm text-studio-wood">
                                 {firstImages[0].image.caption}
@@ -80,7 +80,6 @@ export default function DefaultProjectLayout({
                                     variant="half"
                                     className="h-auto w-full object-cover"
                                 />
-
                                 {image.caption && (
                                     <figcaption className="mt-3 text-sm text-studio-wood">
                                         {image.caption}
@@ -99,17 +98,16 @@ export default function DefaultProjectLayout({
 
                         if (!image || typeof image === "number") return null;
 
+                        const fallbackSize = image.sizes?.large?.filename
+                            ? "large"
+                            : "card";
+
                         return (
                             <figure key={item.id ?? index}>
-                                {/* <MediaImage
-                                    media={image}
-                                    size="large"
-                                    fallbackAlt={`${project.title} ${index + 1}`}
-                                    className="h-auto w-full object-cover"
-                                /> */}
                                 <MediaImage
                                     media={image}
-                                    size="large"
+                                    size={fallbackSize} // "large"
+                                    fallbackAlt={`${project.title} ${index + 1}`}
                                     variant="contained"
                                     className="h-auto w-full object-cover"
                                 />

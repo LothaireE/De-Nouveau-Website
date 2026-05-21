@@ -85,5 +85,30 @@ export const Pages: CollectionConfig = {
             label: "Adresse",
             type: "textarea",
         },
+        {
+            name: "socialMedias",
+            label: "Social medias",
+            type: "array",
+            fields: [
+                {
+                    name: "link",
+                    label: "Link",
+                    type: "text",
+                    admin: {
+                        description:
+                            "Provide a full url (ex: https://www.instagram.com/).",
+                    },
+                },
+                {
+                    name: "label",
+                    label: "Label",
+                    type: "text",
+                    admin: {
+                        description:
+                            "Label used as a placeholder for the link.",
+                    },
+                },
+            ],
+        },
     ],
 };

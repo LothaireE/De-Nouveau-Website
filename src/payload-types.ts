@@ -239,6 +239,19 @@ export interface Page {
   email?: string | null;
   phone?: string | null;
   address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Provide a full url (ex: https://www.instagram.com/).
+         */
+        link?: string | null;
+        /**
+         * Label used as a placeholder for the link.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -523,6 +536,13 @@ export interface PagesSelect<T extends boolean = true> {
   email?: T;
   phone?: T;
   address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
