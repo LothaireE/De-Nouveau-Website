@@ -110,5 +110,49 @@ export const Pages: CollectionConfig = {
                 },
             ],
         },
+        {
+            name: "awards",
+            label: "Prix / distinctions",
+            type: "array",
+            admin: {
+                description: "Available on about page",
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "about",
+            },
+            fields: [
+                {
+                    name: "name",
+                    label: "nom",
+                    type: "text",
+                },
+                {
+                    name: "year",
+                    label: "Année",
+                    type: "text",
+                },
+            ],
+        },
+        {
+            name: "studioTeam",
+            label: "Equipe",
+            type: "array",
+            admin: {
+                description: "Available on about page",
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "about",
+            },
+            fields: [
+                {
+                    name: "name", // fullname
+                    label: "Prénom Nom",
+                    type: "text",
+                },
+                {
+                    name: "role",
+                    label: "Rôle",
+                    type: "text",
+                },
+            ],
+        },
     ],
 };

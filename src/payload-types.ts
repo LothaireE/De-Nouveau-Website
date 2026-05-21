@@ -252,6 +252,26 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Available on about page
+   */
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -541,6 +561,20 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         link?: T;
         label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
         id?: T;
       };
   updatedAt?: T;
