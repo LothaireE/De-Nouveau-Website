@@ -88,7 +88,7 @@ export default async function ContactPage() {
                                                     rel="noopener noreferrer"
                                                     className="transition hover:text-studio-red"
                                                 >
-                                                    {socialMedia.Label}
+                                                    {socialMedia.label}
                                                 </a>
                                             ),
                                         )}
