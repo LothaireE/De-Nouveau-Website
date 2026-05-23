@@ -34,7 +34,7 @@ function ContactBlock({
 export default async function ContactPage() {
     const page = await getPage(SLUG);
 
-    if (!page) notFound();
+    if (!page) return notFound();
 
     const imageSrc = !page.portrait || typeof page.portrait !== "number";
 

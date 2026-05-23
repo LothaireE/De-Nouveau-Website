@@ -11,7 +11,7 @@ export default async function SingleProjectPage({
 
     const project = await getSingleProject(slug);
 
-    if (!project) notFound();
+    if (!project) return notFound();
 
     return (
         <div>

@@ -39,7 +39,7 @@ function AboutSection({
 export default async function AboutPage() {
     const page = await getPage(SLUG);
 
-    if (!page) notFound();
+    if (!page) return notFound();
 
     const portrait =
         page.portrait && typeof page.portrait !== "number"
