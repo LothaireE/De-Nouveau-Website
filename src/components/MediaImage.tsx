@@ -43,10 +43,11 @@ export function getMediaUrl(filename: string | null) {
 
     const baseUrl = process.env.NEXT_PUBLIC_S3_PUBLIC_DEV_URL;
     const bucket = process.env.NEXT_PUBLIC_S3_BUCKET;
+    const prefix = "media";
 
     if (!baseUrl || !bucket) return null;
 
-    return `${baseUrl}/${bucket}/${encodeURIComponent(filename)}`;
+    return `${baseUrl}/${bucket}/${prefix}/${encodeURIComponent(filename)}`;
 }
 
 export default function MediaImage({
@@ -62,7 +63,6 @@ export default function MediaImage({
     if (!media || typeof media === "number") return null;
 
     const selectedSize = media.sizes?.[size];
-
     const filename = selectedSize?.filename || media.filename || null;
     const cleanedSrc = getMediaUrl(filename);
 

@@ -1,8 +1,11 @@
-import { formatSlug } from "@/library/payload/formatSlug";
+import { assignProjectToMedia, formatSlug } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Projects: CollectionConfig = {
     slug: "projects",
+    hooks: {
+        afterChange: [assignProjectToMedia],
+    },
     labels: {
         singular: "Project",
         plural: "Projects",
@@ -66,11 +69,6 @@ export const Projects: CollectionConfig = {
                     label: "Image",
                     type: "upload",
                     relationTo: "media",
-                    required: true,
-                },
-                {
-                    name: "caption",
-                    type: "text",
                 },
             ],
         },
@@ -129,18 +127,6 @@ export const Projects: CollectionConfig = {
             ],
         },
         {
-            name: "featured",
-            label: "Featured project",
-            type: "checkbox",
-            defaultValue: false,
-        },
-        {
-            name: "order",
-            label: "Order",
-            type: "number",
-            defaultValue: 0,
-        },
-        {
             name: "seoTitle",
             label: "SEO title",
             type: "text",
@@ -151,41 +137,12 @@ export const Projects: CollectionConfig = {
             type: "textarea",
         },
         {
-            name: "language",
-            label: "Language",
-            type: "select",
-            defaultValue: "fr",
-            options: [
-                { label: "French", value: "fr" },
-                { label: "English", value: "en" },
-            ],
-        },
-        {
-            name: "translations",
-            label: "Translations",
-            type: "relationship",
-            relationTo: "projects",
-            hasMany: true,
-        },
-        {
             name: "plans",
             label: "Plans",
-            type: "array",
-            fields: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "upload",
-                    relationTo: "media",
-                    required: true,
-                },
-                {
-                    name: "caption",
-                    label: "Caption",
-                    type: "text",
-                },
-            ],
+            type: "upload",
+            relationTo: "media",
         },
+
         {
             name: "planDetails",
             label: "Détail des plans",

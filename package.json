@@ -14,7 +14,9 @@
         "payload:importmap": "payload generate:importmap",
         "payload:generate": "payload generate:types && payload generate:importmap",
         "test": "vitest",
-        "test:ui": "vitest --ui"
+        "test:ui": "vitest --ui",
+        "test:coverage": "vitest --coverage",
+        "test:watch": "vitest --watch"
     },
     "dependencies": {
         "@payloadcms/db-postgres": "^3.84.1",
@@ -39,6 +41,7 @@
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
+        "@vitest/coverage-v8": "^4.1.7",
         "@vitest/ui": "^4.1.7",
         "eslint": "^9",
         "eslint-config-next": "16.2.4",

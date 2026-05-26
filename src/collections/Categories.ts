@@ -1,4 +1,4 @@
-import { formatSlug } from "@/library/payload/formatSlug";
+import { formatSlug } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Categories: CollectionConfig = {

@@ -37,10 +37,10 @@ const config = buildConfig({
     plugins: [
         s3Storage({
             collections: {
-                media: true,
-                //   media: {
-                //     prefix: 'media',
-                //   },
+                // media: true,
+                media: {
+                    prefix: "media",
+                },
             },
             bucket: process.env.NEXT_PUBLIC_S3_BUCKET || "",
             config: {

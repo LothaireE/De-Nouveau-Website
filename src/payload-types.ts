@@ -154,8 +154,16 @@ export interface User {
  */
 export interface Media {
   id: number;
-  alt: string;
+  /**
+   * Lorsque non renseigné, l'image sera associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
+   */
+  project?: (number | null) | Project;
+  /**
+   * Il est recommandé de fournir un texte alternatif, important pour l'accessibilité et le référencement. Il doit décrire le contenu de l'image de manière concise et précise.
+   */
+  alt?: string | null;
   caption?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -201,6 +209,89 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  /**
+   * Définit la mise en page du projet côté site : Default - page projet classique | Editorial - texte et images alternées | Gallery focused - galerie dominante, peu de texte | Minimal - titre et quelques images, très peu d’infos
+   */
+  projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
+  title: string;
+  /**
+   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   */
+  slug?: string | null;
+  coverImage: number | Media;
+  galleryImages?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  video?: string | null;
+  shortDescription: string;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  location?: string | null;
+  year?: number | null;
+  categories?: (number | Category)[] | null;
+  surface?: string | null;
+  client?: string | null;
+  status?: ('completed' | 'inProgress' | 'concept') | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  plans?: (number | null) | Media;
+  /**
+   * Description des plans du projet : listes, paragraphes, etc.
+   */
+  planDetails?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -272,100 +363,6 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  /**
-   * Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
-   */
-  slug?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
- */
-export interface Project {
-  id: number;
-  /**
-   * Définit la mise en page du projet côté site : Default - page projet classique | Editorial - texte et images alternées | Gallery focused - galerie dominante, peu de texte | Minimal - titre et quelques images, très peu d’infos
-   */
-  projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
-  title: string;
-  /**
-   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
-   */
-  slug?: string | null;
-  coverImage: number | Media;
-  galleryImages?:
-    | {
-        image: number | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  video?: string | null;
-  shortDescription: string;
-  longDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  location?: string | null;
-  year?: number | null;
-  categories?: (number | Category)[] | null;
-  surface?: string | null;
-  client?: string | null;
-  status?: ('completed' | 'inProgress' | 'concept') | null;
-  featured?: boolean | null;
-  order?: number | null;
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  language?: ('fr' | 'en') | null;
-  translations?: (number | Project)[] | null;
-  plans?:
-    | {
-        image: number | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Description des plans du projet : listes, paragraphes, etc.
-   */
-  planDetails?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -482,8 +479,10 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  project?: T;
   alt?: T;
   caption?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -603,7 +602,6 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
-        caption?: T;
         id?: T;
       };
   video?: T;
@@ -615,19 +613,9 @@ export interface ProjectsSelect<T extends boolean = true> {
   surface?: T;
   client?: T;
   status?: T;
-  featured?: T;
-  order?: T;
   seoTitle?: T;
   seoDescription?: T;
-  language?: T;
-  translations?: T;
-  plans?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
+  plans?: T;
   planDetails?: T;
   updatedAt?: T;
   createdAt?: T;
