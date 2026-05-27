@@ -15,12 +15,6 @@ import { Projects } from "./collections/Projects";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-console.log({
-    bucket: process.env.S3_BUCKET,
-    endpoint: process.env.S3_ENDPOINT,
-    region: process.env.S3_REGION,
-});
-
 const config = buildConfig({
     admin: {
         user: Users.slug,
