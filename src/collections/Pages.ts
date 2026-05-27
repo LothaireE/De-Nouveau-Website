@@ -8,7 +8,7 @@ export const Pages: CollectionConfig = {
     },
     admin: {
         useAsTitle: "title",
-        defaultColumns: ["pageType", "title", "slug"],
+        defaultColumns: ["pageType", "title", "createdAt", "updatedAt"],
     },
     fields: [
         {
@@ -16,11 +16,17 @@ export const Pages: CollectionConfig = {
             label: "Type de page",
             type: "select",
             required: true,
+            unique: true,
             options: [
                 { label: "Homepage", value: "homepage" },
                 { label: "About", value: "about" },
                 { label: "Contact", value: "contact" },
             ],
+            // hooks:{
+            //     afterChange:[({ data, previousData, req }) => {
+            //         if(previousData?.pageType === data.pageType) return; // only run when pageType is changed]
+            //     }]
+            // }
         },
         {
             name: "title",
@@ -30,12 +36,19 @@ export const Pages: CollectionConfig = {
         },
         {
             name: "slug",
-            label: "Slug",
             type: "text",
             required: true,
+            hidden: true,
             unique: true,
-            admin: {
-                description: "Exemple : homepage, about, contact",
+            hooks: {
+                beforeValidate: [
+                    ({ siblingData }) => {
+                        if (siblingData?.pageType === "about") return "about";
+                        if (siblingData?.pageType === "contact")
+                            return "contact";
+                        return "";
+                    },
+                ],
             },
         },
         {
@@ -50,9 +63,13 @@ export const Pages: CollectionConfig = {
         },
         {
             name: "portrait",
-            label: "Image / Portrait",
+            label: "Image",
             type: "upload",
             relationTo: "media",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType !== "homepage",
+            },
         },
         {
             name: "heroImage",
@@ -60,7 +77,6 @@ export const Pages: CollectionConfig = {
             type: "upload",
             relationTo: "media",
             admin: {
-                description: "Ne sera utilisé que pour la homepage",
                 condition: (_, siblingData) =>
                     siblingData?.pageType === "homepage",
             },
@@ -69,6 +85,10 @@ export const Pages: CollectionConfig = {
             name: "heroVideoUrl",
             label: "Vidéo hero optionnelle",
             type: "text",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "homepage",
+            },
         },
         {
             name: "email",
@@ -89,6 +109,10 @@ export const Pages: CollectionConfig = {
             name: "socialMedias",
             label: "Social medias",
             type: "array",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType !== "homepage",
+            },
             fields: [
                 {
                     name: "link",

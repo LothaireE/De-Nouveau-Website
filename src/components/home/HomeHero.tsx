@@ -41,11 +41,12 @@ export default function HomeHero({ content }: { content: Page | null }) {
                 ) : hasHeroImage ? (
                     <MediaImage
                         media={content.heroImage}
-                        // size="original"
+                        size="hero"
                         fallbackAlt={content.title}
                         priority
                         variant="full"
-                        className="h-full w-full object-cover object-center"
+                        // className="h-full w-full object-cover object-center"
+                        className="h-full w-full object-cover object-bottom"
                     />
                 ) : null}
             </div>

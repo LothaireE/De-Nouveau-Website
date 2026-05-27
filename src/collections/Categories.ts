@@ -23,6 +23,7 @@ export const Categories: CollectionConfig = {
             label: "Slug",
             type: "text",
             unique: true,
+            required: true,
             hooks: {
                 beforeValidate: [formatSlug("title")],
             },
@@ -30,6 +31,7 @@ export const Categories: CollectionConfig = {
                 position: "sidebar",
                 description:
                     "Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.",
+                condition: () => false, // slug field is not displayed in the form
             },
         },
     ],

@@ -129,6 +129,12 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  role?: ('admin' | 'editor') | null;
+  bio?: string | null;
+  isActive?: boolean | null;
+  lastLogin?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -155,7 +161,7 @@ export interface User {
 export interface Media {
   id: number;
   /**
-   * Lorsque non renseigné, l'image sera associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
+   * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
    */
   project?: (number | null) | Project;
   /**
@@ -222,9 +228,13 @@ export interface Project {
   projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
   title: string;
   /**
+   * Champ verrouillé par défaut. Activez “Déverrouiller le slug” pour le modifier.
+   */
+  unlockSlug?: boolean | null;
+  /**
    * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
    */
-  slug?: string | null;
+  slug: string;
   coverImage: number | Media;
   galleryImages?:
     | {
@@ -257,7 +267,12 @@ export interface Project {
   status?: ('completed' | 'inProgress' | 'concept') | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
-  plans?: (number | null) | Media;
+  plans?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Description des plans du projet : listes, paragraphes, etc.
    */
@@ -301,9 +316,6 @@ export interface Page {
   id: number;
   pageType: 'homepage' | 'about' | 'contact';
   title: string;
-  /**
-   * Exemple : homepage, about, contact
-   */
   slug: string;
   intro?: string | null;
   content?: {
@@ -322,9 +334,6 @@ export interface Page {
     [k: string]: unknown;
   } | null;
   portrait?: (number | null) | Media;
-  /**
-   * Ne sera utilisé que pour la homepage
-   */
   heroImage?: (number | null) | Media;
   heroVideoUrl?: string | null;
   email?: string | null;
@@ -457,6 +466,12 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  bio?: T;
+  isActive?: T;
+  lastLogin?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -596,6 +611,7 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   projectLayout?: T;
   title?: T;
+  unlockSlug?: T;
   slug?: T;
   coverImage?: T;
   galleryImages?:
@@ -615,7 +631,12 @@ export interface ProjectsSelect<T extends boolean = true> {
   status?: T;
   seoTitle?: T;
   seoDescription?: T;
-  plans?: T;
+  plans?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   planDetails?: T;
   updatedAt?: T;
   createdAt?: T;

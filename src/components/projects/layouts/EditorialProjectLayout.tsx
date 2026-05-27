@@ -149,7 +149,59 @@ export default function EditorialProjectLayout({
                     </div>
                 </section>
             )}
+            {project.plans && project.plans.length > 0 && (
+                <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
+                    <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+                        {project.plans.map((item, index) => {
+                            const plan = item.image;
 
+                            if (!plan || typeof plan === "number") return null;
+
+                            const fallbackSize = plan.sizes?.large?.filename
+                                ? "large"
+                                : "card";
+
+                            return (
+                                <figure
+                                    key={item.id ?? index}
+                                    className={
+                                        index % 2 === 0 ? "mr-auto" : "ml-auto"
+                                    }
+                                >
+                                    <MediaImage
+                                        media={plan}
+                                        size={fallbackSize}
+                                        fallbackAlt={`Plan ${project.title} ${index + 1}`}
+                                        variant="contained"
+                                        quality={90}
+                                        className="h-auto w-full object-contain"
+                                    />
+
+                                    {plan.caption && (
+                                        <figcaption className="mt-3 text-sm text-studio-wood">
+                                            {plan.caption}
+                                        </figcaption>
+                                    )}
+                                </figure>
+                            );
+                        })}
+                    </div>
+
+                    {project.planDetails && (
+                        <div className="mx-auto mt-16 max-w-2xl border-t border-studio-sand/40 pt-10">
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-[180px_1fr]">
+                                <p className="text-sm uppercase tracking-wide text-studio-wood">
+                                    Détails des plans
+                                </p>
+
+                                <div className="text-base leading-relaxed text-studio-moss">
+                                    <RichText data={project.planDetails} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </section>
+            )}
             <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-wood">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
