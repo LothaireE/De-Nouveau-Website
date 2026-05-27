@@ -228,11 +228,7 @@ export interface Project {
   projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
   title: string;
   /**
-   * Champ verrouillé par défaut. Activez “Déverrouiller le slug” pour le modifier.
-   */
-  unlockSlug?: boolean | null;
-  /**
-   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.
    */
   slug: string;
   coverImage: number | Media;
@@ -267,6 +263,9 @@ export interface Project {
   status?: ('completed' | 'inProgress' | 'concept') | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
+  /**
+   * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
+   */
   plans?:
     | {
         image?: (number | null) | Media;
@@ -274,7 +273,7 @@ export interface Project {
       }[]
     | null;
   /**
-   * Description des plans du projet : listes, paragraphes, etc.
+   * Description des plans et dessins : listes, paragraphes, etc.
    */
   planDetails?: {
     root: {
@@ -611,7 +610,6 @@ export interface CategoriesSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   projectLayout?: T;
   title?: T;
-  unlockSlug?: T;
   slug?: T;
   coverImage?: T;
   galleryImages?:

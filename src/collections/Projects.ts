@@ -43,15 +43,22 @@ export const Projects: CollectionConfig = {
             label: "Slug",
             type: "text",
             unique: true,
-            hooks: {
-                beforeValidate: [formatSlug("title")],
+            required: true,
+            access: {
+                update: ({ req }) => {
+                    return req.user?.role === "admin";
+                },
             },
             admin: {
                 position: "sidebar",
                 description:
-                    "Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.",
+                    "Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.",
+            },
+            hooks: {
+                beforeValidate: [formatSlug("title")],
             },
         },
+
         {
             name: "coverImage",
             label: "Cover image",
@@ -98,6 +105,7 @@ export const Projects: CollectionConfig = {
             name: "year",
             label: "Year",
             type: "number",
+            defaultValue: new Date().getFullYear(),
         },
         {
             name: "categories",
@@ -138,9 +146,21 @@ export const Projects: CollectionConfig = {
         },
         {
             name: "plans",
-            label: "Plans",
-            type: "upload",
-            relationTo: "media",
+            label: "Plans / Dessins",
+            type: "array",
+            maxRows: 3,
+            admin: {
+                description:
+                    "Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.",
+            },
+            fields: [
+                {
+                    name: "image",
+                    type: "upload",
+                    relationTo: "media",
+                    //   required: true,
+                },
+            ],
         },
 
         {
@@ -149,7 +169,7 @@ export const Projects: CollectionConfig = {
             type: "richText",
             admin: {
                 description:
-                    "Description des plans du projet : listes, paragraphes, etc.",
+                    "Description des plans et dessins : listes, paragraphes, etc.",
             },
         },
     ],
