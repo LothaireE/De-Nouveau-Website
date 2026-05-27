@@ -15,6 +15,12 @@ import { Projects } from "./collections/Projects";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
+console.log({
+    bucket: process.env.S3_BUCKET,
+    endpoint: process.env.S3_ENDPOINT,
+    region: process.env.S3_REGION,
+});
+
 const config = buildConfig({
     admin: {
         user: Users.slug,
@@ -45,7 +51,7 @@ const config = buildConfig({
                     prefix: "media",
                 },
             },
-            bucket: process.env.NEXT_PUBLIC_S3_BUCKET || "",
+            bucket: process.env.S3_BUCKET || "",
             config: {
                 credentials: {
                     accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
