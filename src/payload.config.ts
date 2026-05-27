@@ -33,6 +33,9 @@ const config = buildConfig({
             connectionString: process.env.DATABASE_URL || "",
         },
     }),
+    graphQL: {
+        disable: true,
+    },
     sharp,
     plugins: [
         s3Storage({
