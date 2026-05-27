@@ -3,4 +3,3 @@ node_modules
 dist
 build
 coverage
-sanity/node_modules

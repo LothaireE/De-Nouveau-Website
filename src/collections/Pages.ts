@@ -1,0 +1,182 @@
+import type { CollectionConfig } from "payload";
+
+export const Pages: CollectionConfig = {
+    slug: "pages",
+    labels: {
+        singular: "Page",
+        plural: "Pages",
+    },
+    admin: {
+        useAsTitle: "title",
+        defaultColumns: ["pageType", "title", "createdAt", "updatedAt"],
+    },
+    fields: [
+        {
+            name: "pageType",
+            label: "Type de page",
+            type: "select",
+            required: true,
+            unique: true,
+            options: [
+                { label: "Homepage", value: "homepage" },
+                { label: "About", value: "about" },
+                { label: "Contact", value: "contact" },
+            ],
+            // hooks:{
+            //     afterChange:[({ data, previousData, req }) => {
+            //         if(previousData?.pageType === data.pageType) return; // only run when pageType is changed]
+            //     }]
+            // }
+        },
+        {
+            name: "title",
+            label: "Titre",
+            type: "text",
+            required: true,
+        },
+        {
+            name: "slug",
+            type: "text",
+            required: true,
+            hidden: true,
+            unique: true,
+            hooks: {
+                beforeValidate: [
+                    ({ siblingData }) => {
+                        if (siblingData?.pageType === "about") return "about";
+                        if (siblingData?.pageType === "contact")
+                            return "contact";
+                        return "";
+                    },
+                ],
+            },
+        },
+        {
+            name: "intro",
+            label: "Texte d’introduction",
+            type: "textarea",
+        },
+        {
+            name: "content",
+            label: "Contenu texte",
+            type: "richText",
+        },
+        {
+            name: "portrait",
+            label: "Image",
+            type: "upload",
+            relationTo: "media",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType !== "homepage",
+            },
+        },
+        {
+            name: "heroImage",
+            label: "Image hero",
+            type: "upload",
+            relationTo: "media",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "homepage",
+            },
+        },
+        {
+            name: "heroVideoUrl",
+            label: "Vidéo hero optionnelle",
+            type: "text",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "homepage",
+            },
+        },
+        {
+            name: "email",
+            label: "Email",
+            type: "email",
+        },
+        {
+            name: "phone",
+            label: "Téléphone",
+            type: "text",
+        },
+        {
+            name: "address",
+            label: "Adresse",
+            type: "textarea",
+        },
+        {
+            name: "socialMedias",
+            label: "Social medias",
+            type: "array",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType !== "homepage",
+            },
+            fields: [
+                {
+                    name: "link",
+                    label: "Link",
+                    type: "text",
+                    admin: {
+                        description:
+                            "Provide a full url (ex: https://www.instagram.com/).",
+                    },
+                },
+                {
+                    name: "label",
+                    label: "Label",
+                    type: "text",
+                    admin: {
+                        description:
+                            "Label used as a placeholder for the link.",
+                    },
+                },
+            ],
+        },
+        {
+            name: "awards",
+            label: "Prix / distinctions",
+            type: "array",
+            admin: {
+                description: "Available on about page",
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "about",
+            },
+            fields: [
+                {
+                    name: "name",
+                    label: "nom",
+                    type: "text",
+                },
+                {
+                    name: "year",
+                    label: "Année",
+                    type: "text",
+                },
+            ],
+        },
+        {
+            name: "studioTeam",
+            label: "Equipe",
+            type: "array",
+            admin: {
+                description: "Available on about page",
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "about",
+            },
+            fields: [
+                {
+                    name: "name", // fullname
+                    label: "Prénom Nom",
+                    type: "text",
+                },
+                {
+                    name: "role",
+                    label: "Rôle",
+                    type: "text",
+                },
+            ],
+        },
+    ],
+};

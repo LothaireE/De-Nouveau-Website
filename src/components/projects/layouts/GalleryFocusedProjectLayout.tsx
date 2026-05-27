@@ -1,6 +1,6 @@
-import Image from "next/image";
-import { Project } from "@/types/Project";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
+import MediaImage from "@/components/MediaImage";
+import type { Project } from "@/payload-types";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 export default function GalleryFocusedProjectLayout({
     project,
@@ -31,36 +31,42 @@ export default function GalleryFocusedProjectLayout({
                     </p>
                 )}
             </header>
-
-            <Image
-                src={urlFor(project.coverImage).width(2200).url()}
-                alt={project.coverImage.alt ?? ""}
-                width={2200}
-                height={1400}
+            <MediaImage
+                media={project.coverImage}
+                size="hero"
+                fallbackAlt={project.title}
+                variant="full"
                 priority
+                quality={95}
                 className="mb-8 h-auto w-full object-cover"
             />
 
             {images.length > 0 && (
                 <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    {images.map((image, index) => {
+                    {images.map((item, index) => {
+                        const image = item.image;
+
+                        if (!image || typeof image === "number") return null;
+
                         const isWide = index % 5 === 0;
 
                         return (
                             <figure
-                                key={image._key}
+                                key={item.id ?? index}
                                 className={isWide ? "md:col-span-2" : undefined}
                             >
-                                <Image
-                                    src={urlFor(image)
-                                        .width(isWide ? 2200 : 1200)
-                                        .url()}
-                                    alt={
-                                        image.alt ||
-                                        `${project.title} ${index + 1}`
-                                    }
-                                    width={isWide ? 2200 : 1200}
-                                    height={isWide ? 1400 : 900}
+                                {/* <MediaImage
+                                    media={image}
+                                    size={isWide ? "hero" : "card"}
+                                    fallbackAlt={`${project.title} ${index + 1}`}
+                                    className="h-auto w-full object-cover"
+                                /> */}
+                                <MediaImage
+                                    media={image}
+                                    size={isWide ? "hero" : "card"}
+                                    fallbackAlt={`${project.title} ${index + 1}`}
+                                    variant={isWide ? "full" : "half"}
+                                    quality={90}
                                     className="h-auto w-full object-cover"
                                 />
 
@@ -86,7 +92,68 @@ export default function GalleryFocusedProjectLayout({
                     </div>
                 </section>
             )}
+            {project.plans && project.plans.length > 0 && (
+                <section className="my-24 border-t border-studio-sand/60 pt-16">
+                    <div className="mb-10 flex justify-between text-sm uppercase tracking-wide text-studio-wood">
+                        <span>Plans</span>
+                        <span>{project.plans.length}</span>
+                    </div>
 
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                        {project.plans.map((item, index) => {
+                            const plan = item.image;
+
+                            if (!plan || typeof plan === "number") return null;
+
+                            const fallbackSize = plan.sizes?.large?.filename
+                                ? "large"
+                                : "card";
+
+                            return (
+                                <figure
+                                    key={item.id ?? index}
+                                    className={
+                                        project.plans?.length === 1
+                                            ? "md:col-span-2"
+                                            : undefined
+                                    }
+                                >
+                                    <MediaImage
+                                        media={plan}
+                                        size={fallbackSize}
+                                        fallbackAlt={`Plan ${project.title} ${index + 1}`}
+                                        variant={
+                                            project.plans?.length === 1
+                                                ? "full"
+                                                : "half"
+                                        }
+                                        quality={90}
+                                        className="h-auto w-full object-contain"
+                                    />
+
+                                    {plan.caption && (
+                                        <figcaption className="mt-3 text-sm text-studio-wood">
+                                            {plan.caption}
+                                        </figcaption>
+                                    )}
+                                </figure>
+                            );
+                        })}
+                    </div>
+
+                    {project.planDetails && (
+                        <div className="mt-16 grid grid-cols-1 gap-10 border-t border-studio-sand/40 pt-10 md:grid-cols-[1fr_2fr]">
+                            <p className="text-sm uppercase tracking-wide text-studio-wood">
+                                Détails des plans
+                            </p>
+
+                            <div className="max-w-2xl text-base leading-relaxed text-studio-moss md:justify-self-end">
+                                <RichText data={project.planDetails} />
+                            </div>
+                        </div>
+                    )}
+                </section>
+            )}
             <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-wood">
                 <span>{project.location}</span>
                 <span>{project.year}</span>

@@ -1,61 +1,69 @@
-import { Page } from "@/types/Page";
+"use client";
+
+import MediaImage from "@/components/MediaImage";
+import type { Page } from "@/payload-types";
 import Image from "next/image";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
-import { PortableText } from "@portabletext/react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import TITLE_IMAGE from "../../../public/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
+import { useRef } from "react";
 
 export default function HomeHero({ content }: { content: Page | null }) {
+    const sectionRef = useRef<HTMLElement | null>(null);
+
+    const { scrollYProgress } = useScroll({
+        target: sectionRef,
+        offset: ["start start", "end start"],
+    });
+
+    const logoY = useTransform(scrollYProgress, [0, 1], ["4%", "100%"]);
+
     if (!content) return null;
 
     const hasHeroVideo = Boolean(content.heroVideoUrl);
-    const hasHeroImage = Boolean(content.heroImage);
+    const hasHeroImage =
+        content.heroImage && typeof content.heroImage !== "number";
 
     return (
-        <section className="relative bg-studio-white px-4 sm:px-6">
-            <div className="relative min-h-[160vh]">
-                <div className="relative h-[120vh] overflow-hidden bg-studio-cream">
-                    {hasHeroVideo ? (
-                        <video
-                            src={content.heroVideoUrl}
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="h-full w-full object-cover"
-                        />
-                    ) : hasHeroImage ? (
-                        <Image
-                            src={urlFor(content.heroImage).width(2400).url()}
-                            alt={content.heroImage.alt || content.title}
-                            width={2400}
-                            height={1600}
-                            priority
-                            className="h-full w-full object-cover"
-                        />
-                    ) : null}
-                </div>
-
-                <div className="pointer-events-none absolute inset-0">
-                    <div className="sticky top-0 flex h-screen items-end md:items-center">
-                        <div className="pointer-events-auto mb-8 w-full max-w-xl bg-studio-white p-6 md:mb-0 md:ml-12 md:max-w-2xl lg:ml-20 lg:max-w-3xl">
-                            <h1 className="text-5xl font-medium leading-none text-studio-black md:text-7xl">
-                                {content.title}
-                            </h1>
-
-                            {content.intro && (
-                                <p className="mt-8 max-w-xl text-base leading-relaxed text-studio-black">
-                                    {content.intro}
-                                </p>
-                            )}
-
-                            {content.content && (
-                                <div className="mt-8 max-w-xl text-base leading-relaxed text-studio-black">
-                                    <PortableText value={content.content} />
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
+        <section
+            ref={sectionRef}
+            className="relative min-h-svh overflow-hidden px-4 sm:px-6"
+        >
+            <div className="absolute inset-0 h-full w-full">
+                {hasHeroVideo ? (
+                    <video
+                        src={content.heroVideoUrl || ""}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="h-full w-full object-cover object-bottom"
+                    />
+                ) : hasHeroImage ? (
+                    <MediaImage
+                        media={content.heroImage}
+                        size="hero"
+                        fallbackAlt={content.title}
+                        priority
+                        variant="full"
+                        // className="h-full w-full object-cover object-center"
+                        className="h-full w-full object-cover object-bottom"
+                    />
+                ) : null}
             </div>
+
+            <motion.div
+                style={{ y: logoY }}
+                className="relative z-10 flex min-h-svh items-center md:items-start md:pl-6 lg:pl-10"
+            >
+                <div className="w-full max-w-xl md:max-w-2xl lg:max-w-3xl">
+                    <Image
+                        src={TITLE_IMAGE}
+                        alt="De Nouveau, architecture et design"
+                        className="h-auto w-full"
+                        priority
+                    />
+                </div>
+            </motion.div>
         </section>
     );
 }

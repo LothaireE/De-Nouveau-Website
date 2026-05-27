@@ -1,6 +1,6 @@
-import Image from "next/image";
-import { Project } from "@/types/Project";
-import { urlFor } from "@/library/sanity/imageUrlBuilder";
+import MediaImage from "@/components/MediaImage";
+import type { Project } from "@/payload-types";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 export default function MinimalProjectLayout({
     project,
@@ -30,35 +30,49 @@ export default function MinimalProjectLayout({
             </header>
 
             <figure className="mx-auto max-w-5xl">
-                <Image
-                    src={urlFor(project.coverImage).width(1800).url()}
-                    alt={project.title}
-                    width={1800}
-                    height={1200}
-                    priority
+                <MediaImage
+                    media={project.coverImage}
+                    fallbackAlt={project.title}
+                    size="hero"
+                    variant="contained"
+                    priority={true}
+                    quality={95}
                     className="h-auto w-full object-cover"
                 />
             </figure>
 
             {images.length > 0 && (
                 <section className="mx-auto mt-20 max-w-5xl space-y-16">
-                    {images.map((image) => (
-                        <figure key={image._key}>
-                            <Image
-                                src={urlFor(image).width(1600).url()}
-                                alt={image.alt || project.title}
-                                width={1600}
-                                height={1100}
-                                className="h-auto w-full object-cover"
-                            />
+                    {images.map((item, index) => {
+                        const image = item.image;
 
-                            {image.caption && (
-                                <figcaption className="mt-3 text-sm text-studio-wood">
-                                    {image.caption}
-                                </figcaption>
-                            )}
-                        </figure>
-                    ))}
+                        if (!image || typeof image === "number") return null;
+
+                        return (
+                            <figure key={item.id ?? index}>
+                                {/* <MediaImage
+                                    media={image}
+                                    size="large"
+                                    fallbackAlt={project.title}
+                                    className="h-auto w-full object-cover"
+                                /> */}
+                                <MediaImage
+                                    media={image}
+                                    size="large"
+                                    fallbackAlt={project.title}
+                                    variant="contained"
+                                    quality={90}
+                                    className="h-auto w-full object-cover"
+                                />
+
+                                {image.caption && (
+                                    <figcaption className="mt-3 text-sm text-studio-wood">
+                                        {image.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        );
+                    })}
                 </section>
             )}
 
@@ -71,6 +85,52 @@ export default function MinimalProjectLayout({
                             allowFullScreen
                         />
                     </div>
+                </section>
+            )}
+            {project.plans && project.plans.length > 0 && (
+                <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
+                    <div className="space-y-12">
+                        {project.plans.map((item, index) => {
+                            const plan = item.image;
+
+                            if (!plan || typeof plan === "number") return null;
+
+                            const fallbackSize = plan.sizes?.large?.filename
+                                ? "large"
+                                : "card";
+
+                            return (
+                                <figure key={item.id ?? index}>
+                                    <MediaImage
+                                        media={plan}
+                                        size={fallbackSize}
+                                        fallbackAlt={`Plan ${project.title} ${index + 1}`}
+                                        variant="contained"
+                                        quality={90}
+                                        className="h-auto w-full object-contain"
+                                    />
+
+                                    {plan.caption && (
+                                        <figcaption className="mt-3 text-sm text-studio-wood">
+                                            {plan.caption}
+                                        </figcaption>
+                                    )}
+                                </figure>
+                            );
+                        })}
+                    </div>
+
+                    {project.planDetails && (
+                        <div className="mx-auto mt-14 max-w-2xl border-t border-studio-sand/40 pt-10">
+                            <p className="mb-6 text-sm uppercase tracking-wide text-studio-wood">
+                                Détails des plans
+                            </p>
+
+                            <div className="text-base leading-relaxed text-studio-moss">
+                                <RichText data={project.planDetails} />
+                            </div>
+                        </div>
+                    )}
                 </section>
             )}
 

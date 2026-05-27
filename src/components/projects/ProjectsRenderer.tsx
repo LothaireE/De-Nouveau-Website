@@ -1,4 +1,4 @@
-import { Project } from "@/types/Project";
+import { Project } from "@/payload-types";
 import DefaultProjectLayout from "./layouts/DefaultProjectLayout";
 import EditorialProjectLayout from "./layouts/EditorialProjectLayout";
 import GalleryFocusedProjectLayout from "./layouts/GalleryFocusedProjectLayout";
@@ -11,11 +11,7 @@ const projectLayouts = {
     minimal: MinimalProjectLayout,
 };
 
-type Props = {
-    project: Project;
-};
-
-export function ProjectRenderer({ project }: Props) {
+export function ProjectRenderer({ project }: { project: Project }) {
     const Layout = projectLayouts[project.projectLayout ?? "default"];
 
     return <Layout project={project} />;
