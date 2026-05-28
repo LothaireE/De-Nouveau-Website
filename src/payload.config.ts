@@ -33,6 +33,9 @@ const config = buildConfig({
             connectionString: process.env.DATABASE_URL || "",
         },
     }),
+    graphQL: {
+        disable: true,
+    },
     sharp,
     plugins: [
         s3Storage({
@@ -42,7 +45,7 @@ const config = buildConfig({
                     prefix: "media",
                 },
             },
-            bucket: process.env.NEXT_PUBLIC_S3_BUCKET || "",
+            bucket: process.env.S3_BUCKET || "",
             config: {
                 credentials: {
                     accessKeyId: process.env.S3_ACCESS_KEY_ID || "",

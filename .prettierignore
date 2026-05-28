@@ -3,3 +3,6 @@ node_modules
 dist
 build
 coverage
+
+src/payload-types.ts
+src/app/(payload)/**
