@@ -315,7 +315,7 @@ export interface Page {
   id: number;
   pageType: 'homepage' | 'about' | 'contact';
   title: string;
-  slug: string;
+  slug?: string | null;
   intro?: string | null;
   content?: {
     root: {
