@@ -25,7 +25,7 @@ export const metadata = createMetadata({
     image: "/images/about.jpg",
 });
 
-const SLUG = "homepage";
+const SLUG = "home";
 
 export default async function Home() {
     const pageContent = await getPage(SLUG);

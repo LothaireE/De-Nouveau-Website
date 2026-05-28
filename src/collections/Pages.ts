@@ -8,7 +8,7 @@ export const Pages: CollectionConfig = {
     },
     admin: {
         useAsTitle: "title",
-        defaultColumns: ["pageType", "title", "createdAt", "updatedAt"],
+        defaultColumns: ["pageType", "slug", "title", "createdAt", "updatedAt"],
     },
     fields: [
         {
@@ -38,11 +38,14 @@ export const Pages: CollectionConfig = {
             name: "slug",
             type: "text",
             required: true,
-            hidden: true,
             unique: true,
+            admin: {
+                condition: () => false,
+            },
             hooks: {
                 beforeValidate: [
                     ({ siblingData }) => {
+                        if (siblingData?.pageType === "homepage") return "home";
                         if (siblingData?.pageType === "about") return "about";
                         if (siblingData?.pageType === "contact")
                             return "contact";
