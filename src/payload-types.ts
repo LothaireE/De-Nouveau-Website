@@ -317,6 +317,9 @@ export interface Page {
   title: string;
   slug?: string | null;
   intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
   content?: {
     root: {
       type: string;

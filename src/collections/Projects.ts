@@ -1,10 +1,20 @@
-import { assignProjectToMedia, formatSlug } from "@/library/payload/hooks";
+import {
+    assignProjectToMedia,
+    formatSlug,
+    revalidateFrontend,
+} from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Projects: CollectionConfig = {
     slug: "projects",
     hooks: {
-        afterChange: [assignProjectToMedia],
+        afterChange: [
+            assignProjectToMedia,
+            async ({ doc }) => {
+                await revalidateFrontend(`/${doc.slug}`);
+                await revalidateFrontend("/");
+            },
+        ],
     },
     labels: {
         singular: "Project",
