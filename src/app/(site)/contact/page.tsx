@@ -24,9 +24,7 @@ function ContactBlock({
     return (
         <div>
             <p className="mb-3 text-xs text-studio-black/35">{title}</p>
-            <div className="flex  flex-col gap-1 text-[clamp(1.4rem,2vw,2.4rem)] leading-[1.05] tracking-[-0.04em]">
-                {children}
-            </div>
+            <div className="flex flex-col gap-2">{children}</div>
         </div>
     );
 }
@@ -41,15 +39,16 @@ export default async function ContactPage() {
     return (
         <main className="min-h-screen bg-studio-cream text-studio-black">
             <section className="grid min-h-screen grid-cols-1 md:grid-cols-5">
-                <div className="flex  min-h-screen flex-col justify-center px-6 pb-16 pt-32 md:px-12 md:pb-24 md:col-span-3">
+                <div className="flex min-h-screen flex-col justify-center px-6 pb-16 pt-32 md:px-12 md:pb-24 md:col-span-3">
                     <div className=" grid ">
+                        {/* <div className="grid gap-16 md:gap-24"> */}
                         <div className="grid  gap-10 text-sm md:justify-center">
                             <div className="space-y-10">
                                 <ContactBlock title="Contact">
                                     {page.email && (
                                         <Link
                                             href={`mailto:${page.email}`}
-                                            className="transition hover:text-studio-red"
+                                            className="transition hover:text-studio-red font-medium leading-none tracking-tighter text-4xl" //tracking-tighter
                                         >
                                             {page.email}
                                         </Link>
@@ -58,7 +57,7 @@ export default async function ContactPage() {
                                     {page.phone && (
                                         <Link
                                             href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                            className="transition hover:text-studio-red"
+                                            className="transition hover:text-studio-red text-4xl font-medium leading-none tracking-tighter" //tracking-tighter
                                         >
                                             {page.phone}
                                         </Link>
@@ -67,34 +66,38 @@ export default async function ContactPage() {
 
                                 {page.address && (
                                     <ContactBlock title="Adresse">
-                                        <span className="whitespace-pre-line">
+                                        <span className="whitespace-pre-line text-4xl font-medium leading-none tracking-tighter">
                                             {page.address}
                                         </span>
                                     </ContactBlock>
                                 )}
                             </div>
 
-                            <div className="space-y-10">
-                                <ContactBlock title="Follow us">
-                                    <div className="flex gap-4">
-                                        {page.socialMedias?.map(
-                                            (socialMedia) => (
-                                                <a
-                                                    key={socialMedia.id}
-                                                    target="_blank"
-                                                    href={
-                                                        socialMedia.link ?? ""
-                                                    }
-                                                    rel="noopener noreferrer"
-                                                    className="transition hover:text-studio-red"
-                                                >
-                                                    {socialMedia.label}
-                                                </a>
-                                            ),
-                                        )}
+                            {page.socialMedias &&
+                                page.socialMedias.length > 0 && (
+                                    <div className="space-y-10">
+                                        <ContactBlock title="Nous suivre">
+                                            <div className="flex gap-4">
+                                                {page.socialMedias?.map(
+                                                    (socialMedia) => (
+                                                        <a
+                                                            key={socialMedia.id}
+                                                            target="_blank"
+                                                            href={
+                                                                socialMedia.link ??
+                                                                ""
+                                                            }
+                                                            rel="noopener noreferrer"
+                                                            className="transition hover:text-studio-red text-4xl font-medium leading-none tracking-tighter"
+                                                        >
+                                                            {socialMedia.label}
+                                                        </a>
+                                                    ),
+                                                )}
+                                            </div>
+                                        </ContactBlock>
                                     </div>
-                                </ContactBlock>
-                            </div>
+                                )}
                         </div>
                     </div>
                 </div>

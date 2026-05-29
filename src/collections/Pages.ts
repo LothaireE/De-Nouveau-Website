@@ -1,3 +1,4 @@
+import { revalidateFrontend } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig = {
@@ -9,6 +10,17 @@ export const Pages: CollectionConfig = {
     admin: {
         useAsTitle: "title",
         defaultColumns: ["pageType", "slug", "title", "createdAt", "updatedAt"],
+    },
+    hooks: {
+        afterChange: [
+            async ({ doc }) => {
+                if (doc.slug === "home") {
+                    await revalidateFrontend("/");
+                    return;
+                }
+                await revalidateFrontend(`/${doc.slug}`);
+            },
+        ],
     },
     fields: [
         {
@@ -63,6 +75,10 @@ export const Pages: CollectionConfig = {
             name: "content",
             label: "Contenu texte",
             type: "richText",
+            admin: {
+                description:
+                    "Sauter deux lignes pour créer un espace entre les paragraphes.",
+            },
         },
         {
             name: "portrait",

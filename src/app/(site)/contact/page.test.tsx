@@ -43,7 +43,7 @@ describe("Contact Page", () => {
         expect(getByText("Adresse")).toBeInTheDocument();
         expect(getByText("45B Rue de la Villette")).toBeInTheDocument();
 
-        expect(getByText("Follow us")).toBeInTheDocument();
+        expect(getByText("Nous suivre")).toBeInTheDocument();
 
         expect(getByRole("link", { name: "Instagram" })).toHaveAttribute(
             "href",
