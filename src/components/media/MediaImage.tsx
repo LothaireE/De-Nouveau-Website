@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { Media } from "@/payload-types";
-import { getMediaUrl } from "@/library/utils";
+import { getMediaUrl } from "../../library/utils";
 
 /**
  * This component is a wrapper around Next.js Image component to handle media from Payload CMS
