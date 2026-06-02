@@ -1,3 +1,4 @@
+import LoadingLogo from "@/components/LoadingLogo";
 import { getAllProjects, getPage } from "@/library/payload/fetchers";
 import { createMetadata } from "@/library/seo";
 import { Page } from "@/payload-types";
@@ -6,14 +7,14 @@ import dynamic from "next/dynamic";
 const HomeHero = dynamic<{ content: Page | null }>(
     () => import("@/components/home/HomeHero"),
     {
-        loading: () => <div className="min-h-screen bg-neutral-100" />,
+        loading: () => <LoadingLogo />,
     },
 );
 
 const ProjectGallery = dynamic(
     () => import("@/components/home/ProjectGallery"),
     {
-        loading: () => <div className="h-96 bg-neutral-100" />,
+        loading: () => <LoadingLogo />,
     },
 );
 
