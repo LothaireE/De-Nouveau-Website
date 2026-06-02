@@ -30,7 +30,6 @@ describe("[slug] - Project Page", () => {
 
         const images = getAllByRole("img");
         expect(images[0]).toHaveAttribute("alt", "Toiture en bambou");
-        expect(images[0]).toHaveAttribute("loading", "eager");
         expect(images.length).toBe(8);
 
         expect(

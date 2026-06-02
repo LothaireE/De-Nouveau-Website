@@ -160,15 +160,20 @@ export interface User {
  */
 export interface Media {
   id: number;
+  mediaType?: ('image' | 'video') | null;
   /**
    * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
    */
   project?: (number | null) | Project;
   /**
-   * Il est recommandé de fournir un texte alternatif, important pour l'accessibilité et le référencement. Il doit décrire le contenu de l'image de manière concise et précise.
+   * Important pour l'accessibilité et le référencement. Doit décrire le contenu de l'image de manière concise et précise.
    */
   alt?: string | null;
   caption?: string | null;
+  /**
+   * Image affichée pendant le chargement de la vidéo ou si la vidéo ne se charge pas.
+   */
+  poster?: (number | null) | Media;
   prefix?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -238,7 +243,7 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
-  video?: string | null;
+  video?: (number | null) | Media;
   shortDescription: string;
   longDescription?: {
     root: {
@@ -336,8 +341,10 @@ export interface Page {
     [k: string]: unknown;
   } | null;
   portrait?: (number | null) | Media;
-  heroImage?: (number | null) | Media;
-  heroVideoUrl?: string | null;
+  /**
+   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   */
+  heroMedia?: (number | null) | Media;
   email?: string | null;
   phone?: string | null;
   address?: string | null;
@@ -496,9 +503,11 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  mediaType?: T;
   project?: T;
   alt?: T;
   caption?: T;
+  poster?: T;
   prefix?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -567,8 +576,7 @@ export interface PagesSelect<T extends boolean = true> {
   intro?: T;
   content?: T;
   portrait?: T;
-  heroImage?: T;
-  heroVideoUrl?: T;
+  heroMedia?: T;
   email?: T;
   phone?: T;
   address?: T;

@@ -2,7 +2,7 @@ import { createMetadata } from "@/library/seo";
 import { getPage } from "@/library/payload/fetchers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import MediaImage from "@/components/MediaImage";
+import MediaImage from "@/components/media/MediaImage";
 
 export const metadata = createMetadata({
     title: "Contacter De Nouveau",
