@@ -69,25 +69,24 @@ export default function MediaImage({
     className,
     priority = false,
     quality = 90,
-    loading,
 }: MediaImageProps) {
     if (!media || typeof media === "number") return null;
 
     const selectedSize = media.sizes?.[size];
     const filename = selectedSize?.filename || media.filename || null;
-    const cleanedSrc = getMediaUrl(filename);
+    const src = getMediaUrl(filename);
 
     const width = selectedSize?.width || media.width || 800;
     const height = selectedSize?.height || media.height || 600;
     const alt = media.alt || fallbackAlt;
 
-    if (!cleanedSrc) return null;
+    if (!src) return null;
 
     const responsive = getResponsive(variant, size);
 
     return (
         <Image
-            src={cleanedSrc}
+            src={src}
             alt={alt}
             width={width}
             height={height}
@@ -95,7 +94,6 @@ export default function MediaImage({
             priority={priority}
             sizes={responsive}
             quality={quality}
-            loading={loading ?? (priority ? "eager" : "lazy")} // patch to avoid waring to fix later
         />
     );
 }

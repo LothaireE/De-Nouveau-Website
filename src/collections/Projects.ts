@@ -75,6 +75,11 @@ export const Projects: CollectionConfig = {
             type: "upload",
             relationTo: "media",
             required: true,
+            filterOptions: {
+                mediaType: {
+                    equals: "image",
+                },
+            },
         },
         {
             name: "galleryImages",
@@ -92,8 +97,10 @@ export const Projects: CollectionConfig = {
         {
             name: "video",
             label: "Video",
-            type: "text",
+            type: "upload",
+            relationTo: "media",
         },
+
         {
             name: "shortDescription",
             label: "Short description",
@@ -168,7 +175,6 @@ export const Projects: CollectionConfig = {
                     name: "image",
                     type: "upload",
                     relationTo: "media",
-                    //   required: true,
                 },
             ],
         },

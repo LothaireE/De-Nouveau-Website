@@ -6,6 +6,23 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import TITLE_IMAGE from "../../../public/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
 import { useRef } from "react";
+import MediaVideo from "../MediaVideo";
+
+// function resolveHeroMedia(content: Page) {
+//   const video =
+//     content.heroVideo && typeof content.heroVideo !== "number"
+//       ? content.heroVideo
+//       : null;
+
+//   if (video?.mediaType === "video") return video;
+
+//   const image =
+//     content.heroImage && typeof content.heroImage !== "number"
+//       ? content.heroImage
+//       : null;
+
+//   return image;
+// }
 
 export default function HomeHero({ content }: { content: Page | null }) {
     const sectionRef = useRef<HTMLElement | null>(null);
@@ -19,9 +36,10 @@ export default function HomeHero({ content }: { content: Page | null }) {
 
     if (!content) return null;
 
-    const hasHeroVideo = Boolean(content.heroVideoUrl);
-    const hasHeroImage =
-        content.heroImage && typeof content.heroImage !== "number";
+    const heroMediaType =
+        content.heroMedia && typeof content.heroMedia !== "number"
+            ? content.heroMedia.mediaType
+            : null;
 
     return (
         <section
@@ -29,23 +47,15 @@ export default function HomeHero({ content }: { content: Page | null }) {
             className="relative min-h-svh overflow-hidden px-4 sm:px-6"
         >
             <div className="absolute inset-0 h-full w-full">
-                {hasHeroVideo ? (
-                    <video
-                        src={content.heroVideoUrl || ""}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="h-full w-full object-cover object-bottom"
-                    />
-                ) : hasHeroImage ? (
+                {heroMediaType === "video" ? (
+                    <MediaVideo media={content.heroMedia} />
+                ) : heroMediaType === "image" ? (
                     <MediaImage
-                        media={content.heroImage}
+                        media={content.heroMedia}
                         size="hero"
                         fallbackAlt={content.title}
                         priority
                         variant="full"
-                        // className="h-full w-full object-cover object-center"
                         className="h-full w-full object-cover object-bottom"
                     />
                 ) : null}
