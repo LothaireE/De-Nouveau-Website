@@ -138,7 +138,7 @@ export default function EditorialProjectLayout({
                 </section>
             )}
 
-            {project.video && (
+            {/* {project.video && (
                 <section className="mx-auto my-20 max-w-5xl">
                     <div className="aspect-video overflow-hidden bg-studio-black">
                         <iframe
@@ -148,7 +148,7 @@ export default function EditorialProjectLayout({
                         />
                     </div>
                 </section>
-            )}
+            )} */}
             {project.plans && project.plans.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2">

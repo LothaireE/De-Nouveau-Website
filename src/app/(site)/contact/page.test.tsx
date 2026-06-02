@@ -15,7 +15,7 @@ vi.mock("next/navigation", () => ({
     notFound: () => mockNotFound(),
 }));
 
-vi.mock("@/components/MediaImage", () => ({
+vi.mock("@/components/media/MediaImage", () => ({
     default: () => <MockMediaImage />,
 }));
 

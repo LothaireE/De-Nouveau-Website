@@ -75,7 +75,7 @@ export default function MinimalProjectLayout({
                     })}
                 </section>
             )}
-
+            {/* 
             {project.video && (
                 <section className="mx-auto my-20 max-w-5xl">
                     <div className="aspect-video overflow-hidden bg-studio-black">
@@ -86,7 +86,7 @@ export default function MinimalProjectLayout({
                         />
                     </div>
                 </section>
-            )}
+            )} */}
             {project.plans && project.plans.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
                     <div className="space-y-12">
