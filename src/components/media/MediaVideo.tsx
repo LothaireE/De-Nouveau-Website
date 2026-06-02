@@ -1,4 +1,4 @@
-import { getMediaUrl } from "../../library/utils";
+import { getMediaUrl } from "@/library/utils";
 import type { Media } from "@/payload-types";
 
 type MediaVideoProps = {
