@@ -2,7 +2,7 @@ import { getPage } from "@/library/payload/fetchers";
 import { createMetadata } from "@/library/seo";
 import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
-import MediaImage from "@/components/MediaImage";
+import MediaImage from "@/components/media/MediaImage";
 
 export const metadata = createMetadata({
     title: "À propos — De Nouveau",

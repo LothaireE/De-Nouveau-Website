@@ -85,28 +85,30 @@ export const Pages: CollectionConfig = {
             label: "Image",
             type: "upload",
             relationTo: "media",
+            filterOptions: {
+                mediaType: { equals: "image" },
+            },
             admin: {
                 condition: (_, siblingData) =>
                     siblingData?.pageType !== "homepage",
             },
         },
         {
-            name: "heroImage",
-            label: "Image hero",
+            name: "heroMedia",
+            label: "Média hero",
             type: "upload",
             relationTo: "media",
-            admin: {
-                condition: (_, siblingData) =>
-                    siblingData?.pageType === "homepage",
+            filterOptions: {
+                or: [
+                    { mediaType: { equals: "image" } },
+                    { mediaType: { equals: "video" } },
+                ],
             },
-        },
-        {
-            name: "heroVideoUrl",
-            label: "Vidéo hero optionnelle",
-            type: "text",
             admin: {
                 condition: (_, siblingData) =>
                     siblingData?.pageType === "homepage",
+                description:
+                    "Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.",
             },
         },
         {
