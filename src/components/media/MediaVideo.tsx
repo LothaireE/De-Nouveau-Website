@@ -1,5 +1,5 @@
+import { getMediaUrl } from "@/library/utils";
 import type { Media } from "@/payload-types";
-import { getMediaUrl } from "./MediaImage";
 
 type MediaVideoProps = {
     media?: Media | number | null;

@@ -1,28 +1,12 @@
 "use client";
 
-import MediaImage from "@/components/MediaImage";
+import MediaImage from "@/components/media/MediaImage";
+import MediaVideo from "../media/MediaVideo";
 import type { Page } from "@/payload-types";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import TITLE_IMAGE from "../../../public/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
 import { useRef } from "react";
-import MediaVideo from "../MediaVideo";
-
-// function resolveHeroMedia(content: Page) {
-//   const video =
-//     content.heroVideo && typeof content.heroVideo !== "number"
-//       ? content.heroVideo
-//       : null;
-
-//   if (video?.mediaType === "video") return video;
-
-//   const image =
-//     content.heroImage && typeof content.heroImage !== "number"
-//       ? content.heroImage
-//       : null;
-
-//   return image;
-// }
 
 export default function HomeHero({ content }: { content: Page | null }) {
     const sectionRef = useRef<HTMLElement | null>(null);

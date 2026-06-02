@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { Media } from "@/payload-types";
+import { getMediaUrl } from "@/library/utils";
 
 /**
  * This component is a wrapper around Next.js Image component to handle media from Payload CMS
@@ -48,17 +49,6 @@ function getResponsive(variant: Variant, size: SizeKey) {
             if (size === "card") return "(max-width: 768px) 100vw, 50vw";
             return "(max-width: 768px) 100vw, 800px";
     }
-}
-
-export function getMediaUrl(filename: string | null) {
-    if (!filename) return null;
-
-    const baseUrl = process.env.NEXT_PUBLIC_S3_PUBLIC_DEV_URL;
-    const prefix = "media"; // match prefix defined in src/payload.config.ts
-
-    if (!baseUrl) return null;
-
-    return `${baseUrl}/${prefix}/${encodeURIComponent(filename)}`;
 }
 
 export default function MediaImage({
