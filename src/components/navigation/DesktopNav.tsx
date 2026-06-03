@@ -4,9 +4,9 @@ import { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-// import LOGO_WHITE from "../../../public/DE_NOUVEAU/SVG/AAAA_WHITE_02.svg";
-import LOGO_BLACK from "../../../public/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
 import { frNavItems } from "@/library/navItems";
+
+const LOGO_BLACK_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
 
 export default function DesktopNav({
     projects,
@@ -45,8 +45,6 @@ export default function DesktopNav({
         open ? "opacity-100" : "opacity-0"
     }`;
 
-    const logo = LOGO_BLACK; // open ? LOGO_BLACK : LOGO_WHITE;
-
     return (
         <aside
             onMouseEnter={() => setOpen(true)}
@@ -57,10 +55,12 @@ export default function DesktopNav({
                 <div className="flex items-start justify-between">
                     <Link href="/" className={logoClassName}>
                         <Image
-                            src={logo}
-                            // src={open ? LOGO_BLACK : LOGO_WHITE}
+                            src={LOGO_BLACK_SRC}
                             alt="Logo De Nouveau"
                             className={logoImageClassName}
+                            width={56}
+                            height={56}
+                            priority
                         />
                     </Link>
                     {/* <span className={menuLabelClassName}>Menu</span> */}

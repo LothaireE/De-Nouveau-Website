@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import LOGO from "../../public/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
+
+const LOGO_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
 
 export default function LoadingLogo() {
     return (
@@ -32,7 +33,14 @@ export default function LoadingLogo() {
                     },
                 }}
             >
-                <Image src={LOGO} alt="" priority className="h-auto w-full" />
+                <Image
+                    src={LOGO_SRC}
+                    alt=""
+                    priority
+                    className="h-auto w-full"
+                    width={64}
+                    height={64}
+                />
             </motion.div>
         </div>
     );
