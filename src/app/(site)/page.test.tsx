@@ -16,6 +16,12 @@ vi.mock("@/library/payload/fetchers", () => ({
     ]),
 }));
 
+vi.mock("@/components/LoadingLogo", () => ({
+    default: function MockLoadingLogo() {
+        return <div>Loading...</div>;
+    },
+}));
+
 vi.mock("@/components/home/HomeHero", () => ({
     default: function MockHomeHero() {
         return <div>Lazy Loading HomeHero Component</div>;

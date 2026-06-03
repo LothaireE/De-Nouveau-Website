@@ -93,12 +93,12 @@ export const assignProjectToMedia: CollectionAfterChangeHook = async ({
 };
 
 export async function revalidateFrontend(path: string) {
-    const siteUrl = process.env.NEXT_URL;
+    const siteUrl = process.env.NEXT_PUBLIC_SERVER_URL;
     const secret = process.env.REVALIDATION_SECRET;
 
     if (!siteUrl || !secret) {
         console.warn(
-            "NEXT_URL or REVALIDATION_SECRET is not defined. Skipping revalidation.",
+            "NEXT_PUBLIC_SERVER_URL or REVALIDATION_SECRET is not defined. Skipping revalidation.",
         );
         return;
     }

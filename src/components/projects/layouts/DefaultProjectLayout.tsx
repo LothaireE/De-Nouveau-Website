@@ -1,4 +1,4 @@
-import MediaImage from "@/components/MediaImage";
+import MediaImage from "@/components/media/MediaImage";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 
@@ -123,7 +123,7 @@ export default function DefaultProjectLayout({
                 </section>
             )}
 
-            {project.video && (
+            {/* {project.video && (
                 <section className="mx-auto my-20 max-w-5xl">
                     <div className="aspect-video overflow-hidden bg-studio-black">
                         <iframe
@@ -133,7 +133,7 @@ export default function DefaultProjectLayout({
                         />
                     </div>
                 </section>
-            )}
+            )} */}
 
             {project.plans && project.plans.length > 0 && (
                 <section className="my-24 border-t border-studio-sand/60 px-6 pt-16 md:px-10">
