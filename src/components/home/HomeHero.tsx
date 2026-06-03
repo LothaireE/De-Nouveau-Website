@@ -5,8 +5,9 @@ import MediaVideo from "../media/MediaVideo";
 import type { Page } from "@/payload-types";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import TITLE_IMAGE from "../../../public/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
 import { useRef } from "react";
+
+const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
 
 export default function HomeHero({ content }: { content: Page | null }) {
     const sectionRef = useRef<HTMLElement | null>(null);
@@ -51,10 +52,12 @@ export default function HomeHero({ content }: { content: Page | null }) {
             >
                 <div className="w-full max-w-xl md:max-w-2xl lg:max-w-3xl">
                     <Image
-                        src={TITLE_IMAGE}
+                        src={LOGO_SRC}
                         alt="De Nouveau, architecture et design"
                         className="h-auto w-full"
                         priority
+                        width={120}
+                        height={120}
                     />
                 </div>
             </motion.div>

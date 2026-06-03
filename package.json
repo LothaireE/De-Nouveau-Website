@@ -17,7 +17,8 @@
         "test": "vitest",
         "test:ui": "vitest --ui",
         "test:coverage": "vitest --coverage",
-        "test:watch": "vitest --watch"
+        "test:watch": "vitest --watch",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@payloadcms/db-postgres": "^3.84.1",
