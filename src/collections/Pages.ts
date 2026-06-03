@@ -1,3 +1,4 @@
+import { revalidateFrontend } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Pages: CollectionConfig = {
@@ -8,7 +9,18 @@ export const Pages: CollectionConfig = {
     },
     admin: {
         useAsTitle: "title",
-        defaultColumns: ["pageType", "title", "slug"],
+        defaultColumns: ["pageType", "slug", "title", "createdAt", "updatedAt"],
+    },
+    hooks: {
+        afterChange: [
+            async ({ doc }) => {
+                if (doc.slug === "home") {
+                    await revalidateFrontend("/");
+                    return;
+                }
+                await revalidateFrontend(`/${doc.slug}`);
+            },
+        ],
     },
     fields: [
         {
@@ -16,11 +28,17 @@ export const Pages: CollectionConfig = {
             label: "Type de page",
             type: "select",
             required: true,
+            unique: true,
             options: [
                 { label: "Homepage", value: "homepage" },
                 { label: "About", value: "about" },
                 { label: "Contact", value: "contact" },
             ],
+            // hooks:{
+            //     afterChange:[({ data, previousData, req }) => {
+            //         if(previousData?.pageType === data.pageType) return; // only run when pageType is changed]
+            //     }]
+            // }
         },
         {
             name: "title",
@@ -30,12 +48,22 @@ export const Pages: CollectionConfig = {
         },
         {
             name: "slug",
-            label: "Slug",
             type: "text",
             required: true,
             unique: true,
             admin: {
-                description: "Exemple : homepage, about, contact",
+                condition: () => false,
+            },
+            hooks: {
+                beforeValidate: [
+                    ({ siblingData }) => {
+                        if (siblingData?.pageType === "homepage") return "home";
+                        if (siblingData?.pageType === "about") return "about";
+                        if (siblingData?.pageType === "contact")
+                            return "contact";
+                        return "";
+                    },
+                ],
             },
         },
         {
@@ -47,28 +75,41 @@ export const Pages: CollectionConfig = {
             name: "content",
             label: "Contenu texte",
             type: "richText",
-        },
-        {
-            name: "portrait",
-            label: "Image / Portrait",
-            type: "upload",
-            relationTo: "media",
-        },
-        {
-            name: "heroImage",
-            label: "Image hero",
-            type: "upload",
-            relationTo: "media",
             admin: {
-                description: "Ne sera utilisé que pour la homepage",
-                condition: (_, siblingData) =>
-                    siblingData?.pageType === "homepage",
+                description:
+                    "Sauter deux lignes pour créer un espace entre les paragraphes.",
             },
         },
         {
-            name: "heroVideoUrl",
-            label: "Vidéo hero optionnelle",
-            type: "text",
+            name: "portrait",
+            label: "Image",
+            type: "upload",
+            relationTo: "media",
+            filterOptions: {
+                mediaType: { equals: "image" },
+            },
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType !== "homepage",
+            },
+        },
+        {
+            name: "heroMedia",
+            label: "Média hero",
+            type: "upload",
+            relationTo: "media",
+            filterOptions: {
+                or: [
+                    { mediaType: { equals: "image" } },
+                    { mediaType: { equals: "video" } },
+                ],
+            },
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "homepage",
+                description:
+                    "Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.",
+            },
         },
         {
             name: "email",
@@ -84,6 +125,79 @@ export const Pages: CollectionConfig = {
             name: "address",
             label: "Adresse",
             type: "textarea",
+        },
+        {
+            name: "socialMedias",
+            label: "Social medias",
+            type: "array",
+            admin: {
+                condition: (_, siblingData) =>
+                    siblingData?.pageType !== "homepage",
+            },
+            fields: [
+                {
+                    name: "link",
+                    label: "Link",
+                    type: "text",
+                    admin: {
+                        description:
+                            "Provide a full url (ex: https://www.instagram.com/).",
+                    },
+                },
+                {
+                    name: "label",
+                    label: "Label",
+                    type: "text",
+                    admin: {
+                        description:
+                            "Label used as a placeholder for the link.",
+                    },
+                },
+            ],
+        },
+        {
+            name: "awards",
+            label: "Prix / distinctions",
+            type: "array",
+            admin: {
+                description: "Available on about page",
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "about",
+            },
+            fields: [
+                {
+                    name: "name",
+                    label: "nom",
+                    type: "text",
+                },
+                {
+                    name: "year",
+                    label: "Année",
+                    type: "text",
+                },
+            ],
+        },
+        {
+            name: "studioTeam",
+            label: "Equipe",
+            type: "array",
+            admin: {
+                description: "Available on about page",
+                condition: (_, siblingData) =>
+                    siblingData?.pageType === "about",
+            },
+            fields: [
+                {
+                    name: "name", // fullname
+                    label: "Prénom Nom",
+                    type: "text",
+                },
+                {
+                    name: "role",
+                    label: "Rôle",
+                    type: "text",
+                },
+            ],
         },
     ],
 };

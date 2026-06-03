@@ -129,6 +129,12 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  role?: ('admin' | 'editor') | null;
+  bio?: string | null;
+  isActive?: boolean | null;
+  lastLogin?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -154,8 +160,21 @@ export interface User {
  */
 export interface Media {
   id: number;
-  alt: string;
+  mediaType?: ('image' | 'video') | null;
+  /**
+   * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
+   */
+  project?: (number | null) | Project;
+  /**
+   * Important pour l'accessibilité et le référencement. Doit décrire le contenu de l'image de manière concise et précise.
+   */
+  alt?: string | null;
   caption?: string | null;
+  /**
+   * Image affichée pendant le chargement de la vidéo ou si la vidéo ne se charge pas.
+   */
+  poster?: (number | null) | Media;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -204,60 +223,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: number;
-  pageType: 'homepage' | 'about' | 'contact';
-  title: string;
-  /**
-   * Exemple : homepage, about, contact
-   */
-  slug: string;
-  intro?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  portrait?: (number | null) | Media;
-  /**
-   * Ne sera utilisé que pour la homepage
-   */
-  heroImage?: (number | null) | Media;
-  heroVideoUrl?: string | null;
-  email?: string | null;
-  phone?: string | null;
-  address?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: number;
-  title: string;
-  /**
-   * Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
-   */
-  slug?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
  */
 export interface Project {
@@ -268,18 +233,17 @@ export interface Project {
   projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
   title: string;
   /**
-   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.
    */
-  slug?: string | null;
+  slug: string;
   coverImage: number | Media;
   galleryImages?:
     | {
-        image: number | Media;
-        caption?: string | null;
+        image?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
-  video?: string | null;
+  video?: (number | null) | Media;
   shortDescription: string;
   longDescription?: {
     root: {
@@ -302,21 +266,19 @@ export interface Project {
   surface?: string | null;
   client?: string | null;
   status?: ('completed' | 'inProgress' | 'concept') | null;
-  featured?: boolean | null;
-  order?: number | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
-  language?: ('fr' | 'en') | null;
-  translations?: (number | Project)[] | null;
+  /**
+   * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
+   */
   plans?:
     | {
-        image: number | Media;
-        caption?: string | null;
+        image?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
   /**
-   * Description des plans du projet : listes, paragraphes, etc.
+   * Description des plans et dessins : listes, paragraphes, etc.
    */
   planDetails?: {
     root: {
@@ -333,6 +295,92 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.
+   */
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  pageType: 'homepage' | 'about' | 'contact';
+  title: string;
+  slug?: string | null;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Provide a full url (ex: https://www.instagram.com/).
+         */
+        link?: string | null;
+        /**
+         * Label used as a placeholder for the link.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -427,6 +475,12 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  bio?: T;
+  isActive?: T;
+  lastLogin?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -449,8 +503,12 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  mediaType?: T;
+  project?: T;
   alt?: T;
   caption?: T;
+  poster?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -518,11 +576,31 @@ export interface PagesSelect<T extends boolean = true> {
   intro?: T;
   content?: T;
   portrait?: T;
-  heroImage?: T;
-  heroVideoUrl?: T;
+  heroMedia?: T;
   email?: T;
   phone?: T;
   address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -549,7 +627,6 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
-        caption?: T;
         id?: T;
       };
   video?: T;
@@ -561,17 +638,12 @@ export interface ProjectsSelect<T extends boolean = true> {
   surface?: T;
   client?: T;
   status?: T;
-  featured?: T;
-  order?: T;
   seoTitle?: T;
   seoDescription?: T;
-  language?: T;
-  translations?: T;
   plans?:
     | T
     | {
         image?: T;
-        caption?: T;
         id?: T;
       };
   planDetails?: T;

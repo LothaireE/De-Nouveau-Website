@@ -14,6 +14,9 @@ const eslintConfig = defineConfig([
         "out/**",
         "build/**",
         "next-env.d.ts",
+        "src/payload-types.ts",
+        "src/app/(payload)/**",
+        "coverage/**",
     ]),
 ]);
 

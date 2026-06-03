@@ -2,7 +2,7 @@ import { getPage } from "@/library/payload/fetchers";
 import { createMetadata } from "@/library/seo";
 import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
-import MediaImage from "@/components/MediaImage";
+import MediaImage from "@/components/media/MediaImage";
 
 export const metadata = createMetadata({
     title: "À propos — De Nouveau",
@@ -15,49 +15,82 @@ export const metadata = createMetadata({
 
 const SLUG = "about";
 
-export default async function AboutPage() {
-    const about = await getPage(SLUG);
+function AboutSection({
+    title,
+    children,
+}: {
+    title: string;
+    children: React.ReactNode;
+}) {
+    return (
+        // <section className="border-t border-studio-black/20 pt-8 col-span-1">
+        <section className="pt-8 col-span-1">
+            <p className="mb-8 text-xs uppercase tracking-wide text-studio-black/35">
+                {title}
+            </p>
 
-    if (!about) notFound();
+            <div className="max-w-3xl text-[clamp(1.2rem,1.5vw,2rem)] leading-[1.05] tracking-[-0.04em]">
+                {children}
+            </div>
+        </section>
+    );
+}
+
+export default async function AboutPage() {
+    const page = await getPage(SLUG);
+
+    if (!page) return notFound();
 
     const portrait =
-        about.portrait && typeof about.portrait !== "number"
-            ? about.portrait
+        page.portrait && typeof page.portrait !== "number"
+            ? page.portrait
             : null;
 
     return (
-        <main className="px-6 py-16">
-            <section className="grid min-h-[70vh] grid-cols-1 gap-16 md:grid-cols-2">
-                <div>
-                    <h1 className="max-w-4xl text-5xl font-medium md:text-7xl">
-                        {about.title}
-                    </h1>
-                </div>
-
-                <div className="flex flex-col gap-12">
-                    {portrait && (
+        <main className="min-h-screen bg-studio-cream text-studio-black">
+            <div className="grid gap-10 md:grid-cols-5">
+                <aside className="md:col-span-2">
+                    {portrait ? (
                         <MediaImage
                             media={portrait}
+                            fallbackAlt={page.title}
+                            priority
                             size="large"
-                            fallbackAlt={about.title}
-                            priority={true}
-                            className="h-auto w-full object-cover"
+                            variant="half"
+                            className="h-full w-full object-cover object-center "
                         />
+                    ) : (
+                        <div className="absolute inset-0 bg-studio-red-dark" />
                     )}
+                </aside>
 
-                    {about.intro && (
-                        <p className="max-w-xl text-xl leading-relaxed">
-                            {about.intro}
-                        </p>
-                    )}
+                <div className="md:col-span-3 grid md:grid-cols-2 md:min-h-screen py-32 md:gap-12">
+                    <div className="md:col-span-3">
+                        {page?.content && (
+                            <AboutSection title="À propos">
+                                <RichText data={page?.content} />
+                            </AboutSection>
+                        )}
+                    </div>
+                    <AboutSection title="Récompenses">
+                        <ul className="space-y-3">
+                            {page.awards?.map((award) => (
+                                <li key={award.id}>{award.name}</li>
+                            ))}
+                        </ul>
+                    </AboutSection>
 
-                    {about.content && (
-                        <div className="prose prose-neutral max-w-xl">
-                            <RichText data={about.content} />
-                        </div>
-                    )}
+                    <AboutSection title="Nos membres">
+                        <ul className="space-y-3">
+                            {page.studioTeam?.map((member) => (
+                                <li key={member.id}>
+                                    {member.name} - {member.role}.
+                                </li>
+                            ))}
+                        </ul>
+                    </AboutSection>
                 </div>
-            </section>
+            </div>
         </main>
     );
 }

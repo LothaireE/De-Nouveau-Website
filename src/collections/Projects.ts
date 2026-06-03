@@ -1,8 +1,21 @@
-import { formatSlug } from "@/library/payload/formatSlug";
+import {
+    assignProjectToMedia,
+    formatSlug,
+    revalidateFrontend,
+} from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Projects: CollectionConfig = {
     slug: "projects",
+    hooks: {
+        afterChange: [
+            assignProjectToMedia,
+            async ({ doc }) => {
+                await revalidateFrontend(`/${doc.slug}`);
+                await revalidateFrontend("/");
+            },
+        ],
+    },
     labels: {
         singular: "Project",
         plural: "Projects",
@@ -40,21 +53,33 @@ export const Projects: CollectionConfig = {
             label: "Slug",
             type: "text",
             unique: true,
-            hooks: {
-                beforeValidate: [formatSlug("title")],
+            required: true,
+            access: {
+                update: ({ req }) => {
+                    return req.user?.role === "admin";
+                },
             },
             admin: {
                 position: "sidebar",
                 description:
-                    "Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.",
+                    "Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.",
+            },
+            hooks: {
+                beforeValidate: [formatSlug("title")],
             },
         },
+
         {
             name: "coverImage",
             label: "Cover image",
             type: "upload",
             relationTo: "media",
             required: true,
+            filterOptions: {
+                mediaType: {
+                    equals: "image",
+                },
+            },
         },
         {
             name: "galleryImages",
@@ -66,19 +91,16 @@ export const Projects: CollectionConfig = {
                     label: "Image",
                     type: "upload",
                     relationTo: "media",
-                    required: true,
-                },
-                {
-                    name: "caption",
-                    type: "text",
                 },
             ],
         },
         {
             name: "video",
             label: "Video",
-            type: "text",
+            type: "upload",
+            relationTo: "media",
         },
+
         {
             name: "shortDescription",
             label: "Short description",
@@ -100,6 +122,7 @@ export const Projects: CollectionConfig = {
             name: "year",
             label: "Year",
             type: "number",
+            defaultValue: new Date().getFullYear(),
         },
         {
             name: "categories",
@@ -129,18 +152,6 @@ export const Projects: CollectionConfig = {
             ],
         },
         {
-            name: "featured",
-            label: "Featured project",
-            type: "checkbox",
-            defaultValue: false,
-        },
-        {
-            name: "order",
-            label: "Order",
-            type: "number",
-            defaultValue: 0,
-        },
-        {
             name: "seoTitle",
             label: "SEO title",
             type: "text",
@@ -151,48 +162,30 @@ export const Projects: CollectionConfig = {
             type: "textarea",
         },
         {
-            name: "language",
-            label: "Language",
-            type: "select",
-            defaultValue: "fr",
-            options: [
-                { label: "French", value: "fr" },
-                { label: "English", value: "en" },
-            ],
-        },
-        {
-            name: "translations",
-            label: "Translations",
-            type: "relationship",
-            relationTo: "projects",
-            hasMany: true,
-        },
-        {
             name: "plans",
-            label: "Plans",
+            label: "Plans / Dessins",
             type: "array",
+            maxRows: 3,
+            admin: {
+                description:
+                    "Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.",
+            },
             fields: [
                 {
                     name: "image",
-                    label: "Image",
                     type: "upload",
                     relationTo: "media",
-                    required: true,
-                },
-                {
-                    name: "caption",
-                    label: "Caption",
-                    type: "text",
                 },
             ],
         },
+
         {
             name: "planDetails",
             label: "Détail des plans",
             type: "richText",
             admin: {
                 description:
-                    "Description des plans du projet : listes, paragraphes, etc.",
+                    "Description des plans et dessins : listes, paragraphes, etc.",
             },
         },
     ],

@@ -1,5 +1,6 @@
-import MediaImage from "@/components/MediaImage";
+import MediaImage from "@/components/media/MediaImage";
 import type { Project } from "@/payload-types";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 export default function MinimalProjectLayout({
     project,
@@ -32,7 +33,7 @@ export default function MinimalProjectLayout({
                 <MediaImage
                     media={project.coverImage}
                     fallbackAlt={project.title}
-                    size="large"
+                    size="hero"
                     variant="contained"
                     priority={true}
                     quality={95}
@@ -74,7 +75,7 @@ export default function MinimalProjectLayout({
                     })}
                 </section>
             )}
-
+            {/* 
             {project.video && (
                 <section className="mx-auto my-20 max-w-5xl">
                     <div className="aspect-video overflow-hidden bg-studio-black">
@@ -84,6 +85,52 @@ export default function MinimalProjectLayout({
                             allowFullScreen
                         />
                     </div>
+                </section>
+            )} */}
+            {project.plans && project.plans.length > 0 && (
+                <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
+                    <div className="space-y-12">
+                        {project.plans.map((item, index) => {
+                            const plan = item.image;
+
+                            if (!plan || typeof plan === "number") return null;
+
+                            const fallbackSize = plan.sizes?.large?.filename
+                                ? "large"
+                                : "card";
+
+                            return (
+                                <figure key={item.id ?? index}>
+                                    <MediaImage
+                                        media={plan}
+                                        size={fallbackSize}
+                                        fallbackAlt={`Plan ${project.title} ${index + 1}`}
+                                        variant="contained"
+                                        quality={90}
+                                        className="h-auto w-full object-contain"
+                                    />
+
+                                    {plan.caption && (
+                                        <figcaption className="mt-3 text-sm text-studio-wood">
+                                            {plan.caption}
+                                        </figcaption>
+                                    )}
+                                </figure>
+                            );
+                        })}
+                    </div>
+
+                    {project.planDetails && (
+                        <div className="mx-auto mt-14 max-w-2xl border-t border-studio-sand/40 pt-10">
+                            <p className="mb-6 text-sm uppercase tracking-wide text-studio-wood">
+                                Détails des plans
+                            </p>
+
+                            <div className="text-base leading-relaxed text-studio-moss">
+                                <RichText data={project.planDetails} />
+                            </div>
+                        </div>
+                    )}
                 </section>
             )}
 

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import FloatingNav from "@/components/navigation/FloatingNav";
+import DesktopNav from "@/components/navigation/DesktopNav";
 import { getNavProjects } from "@/library/payload/fetchers";
+import MobileNav from "@/components/navigation/MobileNav";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -60,7 +61,12 @@ export default async function RootLayout({
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
             <body className="min-h-full flex flex-col">
-                <FloatingNav projects={navProjects} />
+                <div className="hidden md:block">
+                    <DesktopNav projects={navProjects} />
+                </div>
+                <div className="block md:hidden">
+                    <MobileNav projects={navProjects} />
+                </div>
                 {children}
             </body>
         </html>
