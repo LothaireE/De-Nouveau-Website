@@ -28,7 +28,7 @@ export default function EditorialProjectLayout({
                         {project.title}
                     </h1>
 
-                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-wood">
+                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>Location {project.location}</p>}
@@ -58,12 +58,6 @@ export default function EditorialProjectLayout({
                         quality={90}
                         className="h-auto w-full object-cover"
                     />
-
-                    {firstImage.caption && (
-                        <figcaption className="mt-3 text-sm text-studio-wood">
-                            {firstImage.caption}
-                        </figcaption>
-                    )}
                 </figure>
             )}
 
@@ -90,12 +84,6 @@ export default function EditorialProjectLayout({
                                     className="h-auto w-full object-cover"
                                     fallbackAlt={project.title}
                                 />
-
-                                {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-wood">
-                                        {image.caption}
-                                    </figcaption>
-                                )}
                             </figure>
                         );
                     })}
@@ -126,12 +114,6 @@ export default function EditorialProjectLayout({
                                     fallbackAlt={`${project.title} ${index + 1}`}
                                     className="h-auto w-full object-cover"
                                 />
-
-                                {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-wood">
-                                        {image.caption}
-                                    </figcaption>
-                                )}
                             </figure>
                         );
                     })}
@@ -176,12 +158,6 @@ export default function EditorialProjectLayout({
                                         quality={90}
                                         className="h-auto w-full object-contain"
                                     />
-
-                                    {plan.caption && (
-                                        <figcaption className="mt-3 text-sm text-studio-wood">
-                                            {plan.caption}
-                                        </figcaption>
-                                    )}
                                 </figure>
                             );
                         })}
@@ -190,7 +166,7 @@ export default function EditorialProjectLayout({
                     {project.planDetails && (
                         <div className="mx-auto mt-16 max-w-2xl border-t border-studio-sand/40 pt-10">
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-[180px_1fr]">
-                                <p className="text-sm uppercase tracking-wide text-studio-wood">
+                                <p className="text-sm uppercase tracking-wide text-studio-red-muted">
                                     Détails des plans
                                 </p>
 
@@ -202,7 +178,7 @@ export default function EditorialProjectLayout({
                     )}
                 </section>
             )}
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-wood">
+            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-red-muted">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
             </footer>

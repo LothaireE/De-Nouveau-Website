@@ -10,14 +10,15 @@ const SingleProject = ({ project }: { project: Project }) => {
         >
             <MediaImage
                 media={project.coverImage}
+                withCaption={false}
                 size="card"
                 fallbackAlt={project.title}
                 variant="half"
+                wrapperClassName="relative h-full w-full"
                 className="h-full w-full object-cover  transition duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
             />
 
-            <div className="absolute inset-0 bg-linear-to-t from-studio-black/80 via-studio-black/20 to-transparent" />
-
+            <div className="absolute inset-0 bg-linear-to-t from-studio-black/80 via-studio-black/20 to-transparent group-hover:backdrop-blur-[2px]" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-studio-white">
                 <p className="mb-2 text-xs uppercase tracking-wide text-studio-sand">
                     {project.location}
@@ -27,7 +28,7 @@ const SingleProject = ({ project }: { project: Project }) => {
                     {project.title}
                 </h2>
 
-                <div className="mt-4 max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-out group-hover:max-h-48 group-hover:opacity-100">
+                <div className="mt-4 max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-out group-hover:max-h-48 group-hover:opacity-100 ">
                     <div className="space-y-1 text-xs uppercase tracking-wide text-studio-sand">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}

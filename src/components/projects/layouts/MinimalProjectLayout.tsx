@@ -16,7 +16,7 @@ export default function MinimalProjectLayout({
                     {project.title}
                 </h1>
 
-                <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-wood">
+                <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                     {project.year && <p>{project.year}</p>}
                     {project.location && <p>{project.location}</p>}
                     {project.status && <p>{project.status}</p>}
@@ -64,29 +64,12 @@ export default function MinimalProjectLayout({
                                     quality={90}
                                     className="h-auto w-full object-cover"
                                 />
-
-                                {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-wood">
-                                        {image.caption}
-                                    </figcaption>
-                                )}
                             </figure>
                         );
                     })}
                 </section>
             )}
-            {/* 
-            {project.video && (
-                <section className="mx-auto my-20 max-w-5xl">
-                    <div className="aspect-video overflow-hidden bg-studio-black">
-                        <iframe
-                            src={project.video}
-                            className="h-full w-full"
-                            allowFullScreen
-                        />
-                    </div>
-                </section>
-            )} */}
+
             {project.plans && project.plans.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
                     <div className="space-y-12">
@@ -109,12 +92,6 @@ export default function MinimalProjectLayout({
                                         quality={90}
                                         className="h-auto w-full object-contain"
                                     />
-
-                                    {plan.caption && (
-                                        <figcaption className="mt-3 text-sm text-studio-wood">
-                                            {plan.caption}
-                                        </figcaption>
-                                    )}
                                 </figure>
                             );
                         })}
@@ -122,7 +99,7 @@ export default function MinimalProjectLayout({
 
                     {project.planDetails && (
                         <div className="mx-auto mt-14 max-w-2xl border-t border-studio-sand/40 pt-10">
-                            <p className="mb-6 text-sm uppercase tracking-wide text-studio-wood">
+                            <p className="mb-6 text-sm uppercase tracking-wide text-studio-red-muted">
                                 Détails des plans
                             </p>
 
@@ -134,7 +111,7 @@ export default function MinimalProjectLayout({
                 </section>
             )}
 
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-wood">
+            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-red-muted">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
             </footer>

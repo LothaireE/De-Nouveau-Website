@@ -23,9 +23,11 @@ type MediaImageProps = {
     variant?: Variant;
     fallbackAlt?: string;
     className?: string;
+    wrapperClassName?: string;
     priority?: boolean; // preload (hero)
     quality?: number; // next compression level (for now I can set it on the whole image but maybe later I can set it on each size in payload)
     loading?: "lazy" | "eager"; // next loading behavior, "eager" for priority images and "lazy" for non-priority images
+    withCaption?: boolean; // whether to display the caption or not, default to true
 };
 
 function getResponsive(variant: Variant, size: SizeKey) {
@@ -57,8 +59,10 @@ export default function MediaImage({
     variant = "auto",
     fallbackAlt = "",
     className,
+    wrapperClassName,
     priority = false,
     quality = 90,
+    withCaption = true,
 }: MediaImageProps) {
     if (!media || typeof media === "number") return null;
 
@@ -75,15 +79,24 @@ export default function MediaImage({
     const responsive = getResponsive(variant, size);
 
     return (
-        <Image
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            className={className}
-            priority={priority}
-            sizes={responsive}
-            quality={quality}
-        />
+        <div className={wrapperClassName ?? "relative"}>
+            <Image
+                src={src}
+                alt={alt}
+                width={width}
+                height={height}
+                className={className}
+                priority={priority}
+                sizes={responsive}
+                quality={quality}
+            />
+            {withCaption && media.caption?.trim() && (
+                <div className="absolute bottom-4 left-4 z-10">
+                    <p className="text-xs px-1 uppercase tracking-wide text-studio-white backdrop-blur-xs bg-black/10">
+                        {media.caption}
+                    </p>
+                </div>
+            )}
+        </div>
     );
 }
