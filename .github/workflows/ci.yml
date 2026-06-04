@@ -21,6 +21,7 @@ jobs:
             S3_REGION: ${{ secrets.S3_REGION }}
             S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
             REVALIDATION_SECRET: ${{ secrets.REVALIDATION_SECRET }}
+            R2_PUBLIC_HOSTNAME: ${{ secrets.R2_PUBLIC_HOSTNAME }}
 
         steps:
             - name: Clone Repository

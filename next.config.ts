@@ -1,6 +1,8 @@
 import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
+const r2Hostname: string = process.env.R2_PUBLIC_HOSTNAME || "";
+
 const nextConfig: NextConfig = {
     images: {
         qualities: [75, 80, 90],
@@ -13,22 +15,20 @@ const nextConfig: NextConfig = {
             },
             {
                 protocol: "https",
-                hostname: `pub-21e71c5d37fe470cbb75999dac7d8b83.r2.dev`,
+                hostname: "denouveau.fr",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "www.denouveau.fr",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: r2Hostname,
             },
         ],
     },
 };
 
 export default withPayload(nextConfig);
-
-// {
-//     protocol: "http",
-//     hostname: "localhost",
-//     port: "3000",
-//     pathname: "/api/media/file/**",
-// },
-// {
-//     protocol: "https",
-//     hostname: "de-nouveau.com",
-//     pathname: "/api/media/file/**",
-// },
