@@ -17,7 +17,7 @@ export default function GalleryFocusedProjectLayout({
                         {project.title}
                     </h1>
 
-                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-wood">
+                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>Location {project.location}</p>}
@@ -70,11 +70,11 @@ export default function GalleryFocusedProjectLayout({
                                     className="h-auto w-full object-cover"
                                 />
 
-                                {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-wood">
+                                {/* {image.caption && (
+                                    <figcaption className="mt-3 text-sm text-studio-red-muted">
                                         {image.caption}
                                     </figcaption>
-                                )}
+                                )} */}
                             </figure>
                         );
                     })}
@@ -94,7 +94,7 @@ export default function GalleryFocusedProjectLayout({
             )} */}
             {project.plans && project.plans.length > 0 && (
                 <section className="my-24 border-t border-studio-sand/60 pt-16">
-                    <div className="mb-10 flex justify-between text-sm uppercase tracking-wide text-studio-wood">
+                    <div className="mb-10 flex justify-between text-sm uppercase tracking-wide text-studio-red-muted">
                         <span>Plans</span>
                         <span>{project.plans.length}</span>
                     </div>
@@ -131,11 +131,11 @@ export default function GalleryFocusedProjectLayout({
                                         className="h-auto w-full object-contain"
                                     />
 
-                                    {plan.caption && (
-                                        <figcaption className="mt-3 text-sm text-studio-wood">
+                                    {/* {plan.caption && (
+                                        <figcaption className="mt-3 text-sm text-studio-red-muted">
                                             {plan.caption}
                                         </figcaption>
-                                    )}
+                                    )} */}
                                 </figure>
                             );
                         })}
@@ -143,7 +143,7 @@ export default function GalleryFocusedProjectLayout({
 
                     {project.planDetails && (
                         <div className="mt-16 grid grid-cols-1 gap-10 border-t border-studio-sand/40 pt-10 md:grid-cols-[1fr_2fr]">
-                            <p className="text-sm uppercase tracking-wide text-studio-wood">
+                            <p className="text-sm uppercase tracking-wide text-studio-red-muted">
                                 Détails des plans
                             </p>
 
@@ -154,7 +154,7 @@ export default function GalleryFocusedProjectLayout({
                     )}
                 </section>
             )}
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-wood">
+            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-red-muted">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
             </footer>

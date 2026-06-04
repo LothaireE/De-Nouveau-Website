@@ -27,7 +27,7 @@ export default function DefaultProjectLayout({
                         {project.title}
                     </h1>
 
-                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-wood">
+                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>Location {project.location}</p>}
@@ -56,11 +56,6 @@ export default function DefaultProjectLayout({
                             variant="contained"
                             className="h-auto w-full object-cover"
                         />
-                        {firstImages[0].image.caption && (
-                            <figcaption className="mt-3 text-sm text-studio-wood">
-                                {firstImages[0].image.caption}
-                            </figcaption>
-                        )}
                     </figure>
                 )}
 
@@ -80,11 +75,6 @@ export default function DefaultProjectLayout({
                                     variant="half"
                                     className="h-auto w-full object-cover"
                                 />
-                                {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-wood">
-                                        {image.caption}
-                                    </figcaption>
-                                )}
                             </figure>
                         );
                     })}
@@ -111,12 +101,6 @@ export default function DefaultProjectLayout({
                                     variant="contained"
                                     className="h-auto w-full object-cover"
                                 />
-
-                                {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-wood">
-                                        {image.caption}
-                                    </figcaption>
-                                )}
                             </figure>
                         );
                     })}
@@ -154,12 +138,6 @@ export default function DefaultProjectLayout({
                                         variant="full"
                                         className="h-auto w-full object-contain"
                                     />
-
-                                    {plan.caption && (
-                                        <figcaption className="mt-3 text-sm text-studio-wood">
-                                            {plan.caption}
-                                        </figcaption>
-                                    )}
                                 </figure>
                             );
                         })}
@@ -169,7 +147,7 @@ export default function DefaultProjectLayout({
                         <div className="max-w-2xl mx-auto mt-10 border-studio-sand/40 pt-10">
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-[220px_1fr]">
                                 <div>
-                                    <p className="text-sm uppercase tracking-wide text-studio-wood">
+                                    <p className="text-sm uppercase tracking-wide text-studio-red-muted">
                                         Details des plans
                                     </p>
                                 </div>
@@ -183,7 +161,7 @@ export default function DefaultProjectLayout({
                 </section>
             )}
 
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-wood">
+            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-red-muted">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
             </footer>

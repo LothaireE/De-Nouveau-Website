@@ -41,7 +41,9 @@ export default function HomeHero({ content }: { content: Page | null }) {
                         fallbackAlt={content.title}
                         priority
                         variant="full"
+                        wrapperClassName="relative h-full w-full"
                         className="h-full w-full object-cover object-bottom"
+                        withCaption={false}
                     />
                 ) : null}
             </div>
