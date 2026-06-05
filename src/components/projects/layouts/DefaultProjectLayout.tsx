@@ -30,8 +30,8 @@ export default function DefaultProjectLayout({
                     <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
-                        {project.location && <p>Location {project.location}</p>}
-                        {project.status && <p>Phase {project.status}</p>}
+                        {project.location && <p>{project.location}</p>}
+                        {project.status && <p>Projet {project.status}</p>}
                     </div>
 
                     <p className="mt-8 max-w-xl text-base leading-relaxed text-studio-moss">

@@ -6,10 +6,10 @@ import MediaImage from "@/components/media/MediaImage";
 
 export const metadata = createMetadata({
     title: "Contacter De Nouveau",
-    description: "Ceci est la page contact de De Nouveau",
+    description: "Bienvenue sur la page contact de De Nouveau",
     path: "/contact",
     locale: "fr_FR",
-    image: "https://www.de-nouveau.com/images/contact.jpg",
+    // image: "https://www.de-nouveau.com/images/contact.jpg",
 });
 
 const SLUG = "contact";
