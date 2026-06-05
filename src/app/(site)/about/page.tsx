@@ -7,10 +7,10 @@ import MediaImage from "@/components/media/MediaImage";
 export const metadata = createMetadata({
     title: "À propos — De Nouveau",
     description:
-        "Découvrez De Nouveau, son approche, ses projets et sa vision architecturale.",
+        "Découvrez De Nouveau, notre approche, nos projets et notre vision architecturale.",
     path: "/about",
     locale: "fr_FR",
-    image: "/images/about.jpg",
+    // image: "/images/about.jpg",
 });
 
 const SLUG = "about";

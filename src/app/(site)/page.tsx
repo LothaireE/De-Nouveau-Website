@@ -21,9 +21,9 @@ const ProjectGallery = dynamic(
 export const metadata = createMetadata({
     title: "De Nouveau",
     description: "Studio d'architecture De Nouveau",
-    path: "/about",
+    path: "/",
     locale: "fr_FR",
-    image: "/images/about.jpg",
+    image: "/DE_NOUVEAU/PNG/og-default-de-nouveau.png", // DE_NOUVEAU/PNG/og-default-de-nouveau.png
 });
 
 const SLUG = "home";
