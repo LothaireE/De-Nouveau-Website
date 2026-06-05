@@ -56,7 +56,7 @@ const config = buildConfig({
                 forcePathStyle: true,
                 requestChecksumCalculation: "WHEN_REQUIRED",
             },
-            clientUploads: true,
+            clientUploads: false, // true,
         }),
     ],
 });
