@@ -20,7 +20,7 @@ const SingleProject = ({ project }: { project: Project }) => {
 
             <div className="absolute inset-0 bg-linear-to-t from-studio-black/80 via-studio-black/20 to-transparent group-hover:backdrop-blur-[2px]" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-studio-white">
-                <p className="mb-2 text-xs uppercase tracking-wide text-studio-sand">
+                <p className="mb-2 text-xs uppercase tracking-wide text-studio-clay">
                     {project.location}
                 </p>
 
@@ -29,10 +29,10 @@ const SingleProject = ({ project }: { project: Project }) => {
                 </h2>
 
                 <div className="mt-4 max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-out group-hover:max-h-48 group-hover:opacity-100 ">
-                    <div className="space-y-1 text-xs uppercase tracking-wide text-studio-sand">
+                    <div className="space-y-1 text-xs uppercase tracking-wide text-studio-white">
                         {project.year && <p>{project.year}</p>}
-                        {project.client && <p>Client {project.client}</p>}
-                        {project.status && <p>Phase {project.status}</p>}
+                        {project.client && <p>{project.client}</p>}
+                        {project.status && <p>{project.status}</p>}
                     </div>
 
                     {project.shortDescription && (

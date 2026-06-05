@@ -265,7 +265,7 @@ export interface Project {
   categories?: (number | Category)[] | null;
   surface?: string | null;
   client?: string | null;
-  status?: ('completed' | 'inProgress' | 'concept') | null;
+  status?: ('délivré' | 'en cours' | 'concept') | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
   /**

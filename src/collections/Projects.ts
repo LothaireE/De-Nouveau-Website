@@ -146,9 +146,9 @@ export const Projects: CollectionConfig = {
             label: "Status",
             type: "radio",
             options: [
-                { label: "Completed", value: "completed" },
-                { label: "In progress", value: "inProgress" },
-                { label: "Concept", value: "concept" },
+                { label: "Completed", value: "délivré" }, // délivré
+                { label: "In progress", value: "en cours" }, // en cours
+                { label: "Concept", value: "concept" }, // concept
             ],
         },
         {

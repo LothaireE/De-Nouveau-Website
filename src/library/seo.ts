@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const siteUrl = "https://www.de-nouveau.com"; // insh';
+const siteUrl = "https://www.de-nouveau.fr";
 
 type SeoParams = {
     title: string;
@@ -15,36 +15,41 @@ export function createMetadata({
     description,
     path,
     locale,
-    image = "/images/og-default.jpg",
+    image = "/DE_NOUVEAU/PNG/og-default-de-nouveau.png", // "/images/og-default.jpg",
 }: SeoParams): Metadata {
-    const isFrench = locale === "fr_FR";
+    // only a French version of the site, so hardcoded if we add English content, we should uncomment to determine the language based on the locale
+    // const isFrench = locale === "fr_FR";
+    const url = `${siteUrl}${path}`;
+    const imageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
 
     return {
         title,
         description,
+        metadataBase: new URL(siteUrl),
         alternates: {
-            canonical: `${siteUrl}${path}`,
+            canonical: url,
             languages: {
-                "fr-FR": `${siteUrl}${isFrench ? path : path.replace("/en", "")}`,
-                "en-US": `${siteUrl}${isFrench ? `/en${path}` : path}`,
+                "fr-FR": url,
+                // "fr-FR": `${siteUrl}${isFrench ? path : path.replace("/en", "")}`,
+                // "en-US": `${siteUrl}${isFrench ? `/en${path}` : path}`, --- IGNORE FOR NOW ---
             },
         },
         keywords: [
             "architecture",
+            "studio d’architecture",
+            "architecte",
             "design",
-            "studio",
-            "projects",
-            "about",
-            "contact",
+            "projets architecturaux",
+            "De Nouveau",
         ],
         openGraph: {
             title,
             description,
-            url: `${siteUrl}${path}`,
+            url,
             siteName: "De Nouveau",
             images: [
                 {
-                    url: `${siteUrl}${image}`,
+                    url: imageUrl,
                     width: 1200,
                     height: 630,
                     alt: title,
@@ -52,6 +57,12 @@ export function createMetadata({
             ],
             locale,
             type: "website",
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+            images: [imageUrl],
         },
     };
 }
