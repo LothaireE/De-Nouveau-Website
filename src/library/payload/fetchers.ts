@@ -78,6 +78,7 @@ export async function getNavProjects(): Promise<NavProjectItem[]> {
         return result.docs.map((project) => ({
             _id: String(project.id),
             _createdAt: project.createdAt,
+            _updatedAt: project.updatedAt,
             title: project.title,
             slug: project.slug,
         })) as NavProjectItem[];
