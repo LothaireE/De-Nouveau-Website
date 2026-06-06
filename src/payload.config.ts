@@ -40,7 +40,6 @@ const config = buildConfig({
     plugins: [
         s3Storage({
             collections: {
-                // media: true,
                 media: {
                     prefix: "media",
                 },
@@ -55,8 +54,9 @@ const config = buildConfig({
                 endpoint: process.env.S3_ENDPOINT,
                 forcePathStyle: true,
                 requestChecksumCalculation: "WHEN_REQUIRED",
+                responseChecksumValidation: "WHEN_REQUIRED",
             },
-            clientUploads: false, // true,
+            clientUploads: true,
         }),
     ],
 });
