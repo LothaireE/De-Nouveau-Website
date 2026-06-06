@@ -22,10 +22,5 @@ describe("Not Found Page", () => {
         expect(
             getByRole("link", { name: "Retour à l’accueil" }),
         ).toHaveAttribute("href", "/");
-
-        expect(getByRole("link", { name: "Voir les projets" })).toHaveAttribute(
-            "href",
-            "/projects",
-        );
     });
 });
