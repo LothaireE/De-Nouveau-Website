@@ -95,12 +95,23 @@ export const Projects: CollectionConfig = {
             ],
         },
         {
-            name: "video",
-            label: "Video",
-            type: "upload",
-            relationTo: "media",
+            name: "galleryMedia",
+            label: "Gallerie images et vidéos",
+            type: "array",
+            fields: [
+                {
+                    name: "media",
+                    label: "Media",
+                    type: "upload",
+                    relationTo: "media",
+                    filterOptions: {
+                        mediaType: {
+                            in: ["image", "video"],
+                        },
+                    },
+                },
+            ],
         },
-
         {
             name: "shortDescription",
             label: "Short description",
