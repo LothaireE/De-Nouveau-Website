@@ -245,11 +245,10 @@ export interface Project {
     | null;
   galleryMedia?:
     | {
-        media: number | Media;
+        media?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
-  video?: (number | null) | Media;
   shortDescription: string;
   longDescription?: {
     root: {
@@ -641,7 +640,6 @@ export interface ProjectsSelect<T extends boolean = true> {
         media?: T;
         id?: T;
       };
-  video?: T;
   shortDescription?: T;
   longDescription?: T;
   location?: T;
