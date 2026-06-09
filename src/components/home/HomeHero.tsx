@@ -33,7 +33,7 @@ export default function HomeHero({ content }: { content: Page | null }) {
         >
             <div className="absolute inset-0 h-full w-full">
                 {heroMediaType === "video" ? (
-                    <MediaVideo media={content.heroMedia} />
+                    <MediaVideo media={content.heroMedia} withCaption={false} />
                 ) : heroMediaType === "image" ? (
                     <MediaImage
                         media={content.heroMedia}

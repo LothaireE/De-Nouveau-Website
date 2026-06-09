@@ -243,7 +243,12 @@ export interface Project {
         id?: string | null;
       }[]
     | null;
-  video?: (number | null) | Media;
+  galleryMedia?:
+    | {
+        media?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   shortDescription: string;
   longDescription?: {
     root: {
@@ -629,7 +634,12 @@ export interface ProjectsSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
-  video?: T;
+  galleryMedia?:
+    | T
+    | {
+        media?: T;
+        id?: T;
+      };
   shortDescription?: T;
   longDescription?: T;
   location?: T;

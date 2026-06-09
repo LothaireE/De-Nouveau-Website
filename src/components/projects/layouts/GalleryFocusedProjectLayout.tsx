@@ -1,4 +1,5 @@
 import MediaImage from "@/components/media/MediaImage";
+import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 
@@ -7,7 +8,7 @@ export default function GalleryFocusedProjectLayout({
 }: {
     project: Project;
 }) {
-    const images = project.galleryImages ?? [];
+    const medias = project.galleryMedia ?? [];
 
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
@@ -41,12 +42,12 @@ export default function GalleryFocusedProjectLayout({
                 className="mb-8 h-auto w-full object-cover"
             />
 
-            {images.length > 0 && (
+            {medias.length > 0 && (
                 <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                    {images.map((item, index) => {
-                        const image = item.image;
+                    {medias.map((item, index) => {
+                        const { media } = item;
 
-                        if (!image || typeof image === "number") return null;
+                        if (!media || typeof media === "number") return null;
 
                         const isWide = index % 5 === 0;
 
@@ -55,37 +56,24 @@ export default function GalleryFocusedProjectLayout({
                                 key={item.id ?? index}
                                 className={isWide ? "md:col-span-2" : undefined}
                             >
-                                <MediaImage
-                                    media={image}
-                                    size={isWide ? "hero" : "card"}
-                                    fallbackAlt={`${project.title} ${index + 1}`}
-                                    variant={isWide ? "full" : "half"}
-                                    quality={90}
-                                    className="h-auto w-full object-cover"
-                                />
-
-                                {/* {image.caption && (
-                                    <figcaption className="mt-3 text-sm text-studio-red-muted">
-                                        {image.caption}
-                                    </figcaption>
-                                )} */}
+                                {media.mediaType === "video" ? (
+                                    <MediaVideo media={media} />
+                                ) : (
+                                    <MediaImage
+                                        media={media}
+                                        size={isWide ? "hero" : "card"}
+                                        fallbackAlt={`${project.title} ${index + 1}`}
+                                        variant={isWide ? "full" : "half"}
+                                        quality={90}
+                                        className="h-auto w-full object-cover"
+                                    />
+                                )}
                             </figure>
                         );
                     })}
                 </section>
             )}
 
-            {/* {project.video && (
-                <section className="mx-auto my-20 max-w-5xl">
-                    <div className="aspect-video overflow-hidden bg-studio-black">
-                        <iframe
-                            src={project.video}
-                            className="h-full w-full"
-                            allowFullScreen
-                        />
-                    </div>
-                </section>
-            )} */}
             {project.plans && project.plans.length > 0 && (
                 <section className="my-24 border-t border-studio-sand/60 pt-16">
                     <div className="mb-10 flex justify-between text-sm uppercase tracking-wide text-studio-red-muted">
@@ -124,12 +112,6 @@ export default function GalleryFocusedProjectLayout({
                                         quality={90}
                                         className="h-auto w-full object-contain"
                                     />
-
-                                    {/* {plan.caption && (
-                                        <figcaption className="mt-3 text-sm text-studio-red-muted">
-                                            {plan.caption}
-                                        </figcaption>
-                                    )} */}
                                 </figure>
                             );
                         })}

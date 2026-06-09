@@ -1,4 +1,5 @@
 import MediaImage from "@/components/media/MediaImage";
+import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 
@@ -7,10 +8,10 @@ export default function EditorialProjectLayout({
 }: {
     project: Project;
 }) {
-    const images = project.galleryImages ?? [];
-    const firstImage = images[0]?.image;
-    const middleImages = images.slice(1, 3);
-    const remainingImages = images.slice(3);
+    const medias = project.galleryMedia ?? [];
+    const firstMedia = medias[0]?.media;
+    const middleMedias = medias.slice(1, 3);
+    const remainingMedias = medias.slice(3);
 
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
@@ -23,6 +24,7 @@ export default function EditorialProjectLayout({
                     quality={95}
                     className="h-auto w-full object-cover"
                 />
+
                 <div className="pb-6">
                     <h1 className="max-w-xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
                         {project.title}
@@ -41,61 +43,75 @@ export default function EditorialProjectLayout({
                     </p>
                 </div>
             </section>
-
             {project.longDescription && (
                 <section className="mx-auto my-24 max-w-2xl text-base leading-relaxed text-studio-moss">
                     <RichText data={project.longDescription} />
                 </section>
             )}
 
-            {firstImage && typeof firstImage !== "number" && (
-                <figure className="mx-auto my-20 max-w-5xl">
+            {/* {firstMedia && typeof firstMedia !== "number" ? (
+                firstMedia.mediaType === "video" ? (
+                    <MediaVideo media={firstMedia} />
+                ) : (
                     <MediaImage
-                        media={firstImage}
+                        media={firstMedia}
                         size="large"
                         variant="contained"
                         fallbackAlt={project.title}
                         quality={90}
                         className="h-auto w-full object-cover"
                     />
+                )
+            ) : null} */}
+            {firstMedia && typeof firstMedia !== "number" ? (
+                <figure className="mx-auto my-24 max-w-5xl">
+                    {firstMedia.mediaType === "video" ? (
+                        <MediaVideo media={firstMedia} />
+                    ) : (
+                        <MediaImage
+                            media={firstMedia}
+                            size="large"
+                            variant="contained"
+                            fallbackAlt={project.title}
+                            quality={90}
+                            className="h-auto w-full object-cover"
+                        />
+                    )}
                 </figure>
-            )}
-
-            {middleImages.length > 0 && (
+            ) : null}
+            {middleMedias.length > 0 && (
                 <section className="mx-auto my-24 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
-                    {middleImages.map((item, index) => {
-                        const image = item.image;
+                    {middleMedias.map((item, index) => {
+                        const media = item.media;
 
-                        if (!image || typeof image === "number") return null;
+                        if (!media || typeof media === "number") return null;
 
                         return (
                             <figure key={item.id ?? index}>
-                                {/* <MediaImage
-                                    media={image}
-                                    size="card"
-                                    fallbackAlt={project.title}
-                                    className="h-auto w-full object-cover"
-                                /> */}
-                                <MediaImage
-                                    media={image}
-                                    size="card"
-                                    variant="half"
-                                    quality={90}
-                                    className="h-auto w-full object-cover"
-                                    fallbackAlt={project.title}
-                                />
+                                {media.mediaType === "video" ? (
+                                    <MediaVideo media={media} />
+                                ) : (
+                                    <MediaImage
+                                        media={media}
+                                        size="card"
+                                        variant="half"
+                                        quality={90}
+                                        className="h-auto w-full object-cover"
+                                        fallbackAlt={project.title}
+                                    />
+                                )}
                             </figure>
                         );
                     })}
                 </section>
             )}
 
-            {remainingImages.length > 0 && (
+            {remainingMedias.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl space-y-20">
-                    {remainingImages.map((item, index) => {
-                        const image = item.image;
+                    {remainingMedias.map((item, index) => {
+                        const { media } = item;
 
-                        if (!image || typeof image === "number") return null;
+                        if (!media || typeof media === "number") return null;
 
                         return (
                             <figure
@@ -106,31 +122,23 @@ export default function EditorialProjectLayout({
                                         : "ml-auto max-w-4xl"
                                 }
                             >
-                                <MediaImage
-                                    media={image}
-                                    size="large"
-                                    variant="contained"
-                                    quality={90}
-                                    fallbackAlt={`${project.title} ${index + 1}`}
-                                    className="h-auto w-full object-cover"
-                                />
+                                {media.mediaType === "video" ? (
+                                    <MediaVideo media={media} />
+                                ) : (
+                                    <MediaImage
+                                        media={media}
+                                        size="large"
+                                        variant="contained"
+                                        quality={90}
+                                        fallbackAlt={`${project.title} ${index + 1}`}
+                                        className="h-auto w-full object-cover"
+                                    />
+                                )}
                             </figure>
                         );
                     })}
                 </section>
             )}
-
-            {/* {project.video && (
-                <section className="mx-auto my-20 max-w-5xl">
-                    <div className="aspect-video overflow-hidden bg-studio-black">
-                        <iframe
-                            src={project.video}
-                            className="h-full w-full"
-                            allowFullScreen
-                        />
-                    </div>
-                </section>
-            )} */}
             {project.plans && project.plans.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
