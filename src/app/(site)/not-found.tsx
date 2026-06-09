@@ -27,13 +27,6 @@ const NotFoundPage = () => {
                         >
                             Retour à l’accueil
                         </Link>
-
-                        <Link
-                            href="/projects"
-                            className="px-5 py-3 text-studio-wood transition hover:text-studio-black"
-                        >
-                            Voir les projets
-                        </Link>
                     </div>
                 </div>
             </section>
