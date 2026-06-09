@@ -21,10 +21,16 @@ export function createMetadata({
     // const isFrench = locale === "fr_FR";
     const url = `${siteUrl}${path}`;
     const imageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
+    const favIcon = "/DE_NOUVEAU/PNG/AAAA_BLACK02.png";
 
     return {
         title,
         description,
+        icons: {
+            icon: favIcon,
+            shortcut: favIcon,
+            apple: favIcon,
+        },
         metadataBase: new URL(siteUrl),
         alternates: {
             canonical: url,
