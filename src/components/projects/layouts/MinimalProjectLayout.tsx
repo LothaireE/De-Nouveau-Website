@@ -1,4 +1,5 @@
 import MediaImage from "@/components/media/MediaImage";
+import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 
@@ -7,7 +8,7 @@ export default function MinimalProjectLayout({
 }: {
     project: Project;
 }) {
-    const images = project.galleryImages?.slice(0, 3) ?? [];
+    const medias = project.galleryMedia?.slice(0, 3) ?? [];
 
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
@@ -41,29 +42,27 @@ export default function MinimalProjectLayout({
                 />
             </figure>
 
-            {images.length > 0 && (
+            {medias.length > 0 && (
                 <section className="mx-auto mt-20 max-w-5xl space-y-16">
-                    {images.map((item, index) => {
-                        const image = item.image;
+                    {medias.map((item, index) => {
+                        const media = item.media;
 
-                        if (!image || typeof image === "number") return null;
+                        if (!media || typeof media === "number") return null;
 
                         return (
                             <figure key={item.id ?? index}>
-                                {/* <MediaImage
-                                    media={image}
-                                    size="large"
-                                    fallbackAlt={project.title}
-                                    className="h-auto w-full object-cover"
-                                /> */}
-                                <MediaImage
-                                    media={image}
-                                    size="large"
-                                    fallbackAlt={project.title}
-                                    variant="contained"
-                                    quality={90}
-                                    className="h-auto w-full object-cover"
-                                />
+                                {media.mediaType === "video" ? (
+                                    <MediaVideo media={media} />
+                                ) : (
+                                    <MediaImage
+                                        media={media}
+                                        size="large"
+                                        fallbackAlt={project.title}
+                                        variant="contained"
+                                        quality={90}
+                                        className="h-auto w-full object-cover"
+                                    />
+                                )}
                             </figure>
                         );
                     })}

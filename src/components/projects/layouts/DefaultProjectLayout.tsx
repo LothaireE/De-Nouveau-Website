@@ -1,4 +1,5 @@
 import MediaImage from "@/components/media/MediaImage";
+import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 
@@ -7,8 +8,8 @@ export default function DefaultProjectLayout({
 }: {
     project: Project;
 }) {
-    const firstImages = project.galleryImages?.slice(0, 2) ?? [];
-    const remainingImages = project.galleryImages?.slice(2) ?? [];
+    const firstMedias = project.galleryMedia?.slice(0, 2) ?? [];
+    const remainingMedias = project.galleryMedia?.slice(2) ?? [];
 
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
@@ -46,61 +47,73 @@ export default function DefaultProjectLayout({
                 </section>
             )}
 
-            {firstImages[0]?.image &&
-                typeof firstImages[0].image !== "number" && (
+            {firstMedias[0]?.media &&
+                typeof firstMedias[0].media !== "number" && (
                     <figure className="mx-auto my-20 max-w-5xl">
-                        <MediaImage
-                            media={firstImages[0].image}
-                            size="large"
-                            fallbackAlt={project.title}
-                            variant="contained"
-                            className="h-auto w-full object-cover"
-                        />
+                        {firstMedias[0]?.media.mediaType === "video" ? (
+                            <MediaVideo media={firstMedias[0].media} />
+                        ) : (
+                            <MediaImage
+                                media={firstMedias[0]?.media}
+                                size="large"
+                                fallbackAlt={project.title}
+                                variant="contained"
+                                className="h-auto w-full object-cover"
+                            />
+                        )}
                     </figure>
                 )}
 
-            {firstImages.length > 1 && (
+            {firstMedias.length > 1 && (
                 <section className="mx-auto my-20 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
-                    {firstImages.slice(1).map((item, index) => {
-                        const image = item.image;
+                    {firstMedias.slice(1).map((item, index) => {
+                        const { media } = item;
 
-                        if (!image || typeof image === "number") return null;
+                        if (!media || typeof media === "number") return null;
 
                         return (
                             <figure key={item.id ?? index}>
-                                <MediaImage
-                                    media={image}
-                                    size="card"
-                                    fallbackAlt={project.title}
-                                    variant="half"
-                                    className="h-auto w-full object-cover"
-                                />
+                                {media.mediaType === "video" ? (
+                                    <MediaVideo media={media} />
+                                ) : (
+                                    <MediaImage
+                                        media={media}
+                                        size="card"
+                                        fallbackAlt={project.title}
+                                        variant="half"
+                                        className="h-auto w-full object-cover"
+                                    />
+                                )}
                             </figure>
                         );
                     })}
                 </section>
             )}
 
-            {remainingImages.length > 0 && (
+            {remainingMedias.length > 0 && (
                 <section className="mx-auto my-20 max-w-5xl space-y-16">
-                    {remainingImages.map((item, index) => {
-                        const image = item.image;
+                    {remainingMedias.map((item, index) => {
+                        const { media } = item;
 
-                        if (!image || typeof image === "number") return null;
+                        if (!media || typeof media === "number") return null;
 
-                        const fallbackSize = image.sizes?.large?.filename
+                        const fallbackSize = media.sizes?.large?.filename
                             ? "large"
                             : "card";
 
                         return (
                             <figure key={item.id ?? index}>
-                                <MediaImage
-                                    media={image}
-                                    size={fallbackSize} // "large"
-                                    fallbackAlt={`${project.title} ${index + 1}`}
-                                    variant="contained"
-                                    className="h-auto w-full object-cover"
-                                />
+                                {media.mediaType === "video" ? (
+                                    <MediaVideo media={media} />
+                                ) : (
+                                    <MediaImage
+                                        media={media}
+                                        size={fallbackSize} // "large"
+                                        fallbackAlt={`${project.title} ${index + 1}`}
+                                        variant="contained"
+                                        className="h-auto w-full object-cover"
+                                    />
+                                )}
                             </figure>
                         );
                     })}

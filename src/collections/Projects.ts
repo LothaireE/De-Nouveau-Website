@@ -95,6 +95,25 @@ export const Projects: CollectionConfig = {
             ],
         },
         {
+            name: "galleryMedia",
+            label: "Gallerie images et vidéos",
+            type: "array",
+            fields: [
+                {
+                    name: "media",
+                    label: "Media",
+                    type: "upload",
+                    relationTo: "media",
+                    required: true,
+                    filterOptions: {
+                        mediaType: {
+                            in: ["image", "video"],
+                        },
+                    },
+                },
+            ],
+        },
+        {
             name: "video",
             label: "Video",
             type: "upload",
