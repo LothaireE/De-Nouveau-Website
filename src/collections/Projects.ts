@@ -82,19 +82,6 @@ export const Projects: CollectionConfig = {
             },
         },
         {
-            name: "galleryImages",
-            label: "Gallery images",
-            type: "array",
-            fields: [
-                {
-                    name: "image",
-                    label: "Image",
-                    type: "upload",
-                    relationTo: "media",
-                },
-            ],
-        },
-        {
             name: "galleryMedia",
             label: "Gallerie images et vidéos",
             type: "array",
