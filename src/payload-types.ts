@@ -237,12 +237,6 @@ export interface Project {
    */
   slug: string;
   coverImage: number | Media;
-  galleryImages?:
-    | {
-        image?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
   galleryMedia?:
     | {
         media?: (number | null) | Media;
@@ -628,12 +622,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   coverImage?: T;
-  galleryImages?:
-    | T
-    | {
-        image?: T;
-        id?: T;
-      };
   galleryMedia?:
     | T
     | {
