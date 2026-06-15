@@ -65,8 +65,8 @@ describe("test function assignProjectToMedia", () => {
         const doc = {
             id: "project1",
             coverImage: 1,
-            plans: 2,
-            galleryImages: [{ image: 3 }],
+            plans: [{ media: 2 }],
+            galleryMedia: [{ media: 3 }],
         };
 
         const req = {
@@ -90,8 +90,8 @@ describe("test function assignProjectToMedia", () => {
         const doc = {
             id: 19,
             coverImage: { id: 1 },
-            plans: { id: 2 },
-            galleryImages: [{ image: { id: 3 } }, { image: { id: 4 } }],
+            plans: [{ media: { id: 2 } }],
+            galleryMedia: [{ media: { id: 3 } }, { media: { id: 4 } }],
         };
         const req = {
             payload: {
@@ -130,7 +130,7 @@ describe("test function assignProjectToMedia", () => {
             id: 20,
             coverImage: { id: 1, project: 20 },
             plans: null,
-            galleryImages: [],
+            galleryMedia: [],
         };
         const req = {
             payload: {
@@ -154,10 +154,11 @@ describe("test function assignProjectToMedia", () => {
         const doc = {
             id: 21,
             coverImage: { id: 1, project: null },
-            plans: { id: 2, project: 21 },
-            galleryImages: [
-                { image: { id: 3, project: null } },
-                { image: { id: 4, project: 21 } },
+            plans: [{ media: { id: 2, project: 21 } }],
+
+            galleryMedia: [
+                { media: { id: 3, project: null } },
+                { media: { id: 4, project: 21 } },
             ],
         };
 

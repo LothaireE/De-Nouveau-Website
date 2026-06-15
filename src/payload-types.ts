@@ -237,13 +237,12 @@ export interface Project {
    */
   slug: string;
   coverImage: number | Media;
-  galleryImages?:
+  galleryMedia?:
     | {
-        image?: (number | null) | Media;
+        media?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
-  video?: (number | null) | Media;
   shortDescription: string;
   longDescription?: {
     root: {
@@ -623,13 +622,12 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   coverImage?: T;
-  galleryImages?:
+  galleryMedia?:
     | T
     | {
-        image?: T;
+        media?: T;
         id?: T;
       };
-  video?: T;
   shortDescription?: T;
   longDescription?: T;
   location?: T;

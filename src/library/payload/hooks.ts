@@ -25,17 +25,19 @@ export const formatSlug =
     };
 
 export const getMediaId = (
-    image: Media | string | number | null,
+    media: Media | string | number | null,
 ): string | number | null => {
-    if (!image) return null;
+    if (!media) return null;
 
-    if (typeof image === "string" || typeof image === "number") return image;
+    if (typeof media === "string" || typeof media === "number") {
+        return media;
+    }
 
-    return image.id;
+    return media.id;
 };
 
-type GalleryImageItem = {
-    image: Media | string | number | null;
+type GalleryMediaItem = {
+    media: Media | string | number | null;
 };
 
 /**
@@ -50,14 +52,13 @@ export const assignProjectToMedia: CollectionAfterChangeHook = async ({
     if (context?.skipProjectGalleryHook) return doc;
 
     const projectId = doc.id;
-    const galleryImages = doc.galleryImages ?? [];
+    const galleryMedia = doc.galleryMedia ?? [];
+    const plans = doc.plans ?? [];
 
     const medias = [
         getMediaId(doc.coverImage),
-        getMediaId(doc.plans),
-        ...galleryImages.map((item: GalleryImageItem) =>
-            getMediaId(item.image),
-        ),
+        ...galleryMedia.map((item: GalleryMediaItem) => getMediaId(item.media)),
+        ...plans.map((item: GalleryMediaItem) => getMediaId(item.media)),
     ];
 
     const mediaIds = Array.from(
