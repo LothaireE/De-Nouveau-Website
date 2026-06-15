@@ -1,3 +1,5 @@
+import { Media, Project } from "@/payload-types";
+
 export const aboutPageMockData = {
     id: 2,
     pageType: "about",
@@ -429,4 +431,86 @@ export const singleProjectMockData = {
     planDetails: null,
     updatedAt: "2026-05-20T11:56:29.541Z",
     createdAt: "2026-05-20T10:37:41.898Z",
+};
+
+const imageMedia = {
+    id: 56,
+    mediaType: "image",
+    alt: "Patio extérieur avec table de jardin",
+    url: "/api/media/file/cover.webp",
+    sizes: {
+        large: {
+            filename: "cover-large.webp",
+        },
+    },
+} as Media;
+
+const videoMedia = {
+    id: 99,
+    mediaType: "video",
+    url: "/api/media/file/video.mp4",
+} as Media;
+
+export const testProjectData: Project = {
+    id: 22,
+    projectLayout: "minimal",
+    title: "Concours Bambou U Default",
+    slug: "concours-bambou-u-default",
+    createdAt: "2026-01-01T00:00:00Z",
+    updatedAt: "2026-02-01T00:00:00Z",
+    coverImage: imageMedia,
+    galleryMedia: [
+        { id: "gallery-1", media: { ...imageMedia, id: 1 } },
+        { id: "gallery-2", media: { ...videoMedia, id: 2 } },
+        { id: "gallery-3", media: { ...imageMedia, id: 3 } },
+        { id: "gallery-4", media: { ...imageMedia, id: 4 } },
+    ],
+    shortDescription: "Une courte description du projet.",
+    longDescription: {
+        root: {
+            type: "root",
+            version: 1,
+            children: [],
+            direction: null,
+            format: "",
+            indent: 0,
+        },
+    },
+    location: "Bali, Indonésie",
+    year: 2026,
+    surface: "8 m × 12 m",
+    client: "Concours",
+    status: "délivré",
+    plans: [
+        {
+            id: "plan-1",
+            image: {
+                ...imageMedia,
+                id: 10,
+                sizes: {
+                    large: {
+                        filename: "plan-large.webp",
+                    },
+                },
+            },
+        },
+        {
+            id: "plan-2",
+            image: {
+                ...imageMedia,
+                id: 11,
+                sizes: {},
+            },
+        },
+    ],
+    planDetails: {
+        root: {
+            type: "root",
+            version: 1,
+            children: [],
+            direction: null,
+            format: "",
+            indent: 0,
+        },
+    },
 };

@@ -17,7 +17,7 @@ type SizeKey = "thumbnail" | "card" | "hero" | "large";
 // Variant defines how the image should be displayed in terms of responsiveness and cropping on the frontend (frontend side of image optimization)
 type Variant = "full" | "half" | "contained" | "grid" | "auto";
 
-type MediaImageProps = {
+export type MediaImageProps = {
     media?: Media | number | null; // payload image object, hopefully of type Media
     size?: SizeKey;
     variant?: Variant;
