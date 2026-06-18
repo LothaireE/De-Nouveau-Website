@@ -37,7 +37,7 @@ export default function LoadingLogo() {
                     src={LOGO_SRC}
                     alt=""
                     priority
-                    className="h-auto w-full"
+                    className="h-auto w-45 md:w-full"
                     width={64}
                     height={64}
                 />
