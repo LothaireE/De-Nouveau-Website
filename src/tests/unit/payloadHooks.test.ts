@@ -2,6 +2,7 @@ import {
     formatSlug,
     getMediaId,
     assignProjectToMedia,
+    assignMediatype,
 } from "@/library/payload/hooks";
 import { describe, expect, it, vi } from "vitest";
 import type { FieldHookArgs, CollectionAfterChangeHook } from "payload";
@@ -245,5 +246,68 @@ describe("test function assignProjectToMedia", () => {
             overrideAccess: true,
             req: req,
         });
+    });
+});
+
+type MockArgs = Parameters<typeof assignMediatype>[0];
+
+describe("assignMediatype", () => {
+    it("should assign image mediaType", () => {
+        const args: MockArgs = {
+            data: {},
+            req: {
+                file: {
+                    mimetype: "image/webp",
+                    size: 1000,
+                },
+            },
+        } as MockArgs;
+
+        const result = assignMediatype(args);
+
+        expect(result.mediaType).toBe("image");
+    });
+
+    it("should assign video mediaType", () => {
+        const args: MockArgs = {
+            data: {},
+            req: {
+                file: {
+                    mimetype: "video/mp4",
+                    size: 1024,
+                },
+            },
+        } as MockArgs;
+
+        const result = assignMediatype(args);
+
+        expect(result.mediaType).toBe("video");
+    });
+
+    it("should throw when video exceeds 4MB", () => {
+        expect(() =>
+            assignMediatype({
+                data: {},
+                req: {
+                    file: {
+                        mimetype: "video/mp4",
+                        size: 5 * 1024 * 1024,
+                    },
+                },
+            } as MockArgs),
+        ).toThrow("la vidéo ne doit pas depasser 4MB.");
+    });
+
+    it("should return data unchanged when no mimeType is available", () => {
+        const data = {
+            title: "test",
+        };
+
+        const result = assignMediatype({
+            data,
+            req: {},
+        } as unknown as MockArgs);
+
+        expect(result).toEqual(data);
     });
 });

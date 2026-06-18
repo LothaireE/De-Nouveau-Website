@@ -1,3 +1,4 @@
+import { assignMediatype } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 const mimeTypes = [
@@ -49,28 +50,7 @@ export const Media: CollectionConfig = {
         ],
     },
     hooks: {
-        beforeValidate: [
-            ({ data = {}, req }) => {
-                const mimeType = req.file?.mimetype || data?.mimeType;
-
-                if (!mimeType) return data;
-
-                if (mimeType.startsWith("image/")) {
-                    data.mediaType = "image";
-                }
-
-                if (mimeType.startsWith("video/")) {
-                    data.mediaType = "video";
-                    const maxSize = 4 * 1024 * 1024; // 4MB
-
-                    if (req.file?.size && req.file.size > maxSize) {
-                        throw new Error("la vidéo ne doit pas depasser 4MB.");
-                    }
-                }
-
-                return data;
-            },
-        ],
+        beforeValidate: [assignMediatype],
     },
     upload: {
         mimeTypes: mimeTypes,
