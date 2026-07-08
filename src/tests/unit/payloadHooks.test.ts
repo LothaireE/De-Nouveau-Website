@@ -3,6 +3,7 @@ import {
     getMediaId,
     assignProjectToMedia,
     assignMediatype,
+    preventDuplicateFilename,
 } from "@/library/payload/hooks";
 import { describe, expect, it, vi } from "vitest";
 import type { FieldHookArgs, CollectionAfterChangeHook } from "payload";
@@ -309,5 +310,131 @@ describe("assignMediatype", () => {
         } as unknown as MockArgs);
 
         expect(result).toEqual(data);
+    });
+});
+
+type PreventDuplicateFilenameArgs = Parameters<
+    typeof preventDuplicateFilename
+>[0];
+
+describe("preventDuplicateFilename", () => {
+    it("should do nothing when operation is not create or update", async () => {
+        const req = {
+            file: {
+                name: "image.jpg",
+            },
+            payload: {
+                find: vi.fn(),
+            },
+        };
+
+        await preventDuplicateFilename({
+            req,
+            operation: "delete",
+        } as unknown as PreventDuplicateFilenameArgs);
+
+        expect(req.payload.find).not.toHaveBeenCalled();
+    });
+
+    it("should do nothing when there is no file", async () => {
+        const req = {
+            payload: {
+                find: vi.fn(),
+            },
+        };
+
+        await preventDuplicateFilename({
+            req,
+            operation: "create",
+        } as unknown as PreventDuplicateFilenameArgs);
+
+        expect(req.payload.find).not.toHaveBeenCalled();
+    });
+
+    it("should check existing media by filename", async () => {
+        const req = {
+            file: {
+                name: "image.jpg",
+            },
+            payload: {
+                find: vi.fn().mockResolvedValue({
+                    totalDocs: 0,
+                    docs: [],
+                }),
+            },
+        };
+
+        await preventDuplicateFilename({
+            req,
+            operation: "create",
+        } as unknown as PreventDuplicateFilenameArgs);
+
+        expect(req.payload.find).toHaveBeenCalledWith({
+            collection: "media",
+            where: {
+                filename: {
+                    equals: "image.jpg",
+                },
+            },
+            limit: 1,
+            depth: 0,
+            overrideAccess: true,
+        });
+    });
+
+    it("should throw when filename already exists", async () => {
+        const req = {
+            file: {
+                name: "image.jpg",
+            },
+            payload: {
+                find: vi.fn().mockResolvedValue({
+                    totalDocs: 1,
+                    docs: [{ id: 1, filename: "image.jpg" }],
+                }),
+            },
+        };
+
+        await expect(
+            preventDuplicateFilename({
+                req,
+                operation: "create",
+            } as unknown as PreventDuplicateFilenameArgs),
+        ).rejects.toThrow(
+            `Un média nommé "image.jpg" existe déjà, utilisez le média existant ou renommez votre fichier avant de l'importer.`,
+        );
+    });
+
+    it("should allow same media content with a different filename", async () => {
+        const req = {
+            file: {
+                name: "image-renamed.jpg",
+            },
+            payload: {
+                find: vi.fn().mockResolvedValue({
+                    totalDocs: 0,
+                    docs: [],
+                }),
+            },
+        };
+
+        await expect(
+            preventDuplicateFilename({
+                req,
+                operation: "create",
+            } as unknown as PreventDuplicateFilenameArgs),
+        ).resolves.toBeUndefined();
+
+        expect(req.payload.find).toHaveBeenCalledWith({
+            collection: "media",
+            where: {
+                filename: {
+                    equals: "image-renamed.jpg",
+                },
+            },
+            limit: 1,
+            depth: 0,
+            overrideAccess: true,
+        });
     });
 });

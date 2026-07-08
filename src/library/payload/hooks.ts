@@ -1,8 +1,10 @@
 import { Media } from "@/payload-types";
-import type {
-    FieldHook,
-    CollectionAfterChangeHook,
-    CollectionBeforeValidateHook,
+import {
+    type FieldHook,
+    type CollectionAfterChangeHook,
+    type CollectionBeforeValidateHook,
+    type CollectionBeforeOperationHook,
+    APIError,
 } from "payload";
 import slugify from "slugify";
 
@@ -165,3 +167,32 @@ export async function revalidateFrontend(path: string) {
         clearTimeout(timeout);
     }
 }
+
+export const preventDuplicateFilename: CollectionBeforeOperationHook = async ({
+    req,
+    operation,
+}) => {
+    if ((operation !== "create" && operation !== "update") || !req.file) {
+        return;
+    }
+    const filename = req.file.name;
+
+    const existingMedia = await req.payload.find({
+        collection: "media",
+        where: {
+            filename: {
+                equals: filename,
+            },
+        },
+        limit: 1,
+        depth: 0,
+        overrideAccess: true,
+    });
+
+    if (existingMedia.totalDocs > 0) {
+        throw new APIError(
+            `Un média nommé "${filename}" existe déjà, utilisez le média existant ou renommez votre fichier avant de l'importer.`,
+            400,
+        );
+    }
+};

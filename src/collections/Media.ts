@@ -1,4 +1,7 @@
-import { assignMediatype } from "@/library/payload/hooks";
+import {
+    assignMediatype,
+    preventDuplicateFilename,
+} from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 const mimeTypes = [
@@ -50,6 +53,7 @@ export const Media: CollectionConfig = {
         ],
     },
     hooks: {
+        beforeOperation: [preventDuplicateFilename],
         beforeValidate: [assignMediatype],
     },
     upload: {
