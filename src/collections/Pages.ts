@@ -34,11 +34,6 @@ export const Pages: CollectionConfig = {
                 { label: "About", value: "about" },
                 { label: "Contact", value: "contact" },
             ],
-            // hooks:{
-            //     afterChange:[({ data, previousData, req }) => {
-            //         if(previousData?.pageType === data.pageType) return; // only run when pageType is changed]
-            //     }]
-            // }
         },
         {
             name: "title",

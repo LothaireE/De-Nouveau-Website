@@ -1,5 +1,11 @@
 import { Media } from "@/payload-types";
-import type { FieldHook, CollectionAfterChangeHook } from "payload";
+import {
+    type FieldHook,
+    type CollectionAfterChangeHook,
+    type CollectionBeforeValidateHook,
+    type CollectionBeforeOperationHook,
+    APIError,
+} from "payload";
 import slugify from "slugify";
 
 export const formatSlug =
@@ -93,6 +99,30 @@ export const assignProjectToMedia: CollectionAfterChangeHook = async ({
     return doc;
 };
 
+export const assignMediatype: CollectionBeforeValidateHook = ({
+    data = {},
+    req,
+}) => {
+    const mimeType = req.file?.mimetype || data?.mimeType;
+
+    if (!mimeType) return data;
+
+    if (mimeType.startsWith("image/")) {
+        data.mediaType = "image";
+    }
+
+    if (mimeType.startsWith("video/")) {
+        data.mediaType = "video";
+        const maxSize = 4 * 1024 * 1024; // 4MB
+
+        if (req.file?.size && req.file.size > maxSize) {
+            throw new Error("la vidéo ne doit pas depasser 4MB.");
+        }
+    }
+
+    return data;
+};
+
 export async function revalidateFrontend(path: string) {
     const siteUrl = process.env.NEXT_PUBLIC_SERVER_URL;
     const secret = process.env.REVALIDATION_SECRET;
@@ -137,3 +167,32 @@ export async function revalidateFrontend(path: string) {
         clearTimeout(timeout);
     }
 }
+
+export const preventDuplicateFilename: CollectionBeforeOperationHook = async ({
+    req,
+    operation,
+}) => {
+    if ((operation !== "create" && operation !== "update") || !req.file) {
+        return;
+    }
+    const filename = req.file.name;
+
+    const existingMedia = await req.payload.find({
+        collection: "media",
+        where: {
+            filename: {
+                equals: filename,
+            },
+        },
+        limit: 1,
+        depth: 0,
+        overrideAccess: true,
+    });
+
+    if (existingMedia.totalDocs > 0) {
+        throw new APIError(
+            `Un média nommé "${filename}" existe déjà, utilisez le média existant ou renommez votre fichier avant de l'importer.`,
+            400,
+        );
+    }
+};
