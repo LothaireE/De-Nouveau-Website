@@ -7,6 +7,35 @@ import type { CollectionConfig } from "payload";
 
 export const Projects: CollectionConfig = {
     slug: "projects",
+    access: {
+        read: ({ req: { user } }) => {
+            // return true;
+            if (user) {
+                return true;
+            }
+            return {
+                _status: {
+                    equals: "published",
+                },
+            };
+        },
+
+        update: ({ req: { user } }) => {
+            // return true;
+            if (!user) return false;
+
+            if (user.role === "admin") return true;
+
+            return {
+                _status: {
+                    equals: "published",
+                },
+            };
+        },
+    },
+    versions: {
+        drafts: true,
+    },
     hooks: {
         afterChange: [
             assignProjectToMedia,
@@ -22,7 +51,15 @@ export const Projects: CollectionConfig = {
     },
     admin: {
         useAsTitle: "title",
-        defaultColumns: ["title", "status", "featured", "order"],
+        // defaultColumns: ["title", "status", "featured", "order"],
+        defaultColumns: [
+            "title",
+            "projectStatus",
+            "_status",
+            "visibility",
+            "year",
+            "createdAt",
+        ],
     },
     fields: [
         {
@@ -66,6 +103,21 @@ export const Projects: CollectionConfig = {
             },
             hooks: {
                 beforeValidate: [formatSlug("title")],
+            },
+        },
+        {
+            name: "visibility",
+            label: "Visibility",
+            type: "radio",
+            defaultValue: "show",
+            options: [
+                { label: "Show", value: "show" },
+                { label: "Hidden", value: "hidden" },
+            ],
+            admin: {
+                position: "sidebar",
+                description:
+                    "Définit si le projet est visible ou non sur le site.",
             },
         },
 
@@ -171,8 +223,8 @@ export const Projects: CollectionConfig = {
             type: "text",
         },
         {
-            name: "status",
-            label: "Status",
+            name: "projectStatus",
+            label: "Project status",
             type: "radio",
             options: [
                 { label: "Completed", value: "délivré" },

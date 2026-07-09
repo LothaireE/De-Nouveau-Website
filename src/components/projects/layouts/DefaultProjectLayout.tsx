@@ -33,7 +33,9 @@ export default function DefaultProjectLayout({
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>{project.location}</p>}
-                        {project.status && <p>Projet {project.status}</p>}
+                        {project.projectStatus && (
+                            <p>Projet {project.projectStatus}</p>
+                        )}
                     </div>
 
                     <p className="mt-8 max-w-xl text-base leading-relaxed text-studio-moss">

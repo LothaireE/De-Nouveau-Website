@@ -21,7 +21,7 @@ export default function MinimalProjectLayout({
                 <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                     {project.year && <p>{project.year}</p>}
                     {project.location && <p>{project.location}</p>}
-                    {project.status && <p>{project.status}</p>}
+                    {project.projectStatus && <p>{project.projectStatus}</p>}
                 </div>
 
                 {project.shortDescription && (
