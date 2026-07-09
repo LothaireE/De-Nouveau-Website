@@ -64,7 +64,7 @@ export default async function ContactPage() {
                                     )}
                                 </ContactBlock>
 
-                                {page.address && (
+                                {page.address && page.address.length > 0 && (
                                     <ContactBlock title="Adresse">
                                         <span className="whitespace-pre-line text-4xl font-medium leading-none tracking-tighter">
                                             {page.address}
