@@ -2,6 +2,7 @@ import MediaImage from "@/components/media/MediaImage";
 import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
+import { getMediaItemClass, getMediaImageProps } from "../ProjectsRenderer";
 
 export default function GalleryFocusedProjectLayout({
     project,
@@ -12,12 +13,11 @@ export default function GalleryFocusedProjectLayout({
 
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
-            <header className="mb-16 grid grid-cols-1 gap-10 md:grid-cols-[1fr_2fr] md:items-end">
-                <div>
-                    <h1 className="max-w-xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
+            <header className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-[2fr_1fr] md:items-end">
+                <div className="w-full">
+                    <h1 className="w-full max-w-full md:max-w-4xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black sm:text-7xl">
                         {project.title}
                     </h1>
-
                     <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
@@ -45,27 +45,27 @@ export default function GalleryFocusedProjectLayout({
             {medias.length > 0 && (
                 <section className="grid grid-cols-1 gap-8 md:grid-cols-2">
                     {medias.map((item, index) => {
-                        const { media } = item;
+                        const { media, layout } = item;
 
                         if (!media || typeof media === "number") return null;
 
-                        const isWide = index % 5 === 0;
+                        const imageProps = getMediaImageProps(layout ?? "auto");
 
                         return (
                             <figure
                                 key={item.id ?? index}
-                                className={isWide ? "md:col-span-2" : undefined}
+                                className={getMediaItemClass(layout ?? "auto")}
                             >
                                 {media.mediaType === "video" ? (
                                     <MediaVideo media={media} />
                                 ) : (
                                     <MediaImage
                                         media={media}
-                                        size={isWide ? "hero" : "card"}
+                                        size={imageProps.size}
                                         fallbackAlt={`${project.title} ${index + 1}`}
-                                        variant={isWide ? "full" : "half"}
+                                        variant={imageProps.variant}
                                         quality={90}
-                                        className="h-auto w-full object-cover"
+                                        className={imageProps.className}
                                     />
                                 )}
                             </figure>
@@ -83,34 +83,29 @@ export default function GalleryFocusedProjectLayout({
 
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                         {project.plans.map((item, index) => {
-                            const plan = item.image;
+                            const { image, layout } = item;
 
-                            if (!plan || typeof plan === "number") return null;
+                            if (!image || typeof image === "number")
+                                return null;
 
-                            const fallbackSize = plan.sizes?.large?.filename
-                                ? "large"
-                                : "card";
+                            const imageProps = getMediaImageProps(
+                                layout ?? "auto",
+                            );
 
                             return (
                                 <figure
                                     key={item.id ?? index}
-                                    className={
-                                        project.plans?.length === 1
-                                            ? "md:col-span-2"
-                                            : undefined
-                                    }
+                                    className={getMediaItemClass(
+                                        layout ?? "auto",
+                                    )}
                                 >
                                     <MediaImage
-                                        media={plan}
-                                        size={fallbackSize}
+                                        media={image}
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={`Plan ${project.title} ${index + 1}`}
-                                        variant={
-                                            project.plans?.length === 1
-                                                ? "full"
-                                                : "half"
-                                        }
                                         quality={90}
-                                        className="h-auto w-full object-contain"
+                                        className={imageProps.className}
                                     />
                                 </figure>
                             );

@@ -240,6 +240,10 @@ export interface Project {
   galleryMedia?:
     | {
         media?: (number | null) | Media;
+        /**
+         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
+         */
+        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
         id?: string | null;
       }[]
     | null;
@@ -273,6 +277,10 @@ export interface Project {
   plans?:
     | {
         image?: (number | null) | Media;
+        /**
+         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
+         */
+        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
         id?: string | null;
       }[]
     | null;
@@ -626,6 +634,7 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         media?: T;
+        layout?: T;
         id?: T;
       };
   shortDescription?: T;
@@ -642,6 +651,7 @@ export interface ProjectsSelect<T extends boolean = true> {
     | T
     | {
         image?: T;
+        layout?: T;
         id?: T;
       };
   planDetails?: T;
