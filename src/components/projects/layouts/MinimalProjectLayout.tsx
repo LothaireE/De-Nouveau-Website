@@ -2,6 +2,7 @@ import MediaImage from "@/components/media/MediaImage";
 import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
+import { getMediaItemClass, getMediaImageProps } from "../ProjectsRenderer";
 
 export default function MinimalProjectLayout({
     project,
@@ -13,7 +14,7 @@ export default function MinimalProjectLayout({
     return (
         <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
             <header className="mb-16">
-                <h1 className="max-w-xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
+                <h1 className="w-full max-w-full md:max-w-4xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
                     {project.title}
                 </h1>
 
@@ -45,22 +46,27 @@ export default function MinimalProjectLayout({
             {medias.length > 0 && (
                 <section className="mx-auto mt-20 max-w-5xl space-y-16">
                     {medias.map((item, index) => {
-                        const media = item.media;
+                        const { media, layout } = item;
 
                         if (!media || typeof media === "number") return null;
 
+                        const imageProps = getMediaImageProps(layout ?? "auto");
+
                         return (
-                            <figure key={item.id ?? index}>
+                            <figure
+                                key={item.id ?? index}
+                                className={getMediaItemClass(layout ?? "auto")}
+                            >
                                 {media.mediaType === "video" ? (
                                     <MediaVideo media={media} />
                                 ) : (
                                     <MediaImage
                                         media={media}
-                                        size="large"
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={project.title}
-                                        variant="contained"
                                         quality={90}
-                                        className="h-auto w-full object-cover"
+                                        className={imageProps.className}
                                     />
                                 )}
                             </figure>
@@ -73,23 +79,32 @@ export default function MinimalProjectLayout({
                 <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
                     <div className="space-y-12">
                         {project.plans.map((item, index) => {
-                            const plan = item.image;
+                            const { image, layout } = item;
 
-                            if (!plan || typeof plan === "number") return null;
+                            if (!image || typeof image === "number")
+                                return null;
 
-                            const fallbackSize = plan.sizes?.large?.filename
-                                ? "large"
-                                : "card";
+                            const imageProps = getMediaImageProps(
+                                layout ?? "auto",
+                            );
 
                             return (
-                                <figure key={item.id ?? index}>
+                                <figure
+                                    key={item.id ?? index}
+                                    className={getMediaItemClass(
+                                        layout ?? "auto",
+                                    )}
+                                >
                                     <MediaImage
-                                        media={plan}
-                                        size={fallbackSize}
+                                        media={image}
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={`Plan ${project.title} ${index + 1}`}
-                                        variant="contained"
                                         quality={90}
-                                        className="h-auto w-full object-contain"
+                                        className={imageProps.className.replace(
+                                            "object-cover",
+                                            "object-contain",
+                                        )}
                                     />
                                 </figure>
                             );

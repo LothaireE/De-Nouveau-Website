@@ -2,6 +2,7 @@ import MediaImage from "@/components/media/MediaImage";
 import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
+import { getMediaItemClass, getMediaImageProps } from "../ProjectsRenderer";
 
 export default function DefaultProjectLayout({
     project,
@@ -46,19 +47,21 @@ export default function DefaultProjectLayout({
                     <RichText data={project.longDescription} />
                 </section>
             )}
-
             {firstMedias[0]?.media &&
                 typeof firstMedias[0].media !== "number" && (
-                    <figure className="mx-auto my-20 max-w-5xl">
-                        {firstMedias[0]?.media.mediaType === "video" ? (
+                    <figure
+                        className={`mx-auto my-20 max-w-5xl ${getMediaItemClass(firstMedias[0].layout ?? "auto")}`}
+                    >
+                        {firstMedias[0].media.mediaType === "video" ? (
                             <MediaVideo media={firstMedias[0].media} />
                         ) : (
                             <MediaImage
-                                media={firstMedias[0]?.media}
-                                size="large"
+                                media={firstMedias[0].media}
+                                {...getMediaImageProps(
+                                    firstMedias[0].layout ?? "auto",
+                                )}
                                 fallbackAlt={project.title}
-                                variant="contained"
-                                className="h-auto w-full object-cover"
+                                quality={90}
                             />
                         )}
                     </figure>
@@ -67,21 +70,27 @@ export default function DefaultProjectLayout({
             {firstMedias.length > 1 && (
                 <section className="mx-auto my-20 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
                     {firstMedias.slice(1).map((item, index) => {
-                        const { media } = item;
+                        const { media, layout } = item;
 
                         if (!media || typeof media === "number") return null;
 
+                        const imageProps = getMediaImageProps(layout ?? "auto");
+
                         return (
-                            <figure key={item.id ?? index}>
+                            <figure
+                                key={item.id ?? index}
+                                className={getMediaItemClass(layout ?? "auto")}
+                            >
                                 {media.mediaType === "video" ? (
                                     <MediaVideo media={media} />
                                 ) : (
                                     <MediaImage
                                         media={media}
-                                        size="card"
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={project.title}
-                                        variant="half"
-                                        className="h-auto w-full object-cover"
+                                        quality={90}
+                                        className={imageProps.className}
                                     />
                                 )}
                             </figure>
@@ -93,25 +102,27 @@ export default function DefaultProjectLayout({
             {remainingMedias.length > 0 && (
                 <section className="mx-auto my-20 max-w-5xl space-y-16">
                     {remainingMedias.map((item, index) => {
-                        const { media } = item;
+                        const { media, layout } = item;
 
                         if (!media || typeof media === "number") return null;
 
-                        const fallbackSize = media.sizes?.large?.filename
-                            ? "large"
-                            : "card";
+                        const imageProps = getMediaImageProps(layout ?? "auto");
 
                         return (
-                            <figure key={item.id ?? index}>
+                            <figure
+                                key={item.id ?? index}
+                                className={getMediaItemClass(layout ?? "auto")}
+                            >
                                 {media.mediaType === "video" ? (
                                     <MediaVideo media={media} />
                                 ) : (
                                     <MediaImage
                                         media={media}
-                                        size={fallbackSize} // "large"
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={`${project.title} ${index + 1}`}
-                                        variant="contained"
-                                        className="h-auto w-full object-cover"
+                                        quality={90}
+                                        className={imageProps.className}
                                     />
                                 )}
                             </figure>
@@ -120,36 +131,36 @@ export default function DefaultProjectLayout({
                 </section>
             )}
 
-            {/* {project.video && (
-                <section className="mx-auto my-20 max-w-5xl">
-                    <div className="aspect-video overflow-hidden bg-studio-black">
-                        <iframe
-                            src={project.video}
-                            className="h-full w-full"
-                            allowFullScreen
-                        />
-                    </div>
-                </section>
-            )} */}
-
             {project.plans && project.plans.length > 0 && (
                 <section className="my-24 border-t border-studio-sand/60 px-6 pt-16 md:px-10">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                         {project.plans.map((item, index) => {
-                            const plan = item.image;
+                            const { image, layout } = item;
 
-                            if (!plan || typeof plan === "number") return null;
-                            const fallbackSize = plan.sizes?.large?.filename
-                                ? "large"
-                                : "card";
+                            if (!image || typeof image === "number")
+                                return null;
+
+                            const imageProps = getMediaImageProps(
+                                layout ?? "auto",
+                            );
+
                             return (
-                                <figure key={item.id ?? index}>
+                                <figure
+                                    key={item.id ?? index}
+                                    className={getMediaItemClass(
+                                        layout ?? "auto",
+                                    )}
+                                >
                                     <MediaImage
-                                        media={plan}
-                                        size={fallbackSize}
+                                        media={image}
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={`Plan ${project.title} ${index + 1}`}
-                                        variant="full"
-                                        className="h-auto w-full object-contain"
+                                        quality={90}
+                                        className={imageProps.className.replace(
+                                            "object-cover",
+                                            "object-contain",
+                                        )}
                                     />
                                 </figure>
                             );

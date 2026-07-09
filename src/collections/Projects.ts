@@ -97,6 +97,37 @@ export const Projects: CollectionConfig = {
                         },
                     },
                 },
+                {
+                    name: "layout",
+                    type: "select",
+                    defaultValue: "auto",
+                    options: [
+                        {
+                            label: "Auto",
+                            value: "auto",
+                        },
+                        {
+                            label: "Portrait",
+                            value: "portrait",
+                        },
+                        {
+                            label: "Landscape",
+                            value: "landscape",
+                        },
+                        {
+                            label: "Square",
+                            value: "square",
+                        },
+                        {
+                            label: "Full width",
+                            value: "full",
+                        },
+                    ],
+                    admin: {
+                        description:
+                            "Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur",
+                    },
+                },
             ],
         },
         {
@@ -144,9 +175,9 @@ export const Projects: CollectionConfig = {
             label: "Status",
             type: "radio",
             options: [
-                { label: "Completed", value: "délivré" }, // délivré
-                { label: "In progress", value: "en cours" }, // en cours
-                { label: "Concept", value: "concept" }, // concept
+                { label: "Completed", value: "délivré" },
+                { label: "In progress", value: "en cours" },
+                { label: "Concept", value: "concept" },
             ],
         },
         {
@@ -173,6 +204,37 @@ export const Projects: CollectionConfig = {
                     name: "image",
                     type: "upload",
                     relationTo: "media",
+                },
+                {
+                    name: "layout",
+                    type: "select",
+                    defaultValue: "auto",
+                    options: [
+                        {
+                            label: "Auto",
+                            value: "auto",
+                        },
+                        {
+                            label: "Portrait",
+                            value: "portrait",
+                        },
+                        {
+                            label: "Landscape",
+                            value: "landscape",
+                        },
+                        {
+                            label: "Square",
+                            value: "square",
+                        },
+                        {
+                            label: "Full width",
+                            value: "full",
+                        },
+                    ],
+                    admin: {
+                        description:
+                            "Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur",
+                    },
                 },
             ],
         },
