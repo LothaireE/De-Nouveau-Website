@@ -418,7 +418,7 @@ export const singleProjectMockData = {
     ],
     surface: "8 m × 12 m",
     client: "Concours",
-    status: "inProgress",
+    projectStatus: "inProgress",
     featured: false,
     order: 1,
     seoTitle:
@@ -496,7 +496,7 @@ export const testProjectData: Project = {
     year: 2026,
     surface: "8 m × 12 m",
     client: "Concours",
-    status: "délivré",
+    projectStatus: "délivré",
     plans: [
         {
             id: "plan-1",
