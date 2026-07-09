@@ -72,23 +72,27 @@ export default async function AboutPage() {
                             </AboutSection>
                         )}
                     </div>
-                    <AboutSection title="Récompenses">
-                        <ul className="space-y-3">
-                            {page.awards?.map((award) => (
-                                <li key={award.id}>{award.name}</li>
-                            ))}
-                        </ul>
-                    </AboutSection>
+                    {page.awards && page.awards.length > 0 && (
+                        <AboutSection title="Récompenses">
+                            <ul className="space-y-3">
+                                {page.awards?.map((award) => (
+                                    <li key={award.id}>{award.name}</li>
+                                ))}
+                            </ul>
+                        </AboutSection>
+                    )}
 
-                    <AboutSection title="Nos membres">
-                        <ul className="space-y-3">
-                            {page.studioTeam?.map((member) => (
-                                <li key={member.id}>
-                                    {member.name} - {member.role}.
-                                </li>
-                            ))}
-                        </ul>
-                    </AboutSection>
+                    {page.studioTeam && page.studioTeam.length > 0 && (
+                        <AboutSection title="Nos membres">
+                            <ul className="space-y-3">
+                                {page.studioTeam?.map((member) => (
+                                    <li key={member.id}>
+                                        {member.name} - {member.role}.
+                                    </li>
+                                ))}
+                            </ul>
+                        </AboutSection>
+                    )}
                 </div>
             </div>
         </main>

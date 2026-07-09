@@ -236,10 +236,18 @@ export interface Project {
    * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.
    */
   slug: string;
+  /**
+   * Définit si le projet est visible ou non sur le site.
+   */
+  visibility?: ('show' | 'hidden') | null;
   coverImage: number | Media;
   galleryMedia?:
     | {
         media?: (number | null) | Media;
+        /**
+         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
+         */
+        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
         id?: string | null;
       }[]
     | null;
@@ -264,7 +272,7 @@ export interface Project {
   categories?: (number | Category)[] | null;
   surface?: string | null;
   client?: string | null;
-  status?: ('délivré' | 'en cours' | 'concept') | null;
+  projectStatus?: ('délivré' | 'en cours' | 'concept') | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
   /**
@@ -273,6 +281,10 @@ export interface Project {
   plans?:
     | {
         image?: (number | null) | Media;
+        /**
+         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
+         */
+        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
         id?: string | null;
       }[]
     | null;
@@ -296,6 +308,7 @@ export interface Project {
   } | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -621,11 +634,13 @@ export interface ProjectsSelect<T extends boolean = true> {
   projectLayout?: T;
   title?: T;
   slug?: T;
+  visibility?: T;
   coverImage?: T;
   galleryMedia?:
     | T
     | {
         media?: T;
+        layout?: T;
         id?: T;
       };
   shortDescription?: T;
@@ -635,18 +650,20 @@ export interface ProjectsSelect<T extends boolean = true> {
   categories?: T;
   surface?: T;
   client?: T;
-  status?: T;
+  projectStatus?: T;
   seoTitle?: T;
   seoDescription?: T;
   plans?:
     | T
     | {
         image?: T;
+        layout?: T;
         id?: T;
       };
   planDetails?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

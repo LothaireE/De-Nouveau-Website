@@ -8,6 +8,20 @@ export async function getAllProjects(): Promise<Project[]> {
 
         const result = await payload.find({
             collection: "projects",
+            where: {
+                and: [
+                    {
+                        _status: {
+                            equals: "published",
+                        },
+                    },
+                    {
+                        visibility: {
+                            equals: "show",
+                        },
+                    },
+                ],
+            },
             depth: 2,
             sort: "order",
             limit: 100,
@@ -28,9 +42,23 @@ export async function getSingleProject(slug: string): Promise<Project | null> {
             collection: "projects",
             depth: 2,
             where: {
-                slug: {
-                    equals: slug,
-                },
+                and: [
+                    {
+                        slug: {
+                            equals: slug,
+                        },
+                    },
+                    {
+                        _status: {
+                            equals: "published",
+                        },
+                    },
+                    {
+                        visibility: {
+                            equals: "show",
+                        },
+                    },
+                ],
             },
             limit: 1,
         });
@@ -70,6 +98,20 @@ export async function getNavProjects(): Promise<NavProjectItem[]> {
 
         const result = await payload.find({
             collection: "projects",
+            where: {
+                and: [
+                    {
+                        _status: {
+                            equals: "published",
+                        },
+                    },
+                    {
+                        visibility: {
+                            equals: "show",
+                        },
+                    },
+                ],
+            },
             sort: "order",
             limit: 100,
             depth: 1,

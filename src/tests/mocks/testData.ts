@@ -418,7 +418,7 @@ export const singleProjectMockData = {
     ],
     surface: "8 m × 12 m",
     client: "Concours",
-    status: "inProgress",
+    projectStatus: "inProgress",
     featured: false,
     order: 1,
     seoTitle:
@@ -460,10 +460,26 @@ export const testProjectData: Project = {
     updatedAt: "2026-02-01T00:00:00Z",
     coverImage: imageMedia,
     galleryMedia: [
-        { id: "gallery-1", media: { ...imageMedia, id: 1 } },
-        { id: "gallery-2", media: { ...videoMedia, id: 2 } },
-        { id: "gallery-3", media: { ...imageMedia, id: 3 } },
-        { id: "gallery-4", media: { ...imageMedia, id: 4 } },
+        {
+            id: "gallery-1",
+            media: { ...imageMedia, id: 1 },
+            layout: "landscape",
+        },
+        {
+            id: "gallery-2",
+            media: { ...videoMedia, id: 2 },
+            layout: "square",
+        },
+        {
+            id: "gallery-3",
+            media: { ...imageMedia, id: 3 },
+            layout: "square",
+        },
+        {
+            id: "gallery-4",
+            media: { ...imageMedia, id: 4 },
+            layout: "portrait",
+        },
     ],
     shortDescription: "Une courte description du projet.",
     longDescription: {
@@ -480,7 +496,7 @@ export const testProjectData: Project = {
     year: 2026,
     surface: "8 m × 12 m",
     client: "Concours",
-    status: "délivré",
+    projectStatus: "délivré",
     plans: [
         {
             id: "plan-1",
@@ -493,6 +509,7 @@ export const testProjectData: Project = {
                     },
                 },
             },
+            layout: "portrait",
         },
         {
             id: "plan-2",
@@ -501,6 +518,7 @@ export const testProjectData: Project = {
                 id: 11,
                 sizes: {},
             },
+            layout: "square",
         },
     ],
     planDetails: {

@@ -3,16 +3,25 @@ import GalleryFocusedProjectLayout from "./GalleryFocusedProjectLayout";
 import { vi, it, describe, expect } from "vitest";
 import { MediaImageProps } from "@/components/media/MediaImage";
 import { testProjectData } from "@/tests/mocks/testData";
-import { Media } from "@/payload-types";
+import { Media, Project } from "@/payload-types";
 
 vi.mock("@/components/media/MediaImage", () => ({
-    default: ({ media, fallbackAlt, size, priority }: MediaImageProps) => (
+    default: ({
+        media,
+        fallbackAlt,
+        size,
+        variant,
+        priority,
+        className,
+    }: MediaImageProps) => (
         <div
             data-testid="media-image"
             data-media-id={typeof media === "object" && media?.id}
             data-fallback-alt={fallbackAlt}
             data-size={size}
+            data-variant={variant}
             data-priority={String(Boolean(priority))}
+            data-class-name={className}
         />
     ),
 }));
@@ -80,12 +89,14 @@ describe("GalleryFocusedProjectLayout", () => {
         );
 
         expect(firstGalleryImage).toHaveAttribute("data-size", "hero");
+        expect(firstGalleryImage).toHaveAttribute("data-variant", "full");
         expect(firstGalleryImage).toHaveAttribute(
             "data-fallback-alt",
             "Concours Bambou U Default 1",
         );
 
         expect(thirdGalleryImage).toHaveAttribute("data-size", "card");
+        expect(thirdGalleryImage).toHaveAttribute("data-variant", "grid");
         expect(thirdGalleryImage).toHaveAttribute(
             "data-fallback-alt",
             "Concours Bambou U Default 3",
@@ -138,7 +149,10 @@ describe("GalleryFocusedProjectLayout", () => {
         );
 
         expect(planLarge).toHaveAttribute("data-size", "large");
+        expect(planLarge).toHaveAttribute("data-variant", "contained");
+
         expect(planCard).toHaveAttribute("data-size", "card");
+        expect(planCard).toHaveAttribute("data-variant", "grid");
     });
 
     it("renders plan details when available", () => {
@@ -151,14 +165,7 @@ describe("GalleryFocusedProjectLayout", () => {
     });
 
     it("renders a single plan with full variant", () => {
-        render(
-            <GalleryFocusedProjectLayout
-                project={{
-                    ...project,
-                    plans: project.plans?.slice(0, 1),
-                }}
-            />,
-        );
+        render(<GalleryFocusedProjectLayout project={project} />);
 
         const images = screen.getAllByTestId("media-image");
 

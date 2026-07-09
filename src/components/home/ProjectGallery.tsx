@@ -32,7 +32,9 @@ const SingleProject = ({ project }: { project: Project }) => {
                     <div className="space-y-1 text-xs uppercase tracking-wide text-studio-white">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>{project.client}</p>}
-                        {project.status && <p>{project.status}</p>}
+                        {project.projectStatus && (
+                            <p>{project.projectStatus}</p>
+                        )}
                     </div>
 
                     {project.shortDescription && (

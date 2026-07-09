@@ -80,7 +80,7 @@ describe("EditorialProjectLayout", () => {
             (img) => img.getAttribute("data-media-id") === "1",
         );
 
-        expect(firstGalleryImage).toHaveAttribute("data-size", "large");
+        expect(firstGalleryImage).toHaveAttribute("data-size", "hero");
         expect(firstGalleryImage).toHaveAttribute(
             "data-fallback-alt",
             "Concours Bambou U Default",

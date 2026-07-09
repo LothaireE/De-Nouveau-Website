@@ -2,6 +2,7 @@ import MediaImage from "@/components/media/MediaImage";
 import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
 import { RichText } from "@payloadcms/richtext-lexical/react";
+import { getMediaItemClass, getMediaImageProps } from "../ProjectsRenderer";
 
 export default function EditorialProjectLayout({
     project,
@@ -9,7 +10,7 @@ export default function EditorialProjectLayout({
     project: Project;
 }) {
     const medias = project.galleryMedia ?? [];
-    const firstMedia = medias[0]?.media;
+    const firstMedia = medias[0];
     const middleMedias = medias.slice(1, 3);
     const remainingMedias = medias.slice(3);
 
@@ -34,7 +35,9 @@ export default function EditorialProjectLayout({
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>{project.location}</p>}
-                        {project.status && <p>Projet {project.status}</p>}
+                        {project.projectStatus && (
+                            <p>Projet {project.projectStatus}</p>
+                        )}
                         {project.surface && <p>Surface {project.surface}</p>}
                     </div>
 
@@ -49,32 +52,18 @@ export default function EditorialProjectLayout({
                 </section>
             )}
 
-            {/* {firstMedia && typeof firstMedia !== "number" ? (
-                firstMedia.mediaType === "video" ? (
-                    <MediaVideo media={firstMedia} />
-                ) : (
-                    <MediaImage
-                        media={firstMedia}
-                        size="large"
-                        variant="contained"
-                        fallbackAlt={project.title}
-                        quality={90}
-                        className="h-auto w-full object-cover"
-                    />
-                )
-            ) : null} */}
-            {firstMedia && typeof firstMedia !== "number" ? (
-                <figure className="mx-auto my-24 max-w-5xl">
-                    {firstMedia.mediaType === "video" ? (
-                        <MediaVideo media={firstMedia} />
+            {firstMedia?.media && typeof firstMedia.media !== "number" ? (
+                <figure
+                    className={`mx-auto my-24 max-w-5xl ${getMediaItemClass(firstMedia.layout ?? "auto")}`}
+                >
+                    {firstMedia.media.mediaType === "video" ? (
+                        <MediaVideo media={firstMedia.media} />
                     ) : (
                         <MediaImage
-                            media={firstMedia}
-                            size="large"
-                            variant="contained"
+                            media={firstMedia.media}
+                            {...getMediaImageProps(firstMedia.layout ?? "auto")}
                             fallbackAlt={project.title}
                             quality={90}
-                            className="h-auto w-full object-cover"
                         />
                     )}
                 </figure>
@@ -82,21 +71,26 @@ export default function EditorialProjectLayout({
             {middleMedias.length > 0 && (
                 <section className="mx-auto my-24 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
                     {middleMedias.map((item, index) => {
-                        const media = item.media;
+                        const { media, layout } = item;
 
                         if (!media || typeof media === "number") return null;
 
+                        const imageProps = getMediaImageProps(layout ?? "auto");
+
                         return (
-                            <figure key={item.id ?? index}>
+                            <figure
+                                key={item.id ?? index}
+                                className={getMediaItemClass(layout ?? "auto")}
+                            >
                                 {media.mediaType === "video" ? (
                                     <MediaVideo media={media} />
                                 ) : (
                                     <MediaImage
                                         media={media}
-                                        size="card"
-                                        variant="half"
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         quality={90}
-                                        className="h-auto w-full object-cover"
+                                        className={imageProps.className}
                                         fallbackAlt={project.title}
                                     />
                                 )}
@@ -109,29 +103,27 @@ export default function EditorialProjectLayout({
             {remainingMedias.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl space-y-20">
                     {remainingMedias.map((item, index) => {
-                        const { media } = item;
+                        const { media, layout } = item;
 
                         if (!media || typeof media === "number") return null;
+
+                        const imageProps = getMediaImageProps(layout ?? "auto");
 
                         return (
                             <figure
                                 key={item.id ?? index}
-                                className={
-                                    index % 2 === 0
-                                        ? "mr-auto max-w-4xl"
-                                        : "ml-auto max-w-4xl"
-                                }
+                                className={`${index % 2 === 0 ? "mr-auto" : "ml-auto"} ${getMediaItemClass(layout ?? "auto")}`}
                             >
                                 {media.mediaType === "video" ? (
                                     <MediaVideo media={media} />
                                 ) : (
                                     <MediaImage
                                         media={media}
-                                        size="large"
-                                        variant="contained"
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         quality={90}
                                         fallbackAlt={`${project.title} ${index + 1}`}
-                                        className="h-auto w-full object-cover"
+                                        className={imageProps.className}
                                     />
                                 )}
                             </figure>
@@ -139,32 +131,35 @@ export default function EditorialProjectLayout({
                     })}
                 </section>
             )}
+
             {project.plans && project.plans.length > 0 && (
                 <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
                         {project.plans.map((item, index) => {
-                            const plan = item.image;
+                            const { image, layout } = item;
 
-                            if (!plan || typeof plan === "number") return null;
+                            if (!image || typeof image === "number")
+                                return null;
 
-                            const fallbackSize = plan.sizes?.large?.filename
-                                ? "large"
-                                : "card";
+                            const imageProps = getMediaImageProps(
+                                layout ?? "auto",
+                            );
 
                             return (
                                 <figure
                                     key={item.id ?? index}
-                                    className={
-                                        index % 2 === 0 ? "mr-auto" : "ml-auto"
-                                    }
+                                    className={`${index % 2 === 0 ? "mr-auto" : "ml-auto"} ${getMediaItemClass(layout ?? "auto")}`}
                                 >
                                     <MediaImage
-                                        media={plan}
-                                        size={fallbackSize}
+                                        media={image}
+                                        size={imageProps.size}
+                                        variant={imageProps.variant}
                                         fallbackAlt={`Plan ${project.title} ${index + 1}`}
-                                        variant="contained"
                                         quality={90}
-                                        className="h-auto w-full object-contain"
+                                        className={imageProps.className.replace(
+                                            "object-cover",
+                                            "object-contain",
+                                        )}
                                     />
                                 </figure>
                             );

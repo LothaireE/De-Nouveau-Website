@@ -6,13 +6,22 @@ import { testProjectData } from "@/tests/mocks/testData";
 import { Media } from "@/payload-types";
 
 vi.mock("@/components/media/MediaImage", () => ({
-    default: ({ media, fallbackAlt, size, priority }: MediaImageProps) => (
+    default: ({
+        media,
+        fallbackAlt,
+        size,
+        variant,
+        priority,
+        className,
+    }: MediaImageProps) => (
         <div
             data-testid="media-image"
             data-media-id={typeof media === "object" && media?.id}
             data-fallback-alt={fallbackAlt}
             data-size={size}
+            data-variant={variant}
             data-priority={String(Boolean(priority))}
+            data-class-name={className}
         />
     ),
 }));
@@ -96,7 +105,7 @@ describe("DefaultProjectLayout", () => {
             (img) => img.getAttribute("data-media-id") === "3",
         );
 
-        expect(largeImage).toHaveAttribute("data-size", "large");
+        expect(largeImage).toHaveAttribute("data-size", "card");
     });
 
     it("renders plans with correct fallback sizes", () => {
