@@ -22,7 +22,9 @@ export default function GalleryFocusedProjectLayout({
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>{project.location}</p>}
-                        {project.status && <p>Projet {project.status}</p>}
+                        {project.projectStatus && (
+                            <p>Projet {project.projectStatus}</p>
+                        )}
                     </div>
                 </div>
 
