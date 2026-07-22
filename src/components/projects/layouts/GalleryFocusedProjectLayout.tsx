@@ -12,7 +12,7 @@ export default function GalleryFocusedProjectLayout({
     const medias = project.galleryMedia ?? [];
 
     return (
-        <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
+        <main className="bg-studio-white px-3 py-16 text-studio-black md:px-10">
             <header className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-[2fr_1fr] md:items-end">
                 <div className="w-full">
                     <h1 className="w-full max-w-full md:max-w-4xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black sm:text-7xl">

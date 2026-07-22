@@ -48,7 +48,7 @@ export default async function AboutPage() {
 
     return (
         <main className="min-h-screen bg-studio-cream text-studio-black">
-            <div className="grid gap-10 md:grid-cols-5">
+            <div className="grid gap-0 md:grid-cols-5 md:gap-10">
                 <aside className="md:col-span-2">
                     {portrait ? (
                         <MediaImage
@@ -64,7 +64,7 @@ export default async function AboutPage() {
                     )}
                 </aside>
 
-                <div className="md:col-span-3 grid md:grid-cols-2 md:min-h-screen py-32 md:gap-12">
+                <div className="grid min-w-0 px-5 pb-32 pt-4 md:col-span-3 md:min-h-screen md:grid-cols-2 md:gap-12 md:px-0 md:py-32">
                     <div className="md:col-span-3">
                         {page?.content && (
                             <AboutSection title="À propos">
