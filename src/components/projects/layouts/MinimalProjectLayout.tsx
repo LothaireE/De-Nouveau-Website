@@ -12,7 +12,7 @@ export default function MinimalProjectLayout({
     const medias = project.galleryMedia?.slice(0, 3) ?? [];
 
     return (
-        <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
+        <main className="bg-studio-white px-3 py-16 text-studio-black md:px-10">
             <header className="mb-16">
                 <h1 className="w-full max-w-full md:max-w-4xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
                     {project.title}

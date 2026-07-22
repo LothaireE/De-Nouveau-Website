@@ -15,7 +15,7 @@ export default function EditorialProjectLayout({
     const remainingMedias = medias.slice(3);
 
     return (
-        <main className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
+        <main className="bg-studio-white px-3 py-16 text-studio-black md:px-10">
             <section className="grid min-h-[75vh] grid-cols-1 gap-10 md:grid-cols-2 md:items-end">
                 <MediaImage
                     media={project.coverImage}
