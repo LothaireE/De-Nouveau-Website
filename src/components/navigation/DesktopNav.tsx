@@ -3,7 +3,7 @@
 import type { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { type FocusEvent, type KeyboardEvent, useRef, useState } from "react";
 import { frNavItems } from "@/library/navItems";
 
 const LOGO_BLACK_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
@@ -34,6 +34,36 @@ export default function DesktopNav({
         setOpen(true);
     }
 
+    function handleMouseEnter() {
+        setOpen(true);
+    }
+
+    function handleMouseLeave() {
+        if (!pinnedOpen && !hasFocusWithin.current) setOpen(false);
+    }
+
+    function handleFocusCapture(event: FocusEvent<HTMLElement>) {
+        hasFocusWithin.current = true;
+        if (event.target !== menuButtonRef.current) setOpen(true);
+    }
+
+    function handleBlurCapture(event: FocusEvent<HTMLElement>) {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+            hasFocusWithin.current = false;
+        }
+
+        if (!pinnedOpen && !hasFocusWithin.current) {
+            setOpen(false);
+        }
+    }
+
+    function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+        if (event.key !== "Escape") return;
+
+        menuButtonRef.current?.focus();
+        closeMenu();
+    }
+
     const navClassName = `overflow-hidden border-studio-sand/50 bg-none text-studio-black shadow-none backdrop-blur-none transition-[width,height,margin,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
         open
             ? "h-screen w-[46rem] p-6 shadow-xl bg-studio-white/85 shadow-sm backdrop-blur-sm"
@@ -60,29 +90,11 @@ export default function DesktopNav({
 
     return (
         <aside
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => {
-                if (!pinnedOpen && !hasFocusWithin.current) setOpen(false);
-            }}
-            onFocusCapture={(event) => {
-                hasFocusWithin.current = true;
-                if (event.target !== menuButtonRef.current) setOpen(true);
-            }}
-            onBlurCapture={(event) => {
-                if (!event.currentTarget.contains(event.relatedTarget)) {
-                    hasFocusWithin.current = false;
-                }
-
-                if (!pinnedOpen && !hasFocusWithin.current) {
-                    setOpen(false);
-                }
-            }}
-            onKeyDown={(event) => {
-                if (event.key !== "Escape") return;
-
-                menuButtonRef.current?.focus();
-                closeMenu();
-            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onFocusCapture={handleFocusCapture}
+            onBlurCapture={handleBlurCapture}
+            onKeyDown={handleKeyDown}
             className="fixed right-0 top-0 z-50 hidden text-sm md:block"
         >
             <nav aria-label="Navigation principale" className={navClassName}>
