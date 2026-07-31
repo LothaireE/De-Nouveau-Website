@@ -58,16 +58,28 @@ describe("Main layout", () => {
 
         expect(getByText("Sample Page Content")).toBeInTheDocument();
 
-        expect(getAllByRole("link", { name: "Accueil" })).toHaveLength(2);
+        expect(
+            getAllByRole("link", { name: "Accueil", hidden: true }),
+        ).toHaveLength(2);
 
-        expect(getAllByRole("link", { name: "À propos" })).toHaveLength(2);
+        expect(
+            getAllByRole("link", { name: "À propos", hidden: true }),
+        ).toHaveLength(2);
 
-        expect(getAllByRole("link", { name: "Contact" })).toHaveLength(2);
+        expect(
+            getAllByRole("link", { name: "Contact", hidden: true }),
+        ).toHaveLength(2);
 
-        expect(getAllByRole("link", { name: "project 1" })).toHaveLength(2);
+        expect(
+            getAllByRole("link", { name: "project 1", hidden: true }),
+        ).toHaveLength(2);
 
-        expect(getAllByRole("link", { name: "project 2" })).toHaveLength(2);
+        expect(
+            getAllByRole("link", { name: "project 2", hidden: true }),
+        ).toHaveLength(2);
 
-        expect(getAllByRole("link", { name: "project 3" })).toHaveLength(2);
+        expect(
+            getAllByRole("link", { name: "project 3", hidden: true }),
+        ).toHaveLength(2);
     });
 });
