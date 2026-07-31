@@ -3,6 +3,8 @@ import { getPayloadClient } from "./client";
 import { Project, Page } from "@/payload-types";
 import { cache } from "react";
 
+export type SitemapProject = Pick<Project, "slug" | "updatedAt">;
+
 export async function getAllProjects(): Promise<Project[]> {
     try {
         const payload = await getPayloadClient();
@@ -31,6 +33,41 @@ export async function getAllProjects(): Promise<Project[]> {
         return result.docs as Project[];
     } catch (error) {
         console.error("Error fetching projects:", error);
+        return [];
+    }
+}
+
+export async function getSitemapProjects(): Promise<SitemapProject[]> {
+    try {
+        const payload = await getPayloadClient();
+
+        const result = await payload.find({
+            collection: "projects",
+            where: {
+                and: [
+                    {
+                        _status: {
+                            equals: "published",
+                        },
+                    },
+                    {
+                        visibility: {
+                            equals: "show",
+                        },
+                    },
+                ],
+            },
+            select: {
+                slug: true,
+                updatedAt: true,
+            },
+            depth: 0,
+            limit: 1000,
+        });
+
+        return result.docs as SitemapProject[];
+    } catch (error) {
+        console.error("Error fetching sitemap projects:", error);
         return [];
     }
 }
