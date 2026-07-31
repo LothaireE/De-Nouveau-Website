@@ -9,7 +9,6 @@ export const metadata = createMetadata({
     description: "Bienvenue sur la page contact de De Nouveau",
     path: "/contact",
     locale: "fr_FR",
-    // image: "https://www.de-nouveau.com/images/contact.jpg",
 });
 
 const SLUG = "contact";

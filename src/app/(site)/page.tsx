@@ -23,7 +23,6 @@ export const metadata = createMetadata({
     description: "Studio d'architecture De Nouveau",
     path: "/",
     locale: "fr_FR",
-    image: "/DE_NOUVEAU/PNG/og-default-de-nouveau.png", // DE_NOUVEAU/PNG/og-default-de-nouveau.png
 });
 
 const SLUG = "home";
