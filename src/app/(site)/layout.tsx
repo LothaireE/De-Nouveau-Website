@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import DesktopNav from "@/components/navigation/DesktopNav";
-import { getNavProjects } from "@/library/payload/fetchers";
+import { getNavProjects, getPage } from "@/library/payload/fetchers";
 import MobileNav from "@/components/navigation/MobileNav";
 import { createMetadata } from "@/library/seo";
+import JsonLd from "@/components/seo/JsonLd";
+import { createOrganizationStructuredData } from "@/library/structuredData";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -30,7 +32,10 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const navProjects = await getNavProjects();
+    const [navProjects, contactPage] = await Promise.all([
+        getNavProjects(),
+        getPage("contact"),
+    ]);
 
     return (
         <html
@@ -38,6 +43,7 @@ export default async function RootLayout({
             className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
         >
             <body className="min-h-full flex flex-col">
+                <JsonLd data={createOrganizationStructuredData(contactPage)} />
                 <div className="hidden md:block">
                     <DesktopNav projects={navProjects} />
                 </div>

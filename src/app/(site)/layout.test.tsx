@@ -20,6 +20,7 @@ vi.mock("next/font/google", () => ({
 }));
 
 vi.mock("@/library/payload/fetchers", () => ({
+    getPage: vi.fn().mockResolvedValue(null),
     getNavProjects: vi.fn().mockResolvedValue([
         {
             _id: "1",
