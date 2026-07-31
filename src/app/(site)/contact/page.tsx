@@ -9,7 +9,6 @@ export const metadata = createMetadata({
     description: "Bienvenue sur la page contact de De Nouveau",
     path: "/contact",
     locale: "fr_FR",
-    // image: "https://www.de-nouveau.com/images/contact.jpg",
 });
 
 const SLUG = "contact";
@@ -39,16 +38,16 @@ export default async function ContactPage() {
     return (
         <main className="min-h-screen bg-studio-cream text-studio-black">
             <section className="grid min-h-screen grid-cols-1 md:grid-cols-5">
-                <div className="flex min-h-screen flex-col justify-center px-6 pb-16 pt-32 md:px-12 md:pb-24 md:col-span-3">
-                    <div className=" grid ">
+                <div className="flex min-h-screen min-w-0 flex-col justify-center px-5 pb-16 pt-32 md:col-span-3 md:px-12 md:pb-24">
+                    <div className="grid min-w-0">
                         {/* <div className="grid gap-16 md:gap-24"> */}
-                        <div className="grid  gap-10 text-sm md:justify-center">
+                        <div className="grid min-w-0 gap-10 text-sm md:justify-center">
                             <div className="space-y-10">
                                 <ContactBlock title="Contact">
                                     {page.email && (
                                         <Link
                                             href={`mailto:${page.email}`}
-                                            className="transition hover:text-studio-red font-medium leading-none tracking-tighter text-4xl" //tracking-tighter
+                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere] transition hover:text-studio-red"
                                         >
                                             {page.email}
                                         </Link>
@@ -57,7 +56,7 @@ export default async function ContactPage() {
                                     {page.phone && (
                                         <Link
                                             href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                            className="transition hover:text-studio-red text-4xl font-medium leading-none tracking-tighter" //tracking-tighter
+                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere] transition hover:text-studio-red"
                                         >
                                             {page.phone}
                                         </Link>
@@ -66,7 +65,7 @@ export default async function ContactPage() {
 
                                 {page.address && page.address.length > 0 && (
                                     <ContactBlock title="Adresse">
-                                        <span className="whitespace-pre-line text-4xl font-medium leading-none tracking-tighter">
+                                        <span className="whitespace-pre-line text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere]">
                                             {page.address}
                                         </span>
                                     </ContactBlock>
@@ -77,7 +76,7 @@ export default async function ContactPage() {
                                 page.socialMedias.length > 0 && (
                                     <div className="space-y-10">
                                         <ContactBlock title="Nous suivre">
-                                            <div className="flex gap-4">
+                                            <div className="flex flex-wrap gap-4">
                                                 {page.socialMedias?.map(
                                                     (socialMedia) => (
                                                         <a
@@ -88,7 +87,7 @@ export default async function ContactPage() {
                                                                 ""
                                                             }
                                                             rel="noopener noreferrer"
-                                                            className="transition hover:text-studio-red text-4xl font-medium leading-none tracking-tighter"
+                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere] transition hover:text-studio-red"
                                                         >
                                                             {socialMedia.label}
                                                         </a>

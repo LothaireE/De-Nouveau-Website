@@ -4,6 +4,7 @@ import "../globals.css";
 import DesktopNav from "@/components/navigation/DesktopNav";
 import { getNavProjects } from "@/library/payload/fetchers";
 import MobileNav from "@/components/navigation/MobileNav";
+import { createMetadata } from "@/library/seo";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -15,36 +16,12 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-    // this is the default metadata for all pages, I can override it in each page.tsx if needed
+export const metadata: Metadata = createMetadata({
     title: "De Nouveau",
-    description: "Studio d'architecture De Nouveau ",
-    keywords: [
-        "architecture",
-        "design",
-        "studio",
-        "projects",
-        "about",
-        "contact",
-    ],
-    authors: [{ name: "Jean", url: "https://www.de-nouveau.com" }],
-    openGraph: {
-        title: "De Nouveau",
-        description: "Studio d'architecture De Nouveau ",
-        url: "https://www.de-nouveau.com",
-        siteName: "De Nouveau",
-        images: [
-            {
-                url: "https://www.de-nouveau.com/images/og-image.jpg",
-                width: 1200,
-                height: 630,
-                alt: "De Nouveau Studio d'Architecture",
-            },
-        ],
-        locale: "fr_FR",
-        type: "website",
-    },
-};
+    description: "Studio d'architecture De Nouveau",
+    path: "/",
+    locale: "fr_FR",
+});
 
 const LOCALE: "fr" | "en" = "fr";
 

@@ -234,13 +234,19 @@ export const Projects: CollectionConfig = {
         },
         {
             name: "seoTitle",
-            label: "SEO title",
+            label: "Legacy SEO title",
             type: "text",
+            admin: {
+                hidden: true,
+            },
         },
         {
             name: "seoDescription",
-            label: "SEO description",
+            label: "Legacy SEO description",
             type: "textarea",
+            admin: {
+                hidden: true,
+            },
         },
         {
             name: "plans",
