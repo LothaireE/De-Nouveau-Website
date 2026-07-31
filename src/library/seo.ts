@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
-const siteUrl = "https://www.denouveau.fr";
+export const SITE_URL = "https://www.denouveau.fr";
+export const DEFAULT_OG_IMAGE = "/DE_NOUVEAU/PNG/og-default-de-nouveau.png";
 
 type SeoParams = {
     title: string;
@@ -15,12 +16,12 @@ export function createMetadata({
     description,
     path,
     locale,
-    image = "/DE_NOUVEAU/PNG/og-default-de-nouveau.png", // Open Graph image for thumbnails
+    image = DEFAULT_OG_IMAGE,
 }: SeoParams): Metadata {
-    // only a French version of the site, so hardcoded if we add English content, we should uncomment to determine the language based on the locale
-    // const isFrench = locale === "fr_FR";
-    const url = `${siteUrl}${path}`;
-    const imageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
+    const url = new URL(path, SITE_URL).toString();
+    const imageUrl = image.startsWith("http")
+        ? image
+        : new URL(image, SITE_URL).toString();
 
     return {
         title,
@@ -30,13 +31,12 @@ export function createMetadata({
             shortcut: "/icon.png",
             apple: "/icon.png",
         },
-        metadataBase: new URL(siteUrl),
+        metadataBase: new URL(SITE_URL),
+        authors: [{ name: "De Nouveau", url: SITE_URL }],
         alternates: {
             canonical: url,
             languages: {
                 "fr-FR": url,
-                // "fr-FR": `${siteUrl}${isFrench ? path : path.replace("/en", "")}`,
-                // "en-US": `${siteUrl}${isFrench ? `/en${path}` : path}`, --- IGNORE FOR NOW ---
             },
         },
         keywords: [
