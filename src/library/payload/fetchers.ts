@@ -1,6 +1,7 @@
 import type { NavProjectItem } from "@/types/Navigation";
 import { getPayloadClient } from "./client";
 import { Project, Page } from "@/payload-types";
+import { cache } from "react";
 
 export async function getAllProjects(): Promise<Project[]> {
     try {
@@ -34,7 +35,9 @@ export async function getAllProjects(): Promise<Project[]> {
     }
 }
 
-export async function getSingleProject(slug: string): Promise<Project | null> {
+export const getSingleProject = cache(async function getSingleProject(
+    slug: string,
+): Promise<Project | null> {
     try {
         const payload = await getPayloadClient();
 
@@ -68,7 +71,7 @@ export async function getSingleProject(slug: string): Promise<Project | null> {
         console.error(`Error fetching project with slug "${slug}":`, error);
         return null;
     }
-}
+});
 
 export async function getPage(slug: string): Promise<Page | null> {
     try {

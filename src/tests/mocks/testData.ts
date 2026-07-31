@@ -421,10 +421,6 @@ export const singleProjectMockData = {
     projectStatus: "inProgress",
     featured: false,
     order: 1,
-    seoTitle:
-        "Concours Bambou U – Modular Bamboo Housing Inspired by Balinese Architecture",
-    seoDescription:
-        "Discover Concours Bambou U, a modular bamboo housing project inspired by traditional Balinese pavilions. A sustainable tropical architecture concept combining natural ventilation, low-carbon materials, and contemporary living across an 80 m² modular layout.",
     language: "en",
     translations: [],
     plans: [],

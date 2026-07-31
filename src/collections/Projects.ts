@@ -233,16 +233,6 @@ export const Projects: CollectionConfig = {
             ],
         },
         {
-            name: "seoTitle",
-            label: "SEO title",
-            type: "text",
-        },
-        {
-            name: "seoDescription",
-            label: "SEO description",
-            type: "textarea",
-        },
-        {
             name: "plans",
             label: "Plans / Dessins",
             type: "array",

@@ -273,8 +273,6 @@ export interface Project {
   surface?: string | null;
   client?: string | null;
   projectStatus?: ('délivré' | 'en cours' | 'concept') | null;
-  seoTitle?: string | null;
-  seoDescription?: string | null;
   /**
    * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
    */
@@ -651,8 +649,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   surface?: T;
   client?: T;
   projectStatus?: T;
-  seoTitle?: T;
-  seoDescription?: T;
   plans?:
     | T
     | {
