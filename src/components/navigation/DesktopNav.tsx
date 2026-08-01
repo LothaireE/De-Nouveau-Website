@@ -1,12 +1,13 @@
 "use client";
 
-import { NavProjectItem } from "@/types/Navigation";
+import type { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { type FocusEvent, type KeyboardEvent, useRef, useState } from "react";
 import { frNavItems } from "@/library/navItems";
 
 const LOGO_BLACK_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
+const MENU_ID = "desktop-navigation-panel";
 
 export default function DesktopNav({
     projects,
@@ -14,6 +15,54 @@ export default function DesktopNav({
     projects: NavProjectItem[];
 }) {
     const [open, setOpen] = useState(false);
+    const [pinnedOpen, setPinnedOpen] = useState(false);
+    const menuButtonRef = useRef<HTMLButtonElement>(null);
+    const hasFocusWithin = useRef(false);
+
+    function closeMenu() {
+        setPinnedOpen(false);
+        setOpen(false);
+    }
+
+    function toggleMenu() {
+        if (open) {
+            closeMenu();
+            return;
+        }
+
+        setPinnedOpen(true);
+        setOpen(true);
+    }
+
+    function handleMouseEnter() {
+        setOpen(true);
+    }
+
+    function handleMouseLeave() {
+        if (!pinnedOpen && !hasFocusWithin.current) setOpen(false);
+    }
+
+    function handleFocusCapture(event: FocusEvent<HTMLElement>) {
+        hasFocusWithin.current = true;
+        if (event.target !== menuButtonRef.current) setOpen(true);
+    }
+
+    function handleBlurCapture(event: FocusEvent<HTMLElement>) {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+            hasFocusWithin.current = false;
+        }
+
+        if (!pinnedOpen && !hasFocusWithin.current) {
+            setOpen(false);
+        }
+    }
+
+    function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+        if (event.key !== "Escape") return;
+
+        menuButtonRef.current?.focus();
+        closeMenu();
+    }
 
     const navClassName = `overflow-hidden border-studio-sand/50 bg-none text-studio-black shadow-none backdrop-blur-none transition-[width,height,margin,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
         open
@@ -21,13 +70,7 @@ export default function DesktopNav({
             : "mr-4 mt-4 h-18 w-18 p-2"
     }`;
 
-    const logoClassName = `block text-sm font-medium uppercase tracking-[-0.02em] text-studio-black transition-colors `;
-
     const logoImageClassName = `block text-sm font-medium uppercase tracking-[-0.02em] text-studio-black max-w-14 h-auto transition-rotate duration-500 ease-out  ${open ? "rotate-0" : "rotate-450"}`;
-
-    // const menuLabelClassName = `text-xs uppercase tracking-wide text-studio-wood transition-opacity duration-300 ${
-    //     open ? "opacity-100" : "opacity-0"
-    // }`;
 
     const contentClassName = `mt-16 transition-[width,height,margin,padding] duration-500 ease-out ${
         open
@@ -47,37 +90,49 @@ export default function DesktopNav({
 
     return (
         <aside
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onFocusCapture={handleFocusCapture}
+            onBlurCapture={handleBlurCapture}
+            onKeyDown={handleKeyDown}
             className="fixed right-0 top-0 z-50 hidden text-sm md:block"
         >
-            <nav className={navClassName}>
+            <nav aria-label="Navigation principale" className={navClassName}>
                 <div className="flex items-start justify-between">
-                    <Link href="/" className={logoClassName}>
+                    <button
+                        ref={menuButtonRef}
+                        type="button"
+                        onClick={toggleMenu}
+                        aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+                        aria-expanded={open}
+                        aria-controls={MENU_ID}
+                        className="text-studio-black transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-studio-red-muted"
+                    >
                         <Image
                             src={LOGO_BLACK_SRC}
-                            alt="Logo De Nouveau"
+                            alt=""
                             className={logoImageClassName}
                             width={56}
                             height={56}
                             priority
                         />
-                    </Link>
-                    {/* <span className={menuLabelClassName}>Menu</span> */}
+                    </button>
                 </div>
 
-                <div className={contentClassName}>
+                <div
+                    id={MENU_ID}
+                    className={contentClassName}
+                    aria-hidden={!open}
+                    inert={!open}
+                >
                     <div className="grid grid-cols-2 gap-10">
                         <div>
-                            {/* <p className="mb-4 text-xs uppercase tracking-wide text-studio-wood">
-                                Navigation
-                            </p> */}
-
                             <div className="space-y-2">
                                 {frNavItems.map((navItem) => (
                                     <Link
                                         key={navItem.href}
                                         href={navItem.href}
+                                        onClick={closeMenu}
                                         className={mainLinkClassName}
                                     >
                                         {navItem.label}
@@ -87,15 +142,12 @@ export default function DesktopNav({
                         </div>
 
                         <div>
-                            {/* <p className="mb-4 text-xs uppercase tracking-wide text-studio-wood">
-                                Projets
-                            </p> */}
-
                             <div className="space-y-2">
                                 {projects.map((project) => (
                                     <Link
                                         key={project._id}
                                         href={`/${project.slug}`}
+                                        onClick={closeMenu}
                                         className={projectLinkClassName}
                                     >
                                         <span className="block truncate text-base leading-tight">

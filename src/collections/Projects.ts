@@ -274,6 +274,11 @@ export const Projects: CollectionConfig = {
                     name: "image",
                     type: "upload",
                     relationTo: "media",
+                    filterOptions: {
+                        mediaType: {
+                            equals: "image",
+                        },
+                    },
                 },
                 {
                     name: "layout",

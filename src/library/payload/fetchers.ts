@@ -110,7 +110,9 @@ export const getSingleProject = cache(async function getSingleProject(
     }
 });
 
-export async function getPage(slug: string): Promise<Page | null> {
+export const getPage = cache(async function getPage(
+    slug: string,
+): Promise<Page | null> {
     try {
         const payload = await getPayloadClient();
 
@@ -130,7 +132,7 @@ export async function getPage(slug: string): Promise<Page | null> {
         console.error(`Error fetching page with slug "${slug}":`, error);
         return null;
     }
-}
+});
 
 export async function getNavProjects(): Promise<NavProjectItem[]> {
     try {
