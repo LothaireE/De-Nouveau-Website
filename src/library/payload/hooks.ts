@@ -43,7 +43,11 @@ export const getMediaId = (
 };
 
 type GalleryMediaItem = {
-    media: Media | string | number | null;
+    media?: Media | string | number | null;
+};
+
+type PlanMediaItem = {
+    image?: Media | string | number | null;
 };
 
 /**
@@ -63,8 +67,10 @@ export const assignProjectToMedia: CollectionAfterChangeHook = async ({
 
     const medias = [
         getMediaId(doc.coverImage),
-        ...galleryMedia.map((item: GalleryMediaItem) => getMediaId(item.media)),
-        ...plans.map((item: GalleryMediaItem) => getMediaId(item.media)),
+        ...galleryMedia.map((item: GalleryMediaItem) =>
+            getMediaId(item.media ?? null),
+        ),
+        ...plans.map((item: PlanMediaItem) => getMediaId(item.image ?? null)),
     ];
 
     const mediaIds = Array.from(

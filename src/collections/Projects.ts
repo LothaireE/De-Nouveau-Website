@@ -5,6 +5,14 @@ import {
 } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
+async function revalidateProjectRoutes(slug: string) {
+    await Promise.all([
+        revalidateFrontend(`/${slug}`),
+        revalidateFrontend("/"),
+        revalidateFrontend("/sitemap.xml"),
+    ]);
+}
+
 export const Projects: CollectionConfig = {
     slug: "projects",
     access: {
@@ -40,8 +48,12 @@ export const Projects: CollectionConfig = {
         afterChange: [
             assignProjectToMedia,
             async ({ doc }) => {
-                await revalidateFrontend(`/${doc.slug}`);
-                await revalidateFrontend("/");
+                await revalidateProjectRoutes(doc.slug);
+            },
+        ],
+        afterDelete: [
+            async ({ doc }) => {
+                await revalidateProjectRoutes(doc.slug);
             },
         ],
     },
@@ -262,6 +274,11 @@ export const Projects: CollectionConfig = {
                     name: "image",
                     type: "upload",
                     relationTo: "media",
+                    filterOptions: {
+                        mediaType: {
+                            equals: "image",
+                        },
+                    },
                 },
                 {
                     name: "layout",

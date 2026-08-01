@@ -4,6 +4,8 @@ import { getMediaUrl } from "@/library/utils";
 import { createMetadata } from "@/library/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/seo/JsonLd";
+import { createProjectStructuredData } from "@/library/structuredData";
 
 type ProjectPageProps = {
     params: Promise<{ slug: string }>;
@@ -47,6 +49,7 @@ export default async function SingleProjectPage({ params }: ProjectPageProps) {
 
     return (
         <div>
+            <JsonLd data={createProjectStructuredData(project)} />
             <ProjectRenderer project={project} />
         </div>
     );
