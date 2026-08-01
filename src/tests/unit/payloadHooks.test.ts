@@ -67,7 +67,7 @@ describe("test function assignProjectToMedia", () => {
         const doc = {
             id: "project1",
             coverImage: 1,
-            plans: [{ media: 2 }],
+            plans: [{ image: 2 }],
             galleryMedia: [{ media: 3 }],
         };
 
@@ -92,7 +92,7 @@ describe("test function assignProjectToMedia", () => {
         const doc = {
             id: 19,
             coverImage: { id: 1 },
-            plans: [{ media: { id: 2 } }],
+            plans: [{ image: { id: 2 } }],
             galleryMedia: [{ media: { id: 3 } }, { media: { id: 4 } }],
         };
         const req = {
@@ -118,6 +118,27 @@ describe("test function assignProjectToMedia", () => {
             depth: 0,
             overrideAccess: true,
             req: req,
+            context: {
+                skipProjectGalleryHook: true,
+            },
+            data: {
+                project: 19,
+            },
+        });
+
+        expect(req.payload.findByID).toHaveBeenCalledWith({
+            collection: "media",
+            id: 2,
+            depth: 0,
+            overrideAccess: true,
+            req,
+        });
+        expect(req.payload.update).toHaveBeenCalledWith({
+            collection: "media",
+            id: 2,
+            depth: 0,
+            overrideAccess: true,
+            req,
             context: {
                 skipProjectGalleryHook: true,
             },
@@ -156,7 +177,7 @@ describe("test function assignProjectToMedia", () => {
         const doc = {
             id: 21,
             coverImage: { id: 1, project: null },
-            plans: [{ media: { id: 2, project: 21 } }],
+            plans: [{ image: { id: 2, project: 21 } }],
 
             galleryMedia: [
                 { media: { id: 3, project: null } },
