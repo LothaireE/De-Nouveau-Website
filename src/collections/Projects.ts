@@ -238,6 +238,7 @@ export const Projects: CollectionConfig = {
             name: "projectStatus",
             label: "Project status",
             type: "radio",
+            defaultValue: "délivré",
             options: [
                 { label: "Completed", value: "délivré" },
                 { label: "In progress", value: "en cours" },
