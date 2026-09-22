@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
+    color-scheme: light;
+    --background: var(--studio-white);
+    --foreground: var(--studio-black);
 
     /* DeNouveau Palette */
     --studio-black: #050505;
@@ -45,16 +46,6 @@
     --color-studio-wood: var(--studio-wood);
     --color-studio-olive: var(--studio-olive);
     --color-studio-moss: var(--studio-moss);
-}
-
-/*  Dark mode plus tard maybe  */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-
-        --studio-cream: #1a1a1a;
-    }
 }
 
 /*  base styles */

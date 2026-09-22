@@ -25,7 +25,7 @@ function AboutSection({
     return (
         // <section className="border-t border-studio-black/20 pt-8 col-span-1">
         <section className="pt-8 col-span-1">
-            <p className="mb-8 text-xs uppercase tracking-wide text-studio-black/35">
+            <p className="mb-8 text-xs uppercase tracking-wide text-studio-black/60">
                 {title}
             </p>
 

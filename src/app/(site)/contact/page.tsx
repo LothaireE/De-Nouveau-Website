@@ -22,7 +22,7 @@ function ContactBlock({
 }) {
     return (
         <div>
-            <p className="mb-3 text-xs text-studio-black/35">{title}</p>
+            <p className="mb-3 text-xs text-studio-black/60">{title}</p>
             <div className="flex flex-col gap-2">{children}</div>
         </div>
     );
@@ -48,7 +48,7 @@ export default async function ContactPage() {
                                         {page.email && (
                                             <Link
                                                 href={`mailto:${page.email}`}
-                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red"
+                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                             >
                                                 {page.email}
                                             </Link>
@@ -57,7 +57,7 @@ export default async function ContactPage() {
                                         {page.phone && (
                                             <Link
                                                 href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red"
+                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                             >
                                                 {page.phone}
                                             </Link>
@@ -89,7 +89,7 @@ export default async function ContactPage() {
                                                                 ""
                                                             }
                                                             rel="noopener noreferrer"
-                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red"
+                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                                         >
                                                             {socialMedia.label}
                                                         </a>
