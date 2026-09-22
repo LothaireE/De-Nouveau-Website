@@ -64,10 +64,10 @@ export default function DesktopNav({
         closeMenu();
     }
 
-    const navClassName = `overflow-hidden border-studio-sand/50 bg-none text-studio-black shadow-none backdrop-blur-none transition-[width,height,margin,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
+    const navClassName = `overflow-hidden border-studio-sand/50 text-studio-black transition-[width,height,margin,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
         open
-            ? "h-screen w-[46rem] p-6 shadow-xl bg-studio-white/85 shadow-sm backdrop-blur-sm"
-            : "mr-4 mt-4 h-18 w-18 p-2"
+            ? "h-screen w-[46rem] p-6 bg-studio-white/90 shadow-xl backdrop-blur-sm"
+            : "mr-4 mt-4 h-18 w-18 p-2 shadow-none backdrop-blur-none"
     }`;
 
     const logoImageClassName = `block text-sm font-medium uppercase tracking-[-0.02em] text-studio-black max-w-14 h-auto transition-rotate duration-500 ease-out  ${open ? "rotate-0" : "rotate-450"}`;
@@ -83,10 +83,6 @@ export default function DesktopNav({
 
     const projectLinkClassName =
         "group block pb-2 text-studio-moss transition-colors hover:text-studio-red-muted";
-
-    const footerClassName = `absolute bottom-6 left-6 right-6 flex justify-between  border-studio-sand/60 pt-4 text-xs uppercase tracking-wide text-studio-wood transition-opacity duration-500 ${
-        open ? "opacity-100" : "opacity-0"
-    }`;
 
     return (
         <aside
@@ -158,11 +154,6 @@ export default function DesktopNav({
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className={footerClassName}>
-                    <span>De Nouveau</span>
-                    <span>Architecture et Design</span>
                 </div>
             </nav>
         </aside>
