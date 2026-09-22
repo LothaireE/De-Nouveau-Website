@@ -7,7 +7,7 @@ const LOGO_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
 
 export default function LoadingLogo() {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-studio">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-studio-white">
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{
