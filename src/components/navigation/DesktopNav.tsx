@@ -84,10 +84,6 @@ export default function DesktopNav({
     const projectLinkClassName =
         "group block pb-2 text-studio-moss transition-colors hover:text-studio-red-muted";
 
-    const footerClassName = `absolute bottom-6 left-6 right-6 flex justify-between  border-studio-sand/60 pt-4 text-xs uppercase tracking-wide text-studio-wood transition-opacity duration-500 ${
-        open ? "opacity-100" : "opacity-0"
-    }`;
-
     return (
         <aside
             onMouseEnter={handleMouseEnter}
@@ -158,11 +154,6 @@ export default function DesktopNav({
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className={footerClassName}>
-                    <span>De Nouveau</span>
-                    <span>Architecture et Design</span>
                 </div>
             </nav>
         </aside>

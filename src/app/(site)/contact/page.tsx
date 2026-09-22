@@ -36,36 +36,38 @@ export default async function ContactPage() {
     const imageSrc = !page.portrait || typeof page.portrait !== "number";
 
     return (
-        <main className="min-h-screen bg-studio-cream text-studio-black">
+        <main className="min-h-screen bg-studio-white text-studio-black">
             <section className="grid min-h-screen grid-cols-1 md:grid-cols-5">
                 <div className="flex min-h-screen min-w-0 flex-col justify-center px-5 pb-16 pt-32 md:col-span-3 md:px-12 md:pb-24">
                     <div className="grid min-w-0">
                         {/* <div className="grid gap-16 md:gap-24"> */}
                         <div className="grid min-w-0 gap-10 text-sm md:justify-center">
                             <div className="space-y-10">
-                                <ContactBlock title="Contact">
-                                    {page.email && (
-                                        <Link
-                                            href={`mailto:${page.email}`}
-                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere] transition hover:text-studio-red"
-                                        >
-                                            {page.email}
-                                        </Link>
-                                    )}
+                                {(page.email || page.phone) && (
+                                    <ContactBlock title="Contact">
+                                        {page.email && (
+                                            <Link
+                                                href={`mailto:${page.email}`}
+                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red"
+                                            >
+                                                {page.email}
+                                            </Link>
+                                        )}
 
-                                    {page.phone && (
-                                        <Link
-                                            href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere] transition hover:text-studio-red"
-                                        >
-                                            {page.phone}
-                                        </Link>
-                                    )}
-                                </ContactBlock>
+                                        {page.phone && (
+                                            <Link
+                                                href={`tel:${page.phone.replace(/\s/g, "")}`}
+                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red"
+                                            >
+                                                {page.phone}
+                                            </Link>
+                                        )}
+                                    </ContactBlock>
+                                )}
 
                                 {page.address && page.address.length > 0 && (
                                     <ContactBlock title="Adresse">
-                                        <span className="whitespace-pre-line text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere]">
+                                        <span className="whitespace-pre-line text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere">
                                             {page.address}
                                         </span>
                                     </ContactBlock>
@@ -87,7 +89,7 @@ export default async function ContactPage() {
                                                                 ""
                                                             }
                                                             rel="noopener noreferrer"
-                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter [overflow-wrap:anywhere] transition hover:text-studio-red"
+                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red"
                                                         >
                                                             {socialMedia.label}
                                                         </a>
@@ -101,7 +103,7 @@ export default async function ContactPage() {
                     </div>
                 </div>
 
-                <div className="relative hidden min-h-screen bg-studio-red-dark md:block md:col-span-2">
+                <div className="relative hidden min-h-screen md:block md:col-span-2">
                     {imageSrc ? (
                         <MediaImage
                             media={page.portrait}
@@ -111,11 +113,7 @@ export default async function ContactPage() {
                             variant="half"
                             className="h-full w-full object-cover object-center"
                         />
-                    ) : (
-                        <div className="absolute inset-0 bg-studio-red-dark" />
-                    )}
-
-                    <div className="absolute inset-0 bg-studio-black/10" />
+                    ) : null}
                 </div>
             </section>
         </main>

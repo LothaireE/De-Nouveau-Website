@@ -47,10 +47,10 @@ export default async function AboutPage() {
             : null;
 
     return (
-        <main className="min-h-screen bg-studio-cream text-studio-black">
+        <main className="min-h-screen bg-studio-white text-studio-black">
             <div className="grid gap-0 md:grid-cols-5 md:gap-10">
                 <aside className="md:col-span-2">
-                    {portrait ? (
+                    {portrait && (
                         <MediaImage
                             media={portrait}
                             fallbackAlt={page.title}
@@ -59,8 +59,6 @@ export default async function AboutPage() {
                             variant="half"
                             className="h-full w-full object-cover object-center "
                         />
-                    ) : (
-                        <div className="absolute inset-0 bg-studio-red-dark" />
                     )}
                 </aside>
 
