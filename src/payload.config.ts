@@ -1,3 +1,7 @@
+import { assertIsolatedDatabase } from "./lib/payload/isolation";
+import { HomePage } from "./globals/HomePage";
+import { AboutPage } from "./globals/AboutPage";
+import { ContactPage } from "./globals/ContactPage";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
@@ -12,23 +16,30 @@ import { Pages } from "./collections/Pages";
 import { Categories } from "./collections/Categories";
 import { Projects } from "./collections/Projects";
 
+assertIsolatedDatabase();
+
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const config = buildConfig({
+    cookiePrefix: "payload-admin-refactor",
     admin: {
         user: Users.slug,
+        meta: { titleSuffix: "— Refactor isolé" },
         importMap: {
             baseDir: path.resolve(dirname),
         },
     },
     collections: [Users, Media, Pages, Categories, Projects],
+    globals: [HomePage, AboutPage, ContactPage],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
     typescript: {
         outputFile: path.resolve(dirname, "payload-types.ts"),
     },
     db: postgresAdapter({
+        push: false,
+        disableCreateDatabase: true,
         pool: {
             connectionString: process.env.DATABASE_URL || "",
         },
@@ -56,7 +67,7 @@ const config = buildConfig({
                 requestChecksumCalculation: "WHEN_REQUIRED",
                 responseChecksumValidation: "WHEN_REQUIRED",
             },
-            clientUploads: true,
+            clientUploads: false,
         }),
     ],
 });

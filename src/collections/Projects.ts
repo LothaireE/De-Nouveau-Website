@@ -1,61 +1,24 @@
 import {
-    assignProjectToMedia,
-    formatSlug,
-    revalidateFrontend,
-} from "@/library/payload/hooks";
+    authenticatedOrPublished,
+    canUpdateProject,
+    isAdminField,
+} from "@/access";
+import { createSeoFields } from "@/fields/seo";
+import { revalidateProject, revalidateProjectDelete } from "@/hooks/revalidate";
+import { createSlugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
-
-async function revalidateProjectRoutes(slug: string) {
-    await Promise.all([
-        revalidateFrontend(`/${slug}`),
-        revalidateFrontend("/"),
-        revalidateFrontend("/sitemap.xml"),
-    ]);
-}
 
 export const Projects: CollectionConfig = {
     slug: "projects",
-    access: {
-        read: ({ req: { user } }) => {
-            // return true;
-            if (user) {
-                return true;
-            }
-            return {
-                _status: {
-                    equals: "published",
-                },
-            };
-        },
-
-        update: ({ req: { user } }) => {
-            // return true;
-            if (!user) return false;
-
-            if (user.role === "admin") return true;
-
-            return {
-                _status: {
-                    equals: "published",
-                },
-            };
-        },
-    },
+    access: { read: authenticatedOrPublished, update: canUpdateProject },
     versions: {
         drafts: true,
     },
+    // Shared media are immutable in this worktree: do not run assignProjectToMedia here.
+    // The original association helper remains available for the normal environment.
     hooks: {
-        afterChange: [
-            assignProjectToMedia,
-            async ({ doc }) => {
-                await revalidateProjectRoutes(doc.slug);
-            },
-        ],
-        afterDelete: [
-            async ({ doc }) => {
-                await revalidateProjectRoutes(doc.slug);
-            },
-        ],
+        afterChange: [revalidateProject],
+        afterDelete: [revalidateProjectDelete],
     },
     labels: {
         singular: "Project",
@@ -97,26 +60,14 @@ export const Projects: CollectionConfig = {
             type: "text",
             required: true,
         },
-        {
-            name: "slug",
-            label: "Slug",
-            type: "text",
-            unique: true,
-            required: true,
-            access: {
-                update: ({ req }) => {
-                    return req.user?.role === "admin";
-                },
-            },
+        createSlugField({
+            access: { update: isAdminField },
             admin: {
                 position: "sidebar",
                 description:
                     "Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.",
             },
-            hooks: {
-                beforeValidate: [formatSlug("title")],
-            },
-        },
+        }),
         {
             name: "visibility",
             label: "Visibility",
@@ -245,22 +196,7 @@ export const Projects: CollectionConfig = {
                 { label: "Concept", value: "concept" },
             ],
         },
-        {
-            name: "seoTitle",
-            label: "Legacy SEO title",
-            type: "text",
-            admin: {
-                hidden: true,
-            },
-        },
-        {
-            name: "seoDescription",
-            label: "Legacy SEO description",
-            type: "textarea",
-            admin: {
-                hidden: true,
-            },
-        },
+        ...createSeoFields(true),
         {
             name: "plans",
             label: "Plans / Dessins",

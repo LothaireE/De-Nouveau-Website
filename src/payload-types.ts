@@ -93,8 +93,16 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'home-page': HomePage;
+    'about-page': AboutPage;
+    'contact-page': ContactPage;
+  };
+  globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -704,6 +712,342 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  title: string;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Provide a full url (ex: https://www.instagram.com/).
+         */
+        link?: string | null;
+        /**
+         * Label used as a placeholder for the link.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  title: string;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Provide a full url (ex: https://www.instagram.com/).
+         */
+        link?: string | null;
+        /**
+         * Label used as a placeholder for the link.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  title: string;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Provide a full url (ex: https://www.instagram.com/).
+         */
+        link?: string | null;
+        /**
+         * Label used as a placeholder for the link.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Available on about page
+   */
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  content?: T;
+  portrait?: T;
+  heroMedia?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  content?: T;
+  portrait?: T;
+  heroMedia?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  content?: T;
+  portrait?: T;
+  heroMedia?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

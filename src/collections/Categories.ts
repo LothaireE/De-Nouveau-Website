@@ -1,4 +1,5 @@
-import { formatSlug } from "@/library/payload/hooks";
+import { revalidateRelated, revalidateRelatedDelete } from "@/hooks/revalidate";
+import { createSlugField } from "@/fields/slug";
 import type { CollectionConfig } from "payload";
 
 export const Categories: CollectionConfig = {
@@ -11,6 +12,10 @@ export const Categories: CollectionConfig = {
         useAsTitle: "title",
         defaultColumns: ["title", "slug"],
     },
+    hooks: {
+        afterChange: [revalidateRelated],
+        afterDelete: [revalidateRelatedDelete],
+    },
     fields: [
         {
             name: "title",
@@ -18,21 +23,13 @@ export const Categories: CollectionConfig = {
             type: "text",
             required: true,
         },
-        {
-            name: "slug",
-            label: "Slug",
-            type: "text",
-            unique: true,
-            required: true,
-            hooks: {
-                beforeValidate: [formatSlug("title")],
-            },
+        createSlugField({
             admin: {
                 position: "sidebar",
                 description:
                     "Ce champ définit l’URL publique de la catégorie (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants.",
                 condition: () => false, // slug field is not displayed in the form
             },
-        },
+        }),
     ],
 };

@@ -44,3 +44,5 @@ next-env.d.ts
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+# Local database isolation guard (no credentials)
+.refactor-isolation.json

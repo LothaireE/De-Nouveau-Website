@@ -1,3 +1,5 @@
+import { protectSharedMedia } from "@/hooks/readOnlyMedia";
+import { revalidateRelated, revalidateRelatedDelete } from "@/hooks/revalidate";
 import {
     assignMediatype,
     preventDuplicateFilename,
@@ -52,8 +54,11 @@ export const Media: CollectionConfig = {
             "updatedAt",
         ],
     },
+    access: { create: () => false, update: () => false, delete: () => false },
     hooks: {
-        beforeOperation: [preventDuplicateFilename],
+        afterChange: [revalidateRelated],
+        afterDelete: [revalidateRelatedDelete],
+        beforeOperation: [protectSharedMedia, preventDuplicateFilename],
         beforeValidate: [assignMediatype],
     },
     upload: {

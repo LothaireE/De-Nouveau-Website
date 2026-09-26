@@ -1,3 +1,4 @@
+import { isAdminField } from "@/access";
 import type { CollectionConfig } from "payload";
 
 export const Users: CollectionConfig = {
@@ -41,9 +42,7 @@ export const Users: CollectionConfig = {
                 readOnly: true,
             },
             access: {
-                update: ({ req }) => {
-                    return req.user?.role === "admin";
-                },
+                update: isAdminField,
             },
         },
 
