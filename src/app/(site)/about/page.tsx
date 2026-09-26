@@ -1,17 +1,19 @@
-import { getPage } from "@/library/payload/fetchers";
-import { createMetadata } from "@/library/seo";
+import { getPage } from "@/lib/payload/fetchers";
+import { getPageMetadata } from "@/lib/payload/metadata";
 import { notFound } from "next/navigation";
 import { RichText } from "@payloadcms/richtext-lexical/react";
 import MediaImage from "@/components/media/MediaImage";
 
-export const metadata = createMetadata({
-    title: "À propos — De Nouveau",
-    description:
-        "Découvrez De Nouveau, notre approche, nos projets et notre vision architecturale.",
-    path: "/about",
-    locale: "fr_FR",
-    // image: "/images/about.jpg",
-});
+export async function generateMetadata() {
+    return getPageMetadata(SLUG, {
+        title: "À propos — De Nouveau",
+        description:
+            "Découvrez De Nouveau, notre approche, nos projets et notre vision architecturale.",
+        path: "/about",
+        locale: "fr_FR",
+        // image: "/images/about.jpg",
+    });
+}
 
 const SLUG = "about";
 

@@ -5,7 +5,7 @@ import { singleProjectMockData } from "@/tests/mocks/testData";
 const mockGetSingleProject = vi.fn(); //.mockResolvedValue(aboutSingleProjectMockData);
 const mockNotFound = vi.fn();
 
-vi.mock("@/library/payload/fetchers", () => ({
+vi.mock("@/lib/payload/fetchers", () => ({
     getSingleProject: () => mockGetSingleProject(),
 }));
 

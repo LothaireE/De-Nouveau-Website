@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import DesktopNav from "@/components/navigation/DesktopNav";
-import { getNavProjects, getPage } from "@/library/payload/fetchers";
+import { getNavProjects, getPage } from "@/lib/payload/fetchers";
 import MobileNav from "@/components/navigation/MobileNav";
 import { createMetadata } from "@/library/seo";
 import JsonLd from "@/components/seo/JsonLd";

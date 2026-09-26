@@ -1,5 +1,5 @@
 import { ProjectRenderer } from "@/components/projects/ProjectsRenderer";
-import { getSingleProject } from "@/library/payload/fetchers";
+import { getSingleProject } from "@/lib/payload/fetchers";
 import { getMediaUrl } from "@/library/utils";
 import { createMetadata } from "@/library/seo";
 import type { Metadata } from "next";

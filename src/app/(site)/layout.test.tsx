@@ -19,7 +19,7 @@ vi.mock("next/font/google", () => ({
     })),
 }));
 
-vi.mock("@/library/payload/fetchers", () => ({
+vi.mock("@/lib/payload/fetchers", () => ({
     getPage: vi.fn().mockResolvedValue(null),
     getNavProjects: vi.fn().mockResolvedValue([
         {
