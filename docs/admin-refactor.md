@@ -85,7 +85,7 @@ Une nouvelle exécution de la migration et du script de copie laisse les
 35 tables de la copie inchangées (22 initiales, 12 pour les Globals, 1 de suivi).
 
 Collections conservées : 3 pages, 8 projets, 40 médias, 0 catégorie, 1 utilisateur.
-`pages` reste disponible et sert de repli. Aucune suppression de l’ancienne
+`pages` reste en base et sert de repli ; sa collection est masquée dans l’administration (`admin.hidden`). Aucune suppression de l’ancienne
 structure n’est préparée ; elle relève d’une intervention séparée à valider.
 
 ## SEO automatique

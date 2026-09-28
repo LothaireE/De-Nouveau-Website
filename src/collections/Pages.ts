@@ -9,6 +9,7 @@ export const Pages: CollectionConfig = {
         plural: "Pages",
     },
     admin: {
+        hidden: true, // Retained for legacy fallback; edit the page Globals instead.
         useAsTitle: "title",
         defaultColumns: ["pageType", "slug", "title", "createdAt", "updatedAt"],
     },
