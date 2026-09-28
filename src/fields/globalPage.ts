@@ -29,6 +29,6 @@ export function createGlobalPageFields(
                       } as Field)
                     : field;
             }),
-        ...createSeoFields(),
+        ...createSeoFields(false, pageType === "homepage" ? "home" : pageType),
     ];
 }

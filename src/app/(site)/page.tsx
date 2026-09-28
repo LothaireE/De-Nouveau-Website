@@ -19,12 +19,7 @@ const ProjectGallery = dynamic(
 );
 
 export async function generateMetadata() {
-    return getPageMetadata(SLUG, {
-        title: "De Nouveau",
-        description: "Studio d'architecture De Nouveau",
-        path: "/",
-        locale: "fr_FR",
-    });
+    return getPageMetadata(SLUG);
 }
 
 const SLUG = "home";

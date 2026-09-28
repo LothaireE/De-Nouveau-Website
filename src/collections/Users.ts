@@ -42,6 +42,7 @@ export const Users: CollectionConfig = {
                 readOnly: true,
             },
             access: {
+                create: isAdminField,
                 update: isAdminField,
             },
         },

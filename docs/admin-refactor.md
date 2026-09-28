@@ -87,3 +87,26 @@ Une nouvelle exécution de la migration et du script de copie laisse les
 Collections conservées : 3 pages, 8 projets, 40 médias, 0 catégorie, 1 utilisateur.
 `pages` reste disponible et sert de repli. Aucune suppression de l’ancienne
 structure n’est préparée ; elle relève d’une intervention séparée à valider.
+
+## SEO automatique
+
+Les pages Accueil, À propos et Contact utilisent les textes dédiés de
+`src/library/seoContent.ts`. Le client n’a aucun champ SEO à remplir. Les titres
+et descriptions se retrouvent également dans les balises de partage. Les
+projets utilisent leur titre, leur description courte et leur couverture.
+Les espaces superflus sont nettoyés ; une description longue est résumée en
+privilégiant une phrase complète, puis une coupure entre mots avec une ellipse.
+La cible de 160 caractères est un choix de présentation, pas une limite Google.
+Le contenu éditorial enregistré n’est jamais réécrit.
+
+L’admin affiche un aperçu en lecture seule, actualisé depuis les champs du
+formulaire. Les corrections manuelles des pages fixes sont dans « Réglages SEO
+avancés », repliés et visibles seulement aux administrateurs. Les permissions
+de création et de modification des deux champs sont également restreintes côté
+serveur. Leur lecture reste possible pour afficher la valeur effective dans
+l’aperçu. Les champs historiques des projets restent masqués et inutilisés.
+
+Le champ de rôle utilisateur est aussi protégé à la création pour qu’un éditeur
+ne puisse pas créer un compte administrateur et contourner ces restrictions.
+Aucune promotion de compte, migration ou modification des contenus existants
+n’a été effectuée pour ce changement.

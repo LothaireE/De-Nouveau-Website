@@ -1,13 +1,7 @@
 import { createMetadata } from "@/library/seo";
+import { getStaticPageSeo, type StaticSeoPage } from "@/library/seoContent";
 import { getPage } from "./fetchers";
-export async function getPageMetadata(
-    slug: string,
-    defaults: Parameters<typeof createMetadata>[0],
-) {
+export async function getPageMetadata(slug: StaticSeoPage) {
     const page = await getPage(slug);
-    return createMetadata({
-        ...defaults,
-        title: page?.seoTitle?.trim() || defaults.title,
-        description: page?.seoDescription?.trim() || defaults.description,
-    });
+    return createMetadata({ ...getStaticPageSeo(slug, page), locale: "fr_FR" });
 }

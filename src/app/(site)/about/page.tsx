@@ -5,14 +5,7 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import MediaImage from "@/components/media/MediaImage";
 
 export async function generateMetadata() {
-    return getPageMetadata(SLUG, {
-        title: "À propos — De Nouveau",
-        description:
-            "Découvrez De Nouveau, notre approche, nos projets et notre vision architecturale.",
-        path: "/about",
-        locale: "fr_FR",
-        // image: "/images/about.jpg",
-    });
+    return getPageMetadata(SLUG);
 }
 
 const SLUG = "about";

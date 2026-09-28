@@ -33,7 +33,7 @@ describe("[slug] - Project Page", () => {
 
         expect(metadata.title).toBe("Concours Bambou U — De Nouveau");
         expect(metadata.description).toBe(
-            singleProjectMockData.shortDescription,
+            "The project reinterprets the traditional Balinese Bale typology through four modular pavilions arranged around a central courtyard, with local materials and…",
         );
         expect(metadata.alternates?.canonical).toBe(
             "https://www.denouveau.fr/concours-bambou-u",

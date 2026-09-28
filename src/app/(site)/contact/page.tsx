@@ -5,12 +5,7 @@ import { notFound } from "next/navigation";
 import MediaImage from "@/components/media/MediaImage";
 
 export async function generateMetadata() {
-    return getPageMetadata(SLUG, {
-        title: "Contacter De Nouveau",
-        description: "Bienvenue sur la page contact de De Nouveau",
-        path: "/contact",
-        locale: "fr_FR",
-    });
+    return getPageMetadata(SLUG);
 }
 
 const SLUG = "contact";

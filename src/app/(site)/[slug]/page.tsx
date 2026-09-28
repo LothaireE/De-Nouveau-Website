@@ -1,6 +1,7 @@
 import { ProjectRenderer } from "@/components/projects/ProjectsRenderer";
 import { getSingleProject } from "@/lib/payload/fetchers";
 import { getMediaUrl } from "@/library/utils";
+import { getProjectSeo } from "@/library/seoContent";
 import { createMetadata } from "@/library/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -32,8 +33,7 @@ export async function generateMetadata({
         coverImage?.sizes?.hero?.filename ?? coverImage?.filename ?? null;
 
     return createMetadata({
-        title: `${project.title} — De Nouveau`,
-        description: project.shortDescription,
+        ...getProjectSeo(project),
         path: `/${project.slug}`,
         locale: "fr_FR",
         image: getMediaUrl(imageFilename) ?? undefined,

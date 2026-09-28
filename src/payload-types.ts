@@ -281,7 +281,13 @@ export interface Project {
   surface?: string | null;
   client?: string | null;
   projectStatus?: ('délivré' | 'en cours' | 'concept') | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
   seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
   seoDescription?: string | null;
   /**
    * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
@@ -780,7 +786,13 @@ export interface HomePage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
   seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
   seoDescription?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -852,7 +864,13 @@ export interface AboutPage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
   seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
   seoDescription?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -924,7 +942,13 @@ export interface ContactPage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
   seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
   seoDescription?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;

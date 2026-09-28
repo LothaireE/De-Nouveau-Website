@@ -4,6 +4,7 @@ import "../globals.css";
 import DesktopNav from "@/components/navigation/DesktopNav";
 import { getNavProjects, getPage } from "@/lib/payload/fetchers";
 import MobileNav from "@/components/navigation/MobileNav";
+import { staticPageSeo } from "@/library/seoContent";
 import { createMetadata } from "@/library/seo";
 import JsonLd from "@/components/seo/JsonLd";
 import { createOrganizationStructuredData } from "@/library/structuredData";
@@ -19,9 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = createMetadata({
-    title: "De Nouveau",
-    description: "Studio d'architecture De Nouveau",
-    path: "/",
+    ...staticPageSeo.home,
     locale: "fr_FR",
 });
 
