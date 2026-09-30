@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const LOGO_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
+// const LOGO_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
+const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_RED_03.svg";
 
 export default function LoadingLogo() {
     return (
