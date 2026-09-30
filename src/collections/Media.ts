@@ -48,6 +48,7 @@ export const Media: CollectionConfig = {
         plural: "Médias",
     },
     admin: {
+        group: "Projets",
         useAsTitle: "alt", // Caption would be better but waiting for client approval for mandatory Caption
         defaultColumns: [
             "filename",

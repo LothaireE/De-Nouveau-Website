@@ -176,3 +176,19 @@ par `scripts/prepare-legal-schema.ts` puis appliquée par
 montrent que seules `agency_info` (nouvelles colonnes vides) et
 `admin_refactor_migrations` (une ligne) diffèrent ; les valeurs existantes
 d’`agency_info` sont identiques.
+
+## Navigation de l’administration
+
+Le menu est organisé en trois groupes, sans groupe générique « Collections » :
+
+- **Projets** : Projets, Médias ;
+- **Réglages du site** : Utilisateurs, Informations de l’agence ;
+- **Pages du site** : Accueil, À propos, Contact.
+
+Payload ordonne les groupes selon la première entité visible rencontrée, en
+parcourant les collections avant les Globals. L’ordre du tableau `collections`
+de `payload.config.ts` a donc été ajusté (Projets, Médias, Utilisateurs, puis
+les collections masquées). Il ne change ni les tables ni les données ; seul
+l’ordre des déclarations de `payload-types.ts` diffère. Un groupe composé
+uniquement de Globals, comme « Pages du site », ne peut pas précéder les groupes
+de collections sans remplacer le menu par un composant personnalisé.

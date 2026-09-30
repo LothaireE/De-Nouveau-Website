@@ -25,6 +25,7 @@ export const Projects: CollectionConfig = {
         plural: "Projets",
     },
     admin: {
+        group: "Projets",
         useAsTitle: "title",
         // defaultColumns: ["title", "status", "featured", "order"],
         defaultColumns: [

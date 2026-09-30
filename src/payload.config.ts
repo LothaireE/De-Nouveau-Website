@@ -32,7 +32,8 @@ const config = buildConfig({
             baseDir: path.resolve(dirname),
         },
     },
-    collections: [Users, Media, Pages, Categories, Projects],
+    // Nav groups follow the first visible collection of each group.
+    collections: [Projects, Media, Users, Pages, Categories],
     globals: [HomePage, AboutPage, ContactPage, AgencyInfo],
     // French only: the client never sees an English admin.
     i18n: {

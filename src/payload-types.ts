@@ -67,11 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    projects: Project;
     media: Media;
+    users: User;
     pages: Page;
     categories: Category;
-    projects: Project;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,11 +79,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -131,104 +131,6 @@ export interface UserAuthOperations {
   unlock: {
     email: string;
     password: string;
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  role?: ('admin' | 'editor') | null;
-  bio?: string | null;
-  isActive?: boolean | null;
-  lastLogin?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  mediaType?: ('image' | 'video') | null;
-  /**
-   * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
-   */
-  project?: (number | null) | Project;
-  /**
-   * Important pour l'accessibilité et le référencement. Doit décrire le contenu de l'image de manière concise et précise.
-   */
-  alt?: string | null;
-  caption?: string | null;
-  /**
-   * Image affichée pendant le chargement de la vidéo ou si la vidéo ne se charge pas.
-   */
-  poster?: (number | null) | Media;
-  prefix?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
   };
 }
 /**
@@ -328,6 +230,73 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  mediaType?: ('image' | 'video') | null;
+  /**
+   * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
+   */
+  project?: (number | null) | Project;
+  /**
+   * Important pour l'accessibilité et le référencement. Doit décrire le contenu de l'image de manière concise et précise.
+   */
+  alt?: string | null;
+  caption?: string | null;
+  /**
+   * Image affichée pendant le chargement de la vidéo ou si la vidéo ne se charge pas.
+   */
+  poster?: (number | null) | Media;
+  prefix?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -339,6 +308,37 @@ export interface Category {
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  role?: ('admin' | 'editor') | null;
+  bio?: string | null;
+  isActive?: boolean | null;
+  lastLogin?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -431,12 +431,16 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'pages';
@@ -445,10 +449,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: number | Category;
-      } | null)
-    | ({
-        relationTo: 'projects';
-        value: number | Project;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -494,31 +494,42 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "projects_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  firstName?: T;
-  lastName?: T;
-  role?: T;
-  bio?: T;
-  isActive?: T;
-  lastLogin?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface ProjectsSelect<T extends boolean = true> {
+  projectLayout?: T;
+  title?: T;
+  slug?: T;
+  visibility?: T;
+  coverImage?: T;
+  galleryMedia?:
     | T
     | {
+        media?: T;
+        layout?: T;
         id?: T;
-        createdAt?: T;
-        expiresAt?: T;
       };
+  shortDescription?: T;
+  longDescription?: T;
+  location?: T;
+  year?: T;
+  categories?: T;
+  surface?: T;
+  client?: T;
+  projectStatus?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  plans?:
+    | T
+    | {
+        image?: T;
+        layout?: T;
+        id?: T;
+      };
+  planDetails?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -589,6 +600,34 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  bio?: T;
+  isActive?: T;
+  lastLogin?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
@@ -635,45 +674,6 @@ export interface CategoriesSelect<T extends boolean = true> {
   slug?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects_select".
- */
-export interface ProjectsSelect<T extends boolean = true> {
-  projectLayout?: T;
-  title?: T;
-  slug?: T;
-  visibility?: T;
-  coverImage?: T;
-  galleryMedia?:
-    | T
-    | {
-        media?: T;
-        layout?: T;
-        id?: T;
-      };
-  shortDescription?: T;
-  longDescription?: T;
-  location?: T;
-  year?: T;
-  categories?: T;
-  surface?: T;
-  client?: T;
-  projectStatus?: T;
-  seoTitle?: T;
-  seoDescription?: T;
-  plans?:
-    | T
-    | {
-        image?: T;
-        layout?: T;
-        id?: T;
-      };
-  planDetails?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
