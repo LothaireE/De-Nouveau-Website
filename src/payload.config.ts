@@ -10,6 +10,7 @@ import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
+import { fr } from "@payloadcms/translations/languages/fr";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
@@ -33,6 +34,11 @@ const config = buildConfig({
     },
     collections: [Users, Media, Pages, Categories, Projects],
     globals: [HomePage, AboutPage, ContactPage, AgencyInfo],
+    // French only: the client never sees an English admin.
+    i18n: {
+        fallbackLanguage: "fr",
+        supportedLanguages: { fr },
+    },
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
     typescript: {

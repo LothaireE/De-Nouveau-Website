@@ -5,8 +5,8 @@ import type { CollectionConfig } from "payload";
 export const Categories: CollectionConfig = {
     slug: "categories",
     labels: {
-        singular: "Category",
-        plural: "Categories",
+        singular: "Catégorie",
+        plural: "Catégories",
     },
     admin: {
         hidden: true, // Preserve the collection and existing project relationships.
@@ -20,7 +20,7 @@ export const Categories: CollectionConfig = {
     fields: [
         {
             name: "title",
-            label: "Title",
+            label: "Titre",
             type: "text",
             required: true,
         },

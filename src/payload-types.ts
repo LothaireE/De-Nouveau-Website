@@ -238,7 +238,7 @@ export interface Media {
 export interface Project {
   id: number;
   /**
-   * Définit la mise en page du projet côté site : Default - page projet classique | Editorial - texte et images alternées | Gallery focused - galerie dominante, peu de texte | Minimal - titre et quelques images, très peu d’infos
+   * Classique : page projet standard. Éditoriale : textes et images alternés. Galerie : images dominantes, peu de texte. Minimale : titre et quelques images.
    */
   projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
   title: string;
@@ -255,7 +255,7 @@ export interface Project {
     | {
         media?: (number | null) | Media;
         /**
-         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
+         * Automatique : le format est détecté. Choisir un autre format seulement pour forcer l’affichage.
          */
         layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
         id?: string | null;
@@ -298,7 +298,7 @@ export interface Project {
     | {
         image?: (number | null) | Media;
         /**
-         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
+         * Automatique : le format est détecté. Choisir un autre format seulement pour forcer l’affichage.
          */
         layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
         id?: string | null;
@@ -370,7 +370,7 @@ export interface Page {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -379,19 +379,16 @@ export interface Page {
   socialMedias?:
     | {
         /**
-         * Provide a full url (ex: https://www.instagram.com/).
+         * Adresse complète (ex. : https://www.instagram.com/…).
          */
         link?: string | null;
         /**
-         * Label used as a placeholder for the link.
+         * Texte affiché à la place du lien (ex. : Instagram).
          */
         label?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   awards?:
     | {
         name?: string | null;
@@ -399,9 +396,6 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   studioTeam?:
     | {
         name?: string | null;
@@ -749,7 +743,7 @@ export interface HomePage {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -758,19 +752,16 @@ export interface HomePage {
   socialMedias?:
     | {
         /**
-         * Provide a full url (ex: https://www.instagram.com/).
+         * Adresse complète (ex. : https://www.instagram.com/…).
          */
         link?: string | null;
         /**
-         * Label used as a placeholder for the link.
+         * Texte affiché à la place du lien (ex. : Instagram).
          */
         label?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   awards?:
     | {
         name?: string | null;
@@ -778,9 +769,6 @@ export interface HomePage {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   studioTeam?:
     | {
         name?: string | null;
@@ -836,7 +824,7 @@ export interface AboutPage {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -845,19 +833,16 @@ export interface AboutPage {
   socialMedias?:
     | {
         /**
-         * Provide a full url (ex: https://www.instagram.com/).
+         * Adresse complète (ex. : https://www.instagram.com/…).
          */
         link?: string | null;
         /**
-         * Label used as a placeholder for the link.
+         * Texte affiché à la place du lien (ex. : Instagram).
          */
         label?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   awards?:
     | {
         name?: string | null;
@@ -865,9 +850,6 @@ export interface AboutPage {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   studioTeam?:
     | {
         name?: string | null;
@@ -914,7 +896,7 @@ export interface ContactPage {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -923,19 +905,16 @@ export interface ContactPage {
   socialMedias?:
     | {
         /**
-         * Provide a full url (ex: https://www.instagram.com/).
+         * Adresse complète (ex. : https://www.instagram.com/…).
          */
         link?: string | null;
         /**
-         * Label used as a placeholder for the link.
+         * Texte affiché à la place du lien (ex. : Instagram).
          */
         label?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   awards?:
     | {
         name?: string | null;
@@ -943,9 +922,6 @@ export interface ContactPage {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   studioTeam?:
     | {
         name?: string | null;
@@ -978,11 +954,11 @@ export interface AgencyInfo {
   socialMedias?:
     | {
         /**
-         * Provide a full url (ex: https://www.instagram.com/).
+         * Adresse complète (ex. : https://www.instagram.com/…).
          */
         link?: string | null;
         /**
-         * Label used as a placeholder for the link.
+         * Texte affiché à la place du lien (ex. : Instagram).
          */
         label?: string | null;
         id?: string | null;

@@ -10,7 +10,7 @@ export const createSeoFields = (
         {
             name: "seoTitle",
             label: legacy
-                ? "Legacy SEO title"
+                ? "Ancien titre SEO"
                 : "Titre personnalisé (facultatif)",
             type: "text",
             access: { create: isAdminField, update: isAdminField },
@@ -22,7 +22,7 @@ export const createSeoFields = (
         {
             name: "seoDescription",
             label: legacy
-                ? "Legacy SEO description"
+                ? "Ancienne description SEO"
                 : "Description personnalisée (facultative)",
             type: "textarea",
             access: { create: isAdminField, update: isAdminField },

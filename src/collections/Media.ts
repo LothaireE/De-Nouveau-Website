@@ -43,6 +43,10 @@ const imageSizes = [
 
 export const Media: CollectionConfig = {
     slug: "media",
+    labels: {
+        singular: "Média",
+        plural: "Médias",
+    },
     admin: {
         useAsTitle: "alt", // Caption would be better but waiting for client approval for mandatory Caption
         defaultColumns: [
@@ -108,7 +112,7 @@ export const Media: CollectionConfig = {
         },
         {
             name: "poster",
-            label: "Video poster",
+            label: "Image d’attente de la vidéo",
             type: "upload",
             relationTo: "media",
             filterOptions: {

@@ -25,9 +25,6 @@ export const AgencyInfo: GlobalConfig = {
                 (field) =>
                     ({
                         ...field,
-                        ...("name" in field && field.name === "socialMedias"
-                            ? { label: "Réseaux sociaux" }
-                            : {}),
                         admin: {},
                     }) as Field,
             ),

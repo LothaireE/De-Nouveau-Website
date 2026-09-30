@@ -8,8 +8,8 @@ export const createPageFields = (): Field[] => [
         required: true,
         unique: true,
         options: [
-            { label: "Homepage", value: "homepage" },
-            { label: "About", value: "about" },
+            { label: "Accueil", value: "homepage" },
+            { label: "À propos", value: "about" },
             { label: "Contact", value: "contact" },
         ],
     },
@@ -66,7 +66,7 @@ export const createPageFields = (): Field[] => [
     },
     {
         name: "heroMedia",
-        label: "Média hero",
+        label: "Média d’en-tête",
         type: "upload",
         relationTo: "media",
         filterOptions: {
@@ -78,13 +78,13 @@ export const createPageFields = (): Field[] => [
         admin: {
             condition: (_, siblingData) => siblingData?.pageType === "homepage",
             description:
-                "Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.",
+                "Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.",
         },
     },
     {
         admin: { hidden: true },
         name: "email",
-        label: "Email",
+        label: "E-mail",
         type: "email",
     },
     {
@@ -101,27 +101,29 @@ export const createPageFields = (): Field[] => [
     },
     {
         name: "socialMedias",
-        label: "Social medias",
+        label: "Réseaux sociaux",
         type: "array",
+        labels: { singular: "Réseau social", plural: "Réseaux sociaux" },
         admin: {
             hidden: true,
         },
         fields: [
             {
                 name: "link",
-                label: "Link",
+                label: "Lien",
                 type: "text",
                 admin: {
                     description:
-                        "Provide a full url (ex: https://www.instagram.com/).",
+                        "Adresse complète (ex. : https://www.instagram.com/…).",
                 },
             },
             {
                 name: "label",
-                label: "Label",
+                label: "Nom affiché",
                 type: "text",
                 admin: {
-                    description: "Label used as a placeholder for the link.",
+                    description:
+                        "Texte affiché à la place du lien (ex. : Instagram).",
                 },
             },
         ],
@@ -130,14 +132,14 @@ export const createPageFields = (): Field[] => [
         name: "awards",
         label: "Prix / distinctions",
         type: "array",
+        labels: { singular: "Distinction", plural: "Distinctions" },
         admin: {
-            description: "Available on about page",
             condition: (_, siblingData) => siblingData?.pageType === "about",
         },
         fields: [
             {
                 name: "name",
-                label: "nom",
+                label: "Nom",
                 type: "text",
             },
             {
@@ -149,10 +151,10 @@ export const createPageFields = (): Field[] => [
     },
     {
         name: "studioTeam",
-        label: "Equipe",
+        label: "Équipe",
         type: "array",
+        labels: { singular: "Membre", plural: "Membres" },
         admin: {
-            description: "Available on about page",
             condition: (_, siblingData) => siblingData?.pageType === "about",
         },
         fields: [
