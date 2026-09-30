@@ -4,7 +4,12 @@ import { getMediaUrl } from "@/library/utils";
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 
-function getPublicSocialLinks(page: Page | null) {
+type AgencyCoordinates = Pick<
+    Page,
+    "email" | "phone" | "address" | "socialMedias"
+>;
+
+function getPublicSocialLinks(page: AgencyCoordinates | null) {
     return (page?.socialMedias ?? []).flatMap((socialMedia) => {
         if (!socialMedia.link) return [];
 
@@ -19,7 +24,9 @@ function getPublicSocialLinks(page: Page | null) {
     });
 }
 
-export function createOrganizationStructuredData(contactPage: Page | null) {
+export function createOrganizationStructuredData(
+    contactPage: AgencyCoordinates | null,
+) {
     const sameAs = getPublicSocialLinks(contactPage);
 
     return {

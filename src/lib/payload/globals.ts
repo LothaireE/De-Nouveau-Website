@@ -1,3 +1,4 @@
+import { getAgencyInfo } from "./agency";
 import { cache } from "react";
 import type { Page, HomePage } from "@/payload-types";
 import { getPayloadClient } from "./payload";
@@ -24,6 +25,7 @@ export const getPage = cache(async (slug: string): Promise<SitePage | null> => {
         if (doc.title?.trim())
             return {
                 ...doc,
+                ...(await getAgencyInfo()),
                 title: doc.title,
                 slug,
                 pageType: mapping.pageType,
@@ -35,7 +37,9 @@ export const getPage = cache(async (slug: string): Promise<SitePage | null> => {
         where: { slug: { equals: slug } },
         limit: 1,
     });
-    return result.docs[0] || null;
+    return result.docs[0]
+        ? { ...result.docs[0], ...(await getAgencyInfo()) }
+        : null;
 });
 export const getHomePage = () => getPage("home");
 export const getAboutPage = () => getPage("about");

@@ -97,11 +97,13 @@ export interface Config {
     'home-page': HomePage;
     'about-page': AboutPage;
     'contact-page': ContactPage;
+    'agency-info': AgencyInfo;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+    'agency-info': AgencyInfoSelect<false> | AgencyInfoSelect<true>;
   };
   locale: null;
   widgets: {
@@ -963,6 +965,34 @@ export interface ContactPage {
   createdAt?: string | null;
 }
 /**
+ * Coordonnées communes à toutes les pages du site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agency-info".
+ */
+export interface AgencyInfo {
+  id: number;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Provide a full url (ex: https://www.instagram.com/).
+         */
+        link?: string | null;
+        /**
+         * Label used as a placeholder for the link.
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  initialized?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -1084,6 +1114,26 @@ export interface ContactPageSelect<T extends boolean = true> {
       };
   seoTitle?: T;
   seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agency-info_select".
+ */
+export interface AgencyInfoSelect<T extends boolean = true> {
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  initialized?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

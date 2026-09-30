@@ -6,6 +6,14 @@ const { find, findGlobal } = vi.hoisted(() => ({
 vi.mock("./payload", () => ({
     getPayloadClient: async () => ({ find, findGlobal }),
 }));
+vi.mock("./agency", () => ({
+    getAgencyInfo: async () => ({
+        email: "shared@example.com",
+        phone: null,
+        address: null,
+        socialMedias: [],
+    }),
+}));
 import { getPage } from "./globals";
 describe("Global page reads", () => {
     beforeEach(() => {
@@ -19,6 +27,7 @@ describe("Global page reads", () => {
         expect(await getPage("about")).toMatchObject({
             id: 4,
             title: "Original",
+            email: "shared@example.com",
         });
     });
     it("uses a populated Global and preserves deliberately cleared fields", async () => {

@@ -82,16 +82,19 @@ export const createPageFields = (): Field[] => [
         },
     },
     {
+        admin: { hidden: true },
         name: "email",
         label: "Email",
         type: "email",
     },
     {
+        admin: { hidden: true },
         name: "phone",
         label: "Téléphone",
         type: "text",
     },
     {
+        admin: { hidden: true },
         name: "address",
         label: "Adresse",
         type: "textarea",
@@ -101,7 +104,7 @@ export const createPageFields = (): Field[] => [
         label: "Social medias",
         type: "array",
         admin: {
-            condition: (_, siblingData) => siblingData?.pageType !== "homepage",
+            hidden: true,
         },
         fields: [
             {

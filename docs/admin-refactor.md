@@ -132,3 +132,9 @@ de trois colonnes sur grand écran.
 La migration additive `20260930_featured_projects.sql`, appliquée par
 `npm run refactor:migrate`, ajoute uniquement `home_page_featured_projects`
 et ses contraintes et index. Aucun projet n’est dupliqué ni présélectionné.
+
+## Informations de l’agence
+
+Le Global « Informations de l’agence », dans « Réglages du site », centralise email, téléphone, adresse et réseaux sociaux. Les pages du site et les données structurées SEO utilisent cette source unique. Vider un champ dans cette fiche le retire du site : les anciennes valeurs ne sont pas réintroduites. Une sauvegarde invalide le cache de toutes les pages.
+
+Les anciens champs restent en base dans Pages et les Globals de pages, mais sont masqués dans l’admin. La migration additive `20260930_agency_info.sql` crée uniquement deux tables. Après `npm run refactor:migrate`, exécuter `node --import tsx scripts/copy-agency-info.ts` dans l’environnement isolé avant de démarrer le site. La copie transactionnelle privilégie Contact pour les coordonnées, complète les valeurs absentes depuis les autres pages et rassemble les liens sociaux sans doublon. Elle vérifie que les sources restent identiques et ne remplace jamais une fiche déjà initialisée, même vidée volontairement.

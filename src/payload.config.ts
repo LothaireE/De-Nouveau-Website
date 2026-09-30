@@ -1,4 +1,5 @@
 import { assertIsolatedDatabase } from "./lib/payload/isolation";
+import { AgencyInfo } from "./globals/AgencyInfo";
 import { HomePage } from "./globals/HomePage";
 import { AboutPage } from "./globals/AboutPage";
 import { ContactPage } from "./globals/ContactPage";
@@ -31,7 +32,7 @@ const config = buildConfig({
         },
     },
     collections: [Users, Media, Pages, Categories, Projects],
-    globals: [HomePage, AboutPage, ContactPage],
+    globals: [HomePage, AboutPage, ContactPage, AgencyInfo],
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",
     typescript: {
