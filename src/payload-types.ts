@@ -172,7 +172,7 @@ export interface Media {
   id: number;
   mediaType?: ('image' | 'video') | null;
   /**
-   * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
+   * Renseigné automatiquement lorsque le média est utilisé dans un projet (couverture, galerie, plans).
    */
   project?: (number | null) | Project;
   /**
@@ -370,7 +370,7 @@ export interface Page {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -743,7 +743,7 @@ export interface HomePage {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -824,7 +824,7 @@ export interface AboutPage {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -896,7 +896,7 @@ export interface ContactPage {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;

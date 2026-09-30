@@ -1,4 +1,5 @@
 import type { Field } from "payload";
+import { HERO_VIDEO_MAX_BYTES, validateHeroMedia } from "./heroMedia";
 
 export const createPageFields = (): Field[] => [
     {
@@ -72,13 +73,19 @@ export const createPageFields = (): Field[] => [
         filterOptions: {
             or: [
                 { mediaType: { equals: "image" } },
-                { mediaType: { equals: "video" } },
+                {
+                    and: [
+                        { mediaType: { equals: "video" } },
+                        { filesize: { less_than_equal: HERO_VIDEO_MAX_BYTES } },
+                    ],
+                },
             ],
         },
+        validate: validateHeroMedia,
         admin: {
             condition: (_, siblingData) => siblingData?.pageType === "homepage",
             description:
-                "Image ou vidéo en haut de la page d’accueil. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.",
+                "Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.",
         },
     },
     {

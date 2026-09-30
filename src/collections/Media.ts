@@ -48,13 +48,13 @@ export const Media: CollectionConfig = {
         plural: "Médias",
     },
     admin: {
-        useAsTitle: "alt", // Caption would be better but waiting for client approval for mandatory Caption
+        // The file name is always filled, unlike the optional alt text and caption.
+        useAsTitle: "filename",
         defaultColumns: [
             "filename",
+            "caption",
             "mediaType",
             "project",
-            "caption",
-            "createdAt",
             "updatedAt",
         ],
     },
@@ -90,8 +90,9 @@ export const Media: CollectionConfig = {
             relationTo: "projects",
             admin: {
                 position: "sidebar",
+                readOnly: true,
                 description:
-                    "Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).",
+                    "Renseigné automatiquement lorsque le média est utilisé dans un projet (couverture, galerie, plans).",
             },
         },
         {

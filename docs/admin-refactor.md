@@ -176,3 +176,22 @@ par `scripts/prepare-legal-schema.ts` puis appliquée par
 montrent que seules `agency_info` (nouvelles colonnes vides) et
 `admin_refactor_migrations` (une ligne) diffèrent ; les valeurs existantes
 d’`agency_info` sont identiques.
+
+## Médias
+
+- La liste et les sélecteurs de médias affichent le nom du fichier, toujours
+  renseigné, au lieu du texte alternatif souvent vide. La légende reste visible
+  en colonne.
+- « Projet associé » est en lecture seule dans l’admin : l’association est
+  faite automatiquement. La restriction est limitée à l’interface, pour que le
+  hook d’association de l’environnement normal continue de fonctionner.
+- La vidéo d’en-tête est limitée à 4 Mo (`src/fields/heroMedia.ts`). Le
+  sélecteur ne propose que les images et les vidéos de 4 Mo au plus, et
+  l’enregistrement d’une page refuse une vidéo plus lourde avec un message
+  explicite. Les images ne sont pas concernées. La limite s’applique au choix du
+  média d’en-tête et non à l’envoi dans la médiathèque, où les vidéos de
+  galerie peuvent rester plus lourdes. Au moment du changement, l’en-tête était
+  une image et la médiathèque ne contenait aucune vidéo.
+
+Aucune migration : seules des options d’administration et de validation
+changent, et `payload-types.ts` ne diffère que par ses commentaires.
