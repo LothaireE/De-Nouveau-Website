@@ -40,7 +40,13 @@ export const AgencyInfo: GlobalConfig = {
                                 }) as Field,
                         ),
                 },
-                { label: "Mentions légales", fields: [legalInfoField] },
+                {
+                    label: "Mentions légales",
+                    // Shown under the tab: an unlabeled group hides its own description.
+                    description:
+                        "Ces informations alimentent automatiquement la page « Mentions légales ». Un champ vide n’est pas affiché.",
+                    fields: [legalInfoField],
+                },
             ],
         },
         {

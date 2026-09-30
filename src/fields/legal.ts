@@ -12,10 +12,6 @@ export const legalInfoField: GroupField = {
     name: "legal",
     type: "group",
     label: false,
-    admin: {
-        description:
-            "Ces informations alimentent automatiquement la page « Mentions légales ». Un champ vide n’est pas affiché.",
-    },
     fields: [
         {
             type: "row",

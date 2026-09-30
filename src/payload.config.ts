@@ -28,6 +28,8 @@ const config = buildConfig({
     admin: {
         user: Users.slug,
         meta: { titleSuffix: "— Refactor isolé" },
+        // date-fns pattern, rendered with the French locale: 28 septembre 2026, 11:39
+        dateFormat: "d MMMM yyyy, HH:mm",
         importMap: {
             baseDir: path.resolve(dirname),
         },
@@ -39,6 +41,16 @@ const config = buildConfig({
     i18n: {
         fallbackLanguage: "fr",
         supportedLanguages: { fr },
+        // Payload's generic "Créer un(e) nouveau ou nouvelle" reads awkwardly.
+        translations: {
+            fr: {
+                general: {
+                    createNew: "Ajouter",
+                    createNewLabel: "Ajouter : {{label}}",
+                },
+                fields: { newLabel: "Ajouter : {{label}}" },
+            },
+        },
     },
     editor: lexicalEditor(),
     secret: process.env.PAYLOAD_SECRET || "",

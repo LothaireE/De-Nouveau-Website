@@ -151,6 +151,10 @@ enregistrées (`show`, `hidden`, `délivré`, `portrait`, etc.) sont inchangés 
 aucune migration n’est nécessaire et `payload-types.ts` ne diffère que par ses
 commentaires.
 
+Les dates de l’admin utilisent le format `d MMMM yyyy, HH:mm`
+(« 28 septembre 2026, 11:39 »). La formule générique de Payload
+« Créer un(e) nouveau ou nouvelle » est remplacée par « Ajouter ».
+
 ## Mentions légales
 
 La fiche « Informations de l’agence » est organisée en deux onglets :

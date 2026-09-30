@@ -964,9 +964,6 @@ export interface AgencyInfo {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Ces informations alimentent automatiquement la page « Mentions légales ». Un champ vide n’est pas affiché.
-   */
   legal?: {
     companyName?: string | null;
     /**
