@@ -45,7 +45,7 @@ export const createSeoFields = (
             },
         },
     };
-    return legacy
+    const content: Field[] = legacy
         ? [preview, ...fields]
         : [
               preview,
@@ -60,4 +60,14 @@ export const createSeoFields = (
                   fields,
               },
           ];
+    // Everything SEO sits in one closed section, placed last in each form.
+    // An unnamed collapsible keeps the existing field paths and columns.
+    return [
+        {
+            type: "collapsible",
+            label: "Référencement (SEO)",
+            admin: { initCollapsed: true },
+            fields: content,
+        },
+    ];
 };

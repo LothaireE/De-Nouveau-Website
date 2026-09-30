@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import type { FieldAccess, Field } from "payload";
 import { createSeoFields } from "./seo";
 import { Users } from "@/collections/Users";
+import { Projects } from "@/collections/Projects";
+import { HomePage } from "@/globals/HomePage";
+import { AboutPage } from "@/globals/AboutPage";
+import { ContactPage } from "@/globals/ContactPage";
 function nestedFields(fields: Field[]): Field[] {
     return fields.flatMap((field) =>
         "fields" in field ? nestedFields(field.fields) : [field],
@@ -36,7 +40,10 @@ describe("SEO permissions", () => {
         });
     }
     it("hides advanced settings for editors while leaving the preview visible", () => {
-        const fields = createSeoFields(false, "home");
+        const [section] = createSeoFields(false, "home");
+        if (section.type !== "collapsible")
+            throw new Error("SEO fields must be grouped in a collapsible");
+        const fields = section.fields;
         const advanced = fields.find((field) => field.type === "collapsible");
         const condition = advanced?.admin?.condition;
         expect(
@@ -60,5 +67,20 @@ describe("SEO permissions", () => {
             throw new Error("Missing role access rules");
         expect(await role.access?.create?.(args("editor"))).toBe(false);
         expect(await role.access?.create?.(args("admin"))).toBe(true);
+    });
+});
+
+describe("SEO placement", () => {
+    it.each([
+        ["Projets", Projects.fields],
+        ["Accueil", HomePage.fields],
+        ["À propos", AboutPage.fields],
+        ["Contact", ContactPage.fields],
+    ])("ends the %s form with a closed SEO section", (_name, fields) => {
+        expect(fields.at(-1)).toMatchObject({
+            type: "collapsible",
+            label: "Référencement (SEO)",
+            admin: { initCollapsed: true },
+        });
     });
 });

@@ -9,5 +9,5 @@ export const HomePage: GlobalConfig = {
     admin: { group: "Pages du site" },
     access: { read: () => true, update: isAuthenticated },
     hooks: { afterChange: [revalidateGlobal("/")] },
-    fields: [...createGlobalPageFields("homepage"), featuredProjectsField],
+    fields: createGlobalPageFields("homepage", [featuredProjectsField]),
 };

@@ -99,7 +99,13 @@ privilégiant une phrase complète, puis une coupure entre mots avec une ellipse
 La cible de 160 caractères est un choix de présentation, pas une limite Google.
 Le contenu éditorial enregistré n’est jamais réécrit.
 
-L’admin affiche un aperçu en lecture seule, actualisé depuis les champs du
+Tout ce qui concerne le SEO est regroupé dans une section repliable
+« Référencement (SEO) », fermée par défaut et placée en fin de formulaire
+(projets, Accueil, À propos, Contact ; sur l’Accueil, après « Projets à la
+une »). Cette section sans nom ne change ni les chemins des champs ni les
+colonnes : le schéma calculé par Payload est identique avant et après.
+
+L’admin y affiche un aperçu en lecture seule, actualisé depuis les champs du
 formulaire. Les corrections manuelles des pages fixes sont dans « Réglages SEO
 avancés », repliés et visibles seulement aux administrateurs. Les permissions
 de création et de modification des deux champs sont également restreintes côté

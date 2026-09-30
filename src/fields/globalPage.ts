@@ -3,6 +3,8 @@ import { createPageFields } from "./page";
 import { createSeoFields } from "./seo";
 export function createGlobalPageFields(
     pageType: "homepage" | "about" | "contact",
+    // Page-specific fields, placed before the SEO section that ends every form.
+    extraFields: Field[] = [],
 ): Field[] {
     return [
         ...createPageFields()
@@ -29,6 +31,7 @@ export function createGlobalPageFields(
                       } as Field)
                     : field;
             }),
+        ...extraFields,
         ...createSeoFields(false, pageType === "homepage" ? "home" : pageType),
     ];
 }

@@ -186,14 +186,6 @@ export interface Project {
   client?: string | null;
   projectStatus?: ('délivré' | 'en cours' | 'concept') | null;
   /**
-   * Laisser vide pour utiliser le titre automatique.
-   */
-  seoTitle?: string | null;
-  /**
-   * Laisser vide pour utiliser la description automatique.
-   */
-  seoDescription?: string | null;
-  /**
    * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
    */
   plans?:
@@ -224,6 +216,14 @@ export interface Project {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
+  seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
+  seoDescription?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -517,8 +517,6 @@ export interface ProjectsSelect<T extends boolean = true> {
   surface?: T;
   client?: T;
   projectStatus?: T;
-  seoTitle?: T;
-  seoDescription?: T;
   plans?:
     | T
     | {
@@ -527,6 +525,8 @@ export interface ProjectsSelect<T extends boolean = true> {
         id?: T;
       };
   planDetails?: T;
+  seoTitle?: T;
+  seoDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -777,14 +777,6 @@ export interface HomePage {
       }[]
     | null;
   /**
-   * Laisser vide pour utiliser le titre automatique.
-   */
-  seoTitle?: string | null;
-  /**
-   * Laisser vide pour utiliser la description automatique.
-   */
-  seoDescription?: string | null;
-  /**
    * Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Sans sélection, la galerie habituelle est affichée. Un projet masqué ou dépublié disparaît de cette sélection sur le site.
    */
   featuredProjects?:
@@ -793,6 +785,14 @@ export interface HomePage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
+  seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
+  seoDescription?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1035,14 +1035,14 @@ export interface HomePageSelect<T extends boolean = true> {
         role?: T;
         id?: T;
       };
-  seoTitle?: T;
-  seoDescription?: T;
   featuredProjects?:
     | T
     | {
         project?: T;
         id?: T;
       };
+  seoTitle?: T;
+  seoDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

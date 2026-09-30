@@ -201,7 +201,6 @@ export const Projects: CollectionConfig = {
                 { label: "Concept", value: "concept" },
             ],
         },
-        ...createSeoFields(true),
         {
             name: "plans",
             label: "Plans / Dessins",
@@ -268,5 +267,6 @@ export const Projects: CollectionConfig = {
                     "Description des plans et dessins : listes, paragraphes, etc.",
             },
         },
+        ...createSeoFields(true),
     ],
 };
