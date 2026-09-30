@@ -1,23 +1,8 @@
 import Link from "next/link";
+import Arrow from "@/components/Arrow";
 import MediaImage from "@/components/media/MediaImage";
 import type { Project } from "@/payload-types";
 
-function ArrowRight() {
-    return (
-        <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-        >
-            <path d="M3 12h17M14 6l6 6-6 6" />
-        </svg>
-    );
-}
-
-/** Selected projects shown one per row, alternating the image side. */
 export default function FeaturedProjects({
     projects,
 }: {
@@ -79,7 +64,7 @@ export default function FeaturedProjects({
                                 className="group mt-8 inline-flex items-center gap-3 text-body font-medium transition-colors hover:text-studio-red-muted"
                             >
                                 Voir le projet
-                                <ArrowRight />
+                                <Arrow className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                             </Link>
                         </div>
                     </article>
