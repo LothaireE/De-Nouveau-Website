@@ -169,7 +169,8 @@ export const Projects: CollectionConfig = {
             name: "year",
             label: "Année",
             type: "number",
-            defaultValue: new Date().getFullYear(),
+            // Evaluated when a project is created, not when the server starts.
+            defaultValue: () => new Date().getFullYear(),
         },
         {
             name: "categories",
