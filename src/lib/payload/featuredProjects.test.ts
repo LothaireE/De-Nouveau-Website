@@ -1,12 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { HomePage } from "@/payload-types";
-const { find, getAllProjects } = vi.hoisted(() => ({
-    find: vi.fn(),
-    getAllProjects: vi.fn(),
-}));
+const { find } = vi.hoisted(() => ({ find: vi.fn() }));
 vi.mock("./payload", () => ({ getPayloadClient: async () => ({ find }) }));
-vi.mock("./projects", () => ({ getAllProjects }));
-import { getHomeProjects } from "./featuredProjects";
+import { getFeaturedProjects } from "./featuredProjects";
 const publicProject = (id: number) => ({
     id,
     title: `Project ${id}`,
@@ -15,16 +11,16 @@ const publicProject = (id: number) => ({
 });
 describe("Homepage featured projects", () => {
     beforeEach(() => vi.resetAllMocks());
-    it("keeps the usual gallery when no selection exists", async () => {
-        getAllProjects.mockResolvedValue([publicProject(4)]);
-        expect(await getHomeProjects([])).toEqual([publicProject(4)]);
+    it("returns no featured project when nothing is selected", async () => {
+        expect(await getFeaturedProjects([])).toEqual([]);
+        expect(await getFeaturedProjects(undefined)).toEqual([]);
         expect(find).not.toHaveBeenCalled();
     });
     it("preserves the chosen order rather than database order", async () => {
         find.mockResolvedValue({
             docs: [publicProject(1), publicProject(3), publicProject(2)],
         });
-        const result = await getHomeProjects([
+        const result = await getFeaturedProjects([
             { project: 3 },
             { project: 1 },
             { project: 2 },
@@ -52,18 +48,16 @@ describe("Homepage featured projects", () => {
             ],
         });
         expect(
-            await getHomeProjects([
+            await getFeaturedProjects([
                 { project: 1 },
                 { project: 2 },
                 { project: 3 },
             ]),
         ).toEqual([]);
-        expect(getAllProjects).not.toHaveBeenCalled();
     });
-    it("handles deleted references without reverting to the full gallery", async () => {
-        expect(await getHomeProjects([{ project: null }])).toEqual([]);
+    it("handles deleted references without showing other projects", async () => {
+        expect(await getFeaturedProjects([{ project: null }])).toEqual([]);
         expect(find).not.toHaveBeenCalled();
-        expect(getAllProjects).not.toHaveBeenCalled();
     });
     it("deduplicates and caps inconsistent stored selections defensively", async () => {
         find.mockResolvedValue({ docs: [1, 2, 3, 4].map(publicProject) });
@@ -71,7 +65,7 @@ describe("Homepage featured projects", () => {
             project,
         })) as HomePage["featuredProjects"];
         expect(
-            (await getHomeProjects(rows)).map((project) => project.id),
+            (await getFeaturedProjects(rows)).map((project) => project.id),
         ).toEqual([1, 2, 3]);
     });
 });
