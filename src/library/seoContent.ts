@@ -18,6 +18,12 @@ export const staticPageSeo = {
             "Contactez le studio De Nouveau pour échanger sur votre projet d’architecture ou de design. Retrouvez ses coordonnées et ses réseaux sociaux.",
         path: "/contact",
     },
+    legal: {
+        title: "Mentions légales — De Nouveau",
+        description:
+            "Mentions légales du site De Nouveau : éditeur, inscription à l’Ordre des architectes, assurance professionnelle et hébergement.",
+        path: "/mentions-legales",
+    },
 } as const;
 export type StaticSeoPage = keyof typeof staticPageSeo;
 export type SeoPreviewKind = StaticSeoPage | "project";

@@ -12,6 +12,7 @@ describe("Shared agency coordinates", () => {
             phone: "+33123456789",
             address: "Paris",
             socialMedias: [{ link: "https://example.com", label: "Studio" }],
+            legal: { companyName: "Studio", siret: null },
             initialized: true,
         });
         expect(await getAgencyInfo()).toEqual({
@@ -19,6 +20,7 @@ describe("Shared agency coordinates", () => {
             phone: "+33123456789",
             address: "Paris",
             socialMedias: [{ link: "https://example.com", label: "Studio" }],
+            legal: { companyName: "Studio", siret: null },
         });
         expect(findGlobal).toHaveBeenCalledWith({
             slug: "agency-info",
@@ -37,6 +39,7 @@ describe("Shared agency coordinates", () => {
             phone: "",
             address: null,
             socialMedias: [],
+            legal: {},
         });
     });
 });

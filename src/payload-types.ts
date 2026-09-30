@@ -941,7 +941,7 @@ export interface ContactPage {
   createdAt?: string | null;
 }
 /**
- * Coordonnées communes à toutes les pages du site.
+ * Coordonnées et informations légales communes à tout le site.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "agency-info".
@@ -964,6 +964,42 @@ export interface AgencyInfo {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Ces informations alimentent automatiquement la page « Mentions légales ». Un champ vide n’est pas affiché.
+   */
+  legal?: {
+    companyName?: string | null;
+    /**
+     * Ex. : SARL d’architecture
+     */
+    legalForm?: string | null;
+    /**
+     * Ex. : 10 000 €
+     */
+    shareCapital?: string | null;
+    /**
+     * 14 chiffres
+     */
+    siret?: string | null;
+    /**
+     * Ex. : RCS Paris 123 456 789
+     */
+    rcs?: string | null;
+    vatNumber?: string | null;
+    /**
+     * Conseil régional et numéro d’inscription. Ex. : Conseil régional d’Île-de-France, n° S12345
+     */
+    architectsRegistration?: string | null;
+    insurer?: string | null;
+    /**
+     * Adresse de l’assureur, numéro de contrat et couverture géographique.
+     */
+    insuranceDetails?: string | null;
+    /**
+     * Prénom et nom de la personne responsable du contenu du site.
+     */
+    publicationDirector?: string | null;
+  };
   initialized?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1108,6 +1144,20 @@ export interface AgencyInfoSelect<T extends boolean = true> {
         link?: T;
         label?: T;
         id?: T;
+      };
+  legal?:
+    | T
+    | {
+        companyName?: T;
+        legalForm?: T;
+        shareCapital?: T;
+        siret?: T;
+        rcs?: T;
+        vatNumber?: T;
+        architectsRegistration?: T;
+        insurer?: T;
+        insuranceDetails?: T;
+        publicationDirector?: T;
       };
   initialized?: T;
   updatedAt?: T;

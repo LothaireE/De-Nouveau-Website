@@ -150,3 +150,29 @@ Seuls les textes affichés changent. Les noms de champs, les slugs et les valeur
 enregistrées (`show`, `hidden`, `délivré`, `portrait`, etc.) sont inchangés :
 aucune migration n’est nécessaire et `payload-types.ts` ne diffère que par ses
 commentaires.
+
+## Mentions légales
+
+La fiche « Informations de l’agence » est organisée en deux onglets :
+« Coordonnées » (champs existants, chemins inchangés) et « Mentions légales ».
+Ce second onglet propose : raison sociale, forme juridique, capital social,
+SIRET, RCS, TVA intracommunautaire, inscription à l’Ordre des architectes,
+assureur professionnel et détails du contrat, directeur ou directrice de la
+publication. Tous les champs sont facultatifs.
+
+La page `/mentions-legales` est générée automatiquement à partir de cette fiche
+(`src/library/legalNotice.ts`). Le siège social, l’e-mail et le téléphone
+reprennent les coordonnées communes. Un champ vide n’est pas affiché, et une
+section sans contenu disparaît. L’hébergeur (Vercel) est une information
+technique maintenue dans le code (`SITE_HOSTING`), pas dans l’admin.
+Un lien discret « Mentions légales » figure en bas de toutes les pages.
+La page n’est pas ajoutée au sitemap. La sauvegarde de la fiche invalide déjà
+le cache de tout le site, cette page comprise.
+
+La migration additive `20260930_agency_legal_info.sql`, générée hors connexion
+par `scripts/prepare-legal-schema.ts` puis appliquée par
+`npm run refactor:migrate`, ajoute uniquement dix colonnes facultatives
+`legal_*` à `agency_info`. Aucune donnée n’est copiée. Les relevés avant/après
+montrent que seules `agency_info` (nouvelles colonnes vides) et
+`admin_refactor_migrations` (une ligne) diffèrent ; les valeurs existantes
+d’`agency_info` sont identiques.

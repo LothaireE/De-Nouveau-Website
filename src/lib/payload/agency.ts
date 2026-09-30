@@ -10,5 +10,6 @@ export const getAgencyInfo = cache(async () => {
         phone: agency.phone ?? null,
         address: agency.address ?? null,
         socialMedias: agency.socialMedias ?? [],
+        legal: agency.legal ?? {},
     };
 });
