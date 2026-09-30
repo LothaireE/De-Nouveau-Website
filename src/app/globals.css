@@ -27,7 +27,7 @@
     --color-background: var(--background);
     --color-foreground: var(--foreground);
 
-    --font-sans: var(--font-geist-sans);
+    --font-sans: var(--font-roboto);
 
     /* DeNouveau palette */
     --color-studio-black: var(--studio-black);

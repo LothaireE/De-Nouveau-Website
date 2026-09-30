@@ -5,9 +5,12 @@ Branche `redesign/foundations`, créée depuis `redesign/site`. L’identité ex
 
 ## Police
 
-Le site utilise réellement Geist, chargée par `next/font` dans
-`src/app/(site)/layout.tsx`. Auparavant, une règle `font-family: Arial` sur
-`body` l’écrasait. Geist Mono, jamais utilisée, n’est plus chargée.
+Le site utilise Roboto, la police de la signature « Architecture et design »
+du logo (identifiée par comparaison des tracés, le texte du logo étant
+vectorisé). Elle est chargée en police variable par `next/font` dans
+`src/app/(site)/layout.tsx` et servie par le site. Auparavant, Geist était
+chargée mais une règle `font-family: Arial` sur `body` l’écrasait ; Geist et
+Geist Mono ne sont plus chargées.
 
 ## Échelle typographique
 
