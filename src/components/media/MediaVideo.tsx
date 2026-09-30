@@ -54,7 +54,7 @@ export default function MediaVideo({
 
             {withCaption && media.caption?.trim() && (
                 <div className="pointer-events-none absolute bottom-4 left-4 z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <p className="bg-black/10 px-1 text-xs uppercase tracking-wide text-studio-white backdrop-blur-xs">
+                    <p className="bg-black/10 px-1 text-label uppercase tracking-wide text-studio-white backdrop-blur-xs">
                         {media.caption}
                     </p>
                 </div>

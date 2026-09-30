@@ -71,7 +71,7 @@ export default function DesktopNav({
             : "mr-4 mt-4 h-18 w-18 p-2 shadow-none backdrop-blur-none"
     }`;
 
-    const logoImageClassName = `block text-sm font-medium uppercase tracking-[-0.02em] text-studio-black max-w-14 h-auto transition-rotate duration-500 ease-out  ${open ? "rotate-0" : "rotate-450"}`;
+    const logoImageClassName = `block text-small font-medium uppercase text-studio-black max-w-14 h-auto transition-rotate duration-500 ease-out  ${open ? "rotate-0" : "rotate-450"}`;
 
     const contentClassName = `mt-16 transition-[width,height,margin,padding] duration-500 ease-out ${
         open
@@ -80,10 +80,10 @@ export default function DesktopNav({
     }`;
 
     const mainLinkClassName =
-        "block text-3xl font-medium leading-none tracking-[-0.04em] text-studio-black transition-colors hover:text-studio-red-muted";
+        "block text-heading font-medium text-studio-black transition-colors hover:text-studio-red-muted";
 
     const projectLinkClassName =
-        "group block pb-2 text-studio-moss transition-colors hover:text-studio-red-muted";
+        "group block pb-2 text-studio-black/60 transition-colors hover:text-studio-red-muted";
 
     return (
         <aside
@@ -92,7 +92,7 @@ export default function DesktopNav({
             onFocusCapture={handleFocusCapture}
             onBlurCapture={handleBlurCapture}
             onKeyDown={handleKeyDown}
-            className="fixed right-0 top-0 z-50 hidden text-sm md:block"
+            className="fixed right-0 top-0 z-50 hidden text-small md:block"
         >
             <nav aria-label="Navigation principale" className={navClassName}>
                 <div className="flex items-start justify-between">
@@ -147,7 +147,7 @@ export default function DesktopNav({
                                         onClick={closeMenu}
                                         className={projectLinkClassName}
                                     >
-                                        <span className="block truncate text-base leading-tight">
+                                        <span className="block truncate text-body">
                                             {project.title}
                                         </span>
                                     </Link>

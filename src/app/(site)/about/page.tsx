@@ -20,13 +20,11 @@ function AboutSection({
     return (
         // <section className="border-t border-studio-black/20 pt-8 col-span-1">
         <section className="pt-8 col-span-1">
-            <p className="mb-8 text-xs uppercase tracking-wide text-studio-black/60">
+            <p className="mb-8 text-label uppercase tracking-wide text-studio-black/60">
                 {title}
             </p>
 
-            <div className="max-w-3xl text-[clamp(1.2rem,1.5vw,2rem)] leading-[1.05] tracking-[-0.04em]">
-                {children}
-            </div>
+            <div className="max-w-3xl text-lead">{children}</div>
         </section>
     );
 }
