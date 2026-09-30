@@ -174,6 +174,7 @@ export const Projects: CollectionConfig = {
             type: "relationship",
             relationTo: "categories",
             hasMany: true,
+            admin: { hidden: true },
         },
         {
             name: "surface",

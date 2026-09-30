@@ -9,6 +9,7 @@ export const Categories: CollectionConfig = {
         plural: "Categories",
     },
     admin: {
+        hidden: true, // Preserve the collection and existing project relationships.
         useAsTitle: "title",
         defaultColumns: ["title", "slug"],
     },

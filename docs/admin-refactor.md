@@ -110,3 +110,7 @@ Le champ de rôle utilisateur est aussi protégé à la création pour qu’un �
 ne puisse pas créer un compte administrateur et contourner ces restrictions.
 Aucune promotion de compte, migration ou modification des contenus existants
 n’a été effectuée pour ce changement.
+
+La collection `categories` et le champ associé des projets sont masqués dans
+l’administration. Leur schéma, leurs données et leur usage dans les données
+structurées restent conservés.
