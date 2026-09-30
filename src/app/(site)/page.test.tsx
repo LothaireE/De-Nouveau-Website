@@ -8,7 +8,7 @@ vi.mock("@/lib/payload/fetchers", () => ({
         title: "Homepage",
     }),
 
-    getAllProjects: vi.fn().mockResolvedValue([
+    getHomeProjects: vi.fn().mockResolvedValue([
         {
             id: "1",
             title: "Projet test",

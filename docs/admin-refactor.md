@@ -114,3 +114,21 @@ n’a été effectuée pour ce changement.
 La collection `categories` et le champ associé des projets sont masqués dans
 l’administration. Leur schéma, leurs données et leur usage dans les données
 structurées restent conservés.
+
+## Projets à la une
+
+Dans le Global Accueil, « Projets à la une » permet de sélectionner jusqu’à
+trois projets distincts et de réordonner les lignes par glisser-déposer.
+Le sélecteur ne propose que les projets publiés et visibles. Le frontend
+vérifie également ces critères lors de la lecture, puis restitue l’ordre choisi.
+Les références restent des identifiants dans les réponses du Global pour éviter
+d’y inclure le contenu d’un projet devenu brouillon ou masqué.
+
+Une liste vide conserve la galerie habituelle. Une sélection non vide dont
+certains projets deviennent indisponibles affiche uniquement les projets encore
+admissibles, sans les remplacer par d’autres. Trois projets utilisent une grille
+de trois colonnes sur grand écran.
+
+La migration additive `20260930_featured_projects.sql`, appliquée par
+`npm run refactor:migrate`, ajoute uniquement `home_page_featured_projects`
+et ses contraintes et index. Aucun projet n’est dupliqué ni présélectionné.

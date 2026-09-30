@@ -1,5 +1,5 @@
 import LoadingLogo from "@/components/LoadingLogo";
-import { getAllProjects, getPage } from "@/lib/payload/fetchers";
+import { getHomeProjects, getPage } from "@/lib/payload/fetchers";
 import { getPageMetadata } from "@/lib/payload/metadata";
 import { Page } from "@/payload-types";
 import dynamic from "next/dynamic";
@@ -26,7 +26,7 @@ const SLUG = "home";
 
 export default async function Home() {
     const pageContent = await getPage(SLUG);
-    const projects = await getAllProjects();
+    const projects = await getHomeProjects(pageContent?.featuredProjects);
 
     return (
         <main>

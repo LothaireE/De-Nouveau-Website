@@ -1,5 +1,5 @@
 import { cache } from "react";
-import type { Page } from "@/payload-types";
+import type { Page, HomePage } from "@/payload-types";
 import { getPayloadClient } from "./payload";
 export const globalPages = {
     home: { global: "home-page", pageType: "homepage" },
@@ -7,6 +7,7 @@ export const globalPages = {
     contact: { global: "contact-page", pageType: "contact" },
 } as const;
 export type SitePage = Page & {
+    featuredProjects?: HomePage["featuredProjects"];
     seoTitle?: string | null;
     seoDescription?: string | null;
 };

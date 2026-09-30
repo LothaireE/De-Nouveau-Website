@@ -1,3 +1,4 @@
+import { featuredProjectsField } from "@/fields/featuredProjects";
 import type { GlobalConfig } from "payload";
 import { isAuthenticated } from "@/access";
 import { createGlobalPageFields } from "@/fields/globalPage";
@@ -8,5 +9,5 @@ export const HomePage: GlobalConfig = {
     admin: { group: "Pages du site" },
     access: { read: () => true, update: isAuthenticated },
     hooks: { afterChange: [revalidateGlobal("/")] },
-    fields: createGlobalPageFields("homepage"),
+    fields: [...createGlobalPageFields("homepage"), featuredProjectsField],
 };

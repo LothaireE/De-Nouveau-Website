@@ -794,6 +794,15 @@ export interface HomePage {
    * Laisser vide pour utiliser la description automatique.
    */
   seoDescription?: string | null;
+  /**
+   * Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Sans sélection, la galerie habituelle est affichée. Un projet masqué ou dépublié disparaît de cette sélection sur le site.
+   */
+  featuredProjects?:
+    | {
+        project?: (number | null) | Project;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -989,6 +998,12 @@ export interface HomePageSelect<T extends boolean = true> {
       };
   seoTitle?: T;
   seoDescription?: T;
+  featuredProjects?:
+    | T
+    | {
+        project?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
