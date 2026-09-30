@@ -221,3 +221,39 @@ de collections sans remplacer le menu par un composant personnalisé.
 
 Aucune migration : seules des options d’administration et de validation
 changent, et `payload-types.ts` ne diffère que par ses commentaires.
+
+## Portage vers le projet d’origine
+
+La branche `feature/admin-structure` reprend `refactor/admin-structure` (sans
+le redesign) et rend conditionnelles les protections propres au refactor,
+au lieu de les supprimer.
+
+| Comportement                           | Refactor (fichier `.refactor-isolation.json`) | Projet d’origine (sans ce fichier)                       |
+| -------------------------------------- | --------------------------------------------- | -------------------------------------------------------- |
+| Vérification de la base par l’app      | obligatoire (hôte du fichier)                 | seulement si `PAYLOAD_EXPECTED_DATABASE_HOST` est défini |
+| Médias                                 | lecture seule                                 | modifiables, sauf si `PAYLOAD_MEDIA_READ_ONLY=true`      |
+| Association automatique projet → média | désactivée                                    | active (sauf médias en lecture seule)                    |
+| Cookie et titre de l’admin             | `payload-admin-refactor`, « Refactor isolé »  | valeurs par défaut, « De Nouveau »                       |
+| Refus du point d’accès de production   | toujours                                      | non (la production pourra l’utiliser)                    |
+
+Les scripts qui écrivent des données (`migrate-admin-globals`,
+`copy-pages-to-globals`, `copy-agency-info`, `create-test-admin`) échouent
+toujours tant que la base cible n’est pas nommée explicitement, par le fichier
+de garde ou par `PAYLOAD_EXPECTED_DATABASE_HOST`. `PAYLOAD_DROP_DATABASE=true`
+reste refusé partout. La synchronisation automatique du schéma reste désactivée
+(`push: false`) ; la branche `fix/disable-db-push` l’applique aussi à `develop`.
+
+Pour tester en local dans `de-nouveau`, sur la branche Neon `dev` :
+
+1. Dans `de-nouveau/.env` : `DATABASE_URL` vers `dev`,
+   `PAYLOAD_EXPECTED_DATABASE_HOST` avec le nom d’hôte de `dev`, et
+   `PAYLOAD_MEDIA_READ_ONLY=true` (le stockage des médias est celui de la
+   production).
+2. `npm ci`, puis relevé en lecture seule avec `scripts/database-snapshot.mjs`.
+3. `npm run refactor:migrate`, puis `npm run refactor:copy`, puis
+   `node --import tsx scripts/copy-agency-info.ts`.
+4. Nouveau relevé et comparaison, puis `npm run payload:generate` et
+   `npm run dev`.
+
+Le passage en production suit les mêmes étapes, après sauvegarde et accord
+explicite, en retirant `PAYLOAD_MEDIA_READ_ONLY`.

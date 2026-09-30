@@ -5,7 +5,7 @@ export const protectSharedMedia: CollectionBeforeOperationHook = ({
 }) => {
     if (["create", "update", "delete"].includes(operation)) {
         throw new APIError(
-            "Les médias sont en lecture seule dans cet environnement de refactor.",
+            "Les médias sont en lecture seule dans cet environnement.",
             403,
         );
     }

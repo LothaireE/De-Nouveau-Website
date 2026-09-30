@@ -6,6 +6,8 @@ import {
 import { createSeoFields } from "@/fields/seo";
 import { revalidateProject, revalidateProjectDelete } from "@/hooks/revalidate";
 import { createSlugField } from "@/fields/slug";
+import { isMediaReadOnly } from "@/lib/payload/isolation";
+import { assignProjectToMedia } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
 
 export const Projects: CollectionConfig = {
@@ -14,10 +16,13 @@ export const Projects: CollectionConfig = {
     versions: {
         drafts: true,
     },
-    // Shared media are immutable in this worktree: do not run assignProjectToMedia here.
-    // The original association helper remains available for the normal environment.
     hooks: {
-        afterChange: [revalidateProject],
+        // Linking media to their project writes to the media, so it is skipped
+        // where the shared storage is read-only (refactor worktree).
+        afterChange: [
+            ...(isMediaReadOnly() ? [] : [assignProjectToMedia]),
+            revalidateProject,
+        ],
         afterDelete: [revalidateProjectDelete],
     },
     labels: {

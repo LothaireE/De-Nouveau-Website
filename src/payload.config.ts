@@ -1,4 +1,7 @@
-import { assertIsolatedDatabase } from "./lib/payload/isolation";
+import {
+    assertConfiguredDatabaseTarget,
+    isIsolatedEnvironment,
+} from "./lib/payload/isolation";
 import { AgencyInfo } from "./globals/AgencyInfo";
 import { HomePage } from "./globals/HomePage";
 import { AboutPage } from "./globals/AboutPage";
@@ -18,16 +21,20 @@ import { Pages } from "./collections/Pages";
 import { Categories } from "./collections/Categories";
 import { Projects } from "./collections/Projects";
 
-assertIsolatedDatabase();
+assertConfiguredDatabaseTarget();
+// Refactor worktree only: separate admin session and a visible marker.
+const isolated = isIsolatedEnvironment();
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const config = buildConfig({
-    cookiePrefix: "payload-admin-refactor",
+    ...(isolated ? { cookiePrefix: "payload-admin-refactor" } : {}),
     admin: {
         user: Users.slug,
-        meta: { titleSuffix: "— Refactor isolé" },
+        meta: {
+            titleSuffix: isolated ? "— Refactor isolé" : "— De Nouveau",
+        },
         // date-fns pattern, rendered with the French locale: 28 septembre 2026, 11:39
         dateFormat: "d MMMM yyyy, HH:mm",
         importMap: {

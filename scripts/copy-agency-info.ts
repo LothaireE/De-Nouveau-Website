@@ -2,7 +2,10 @@ import "dotenv/config";
 import assert from "node:assert/strict";
 import { createLocalReq, getPayload } from "payload";
 import config from "../src/payload.config";
+import { assertDatabaseTarget } from "../src/lib/payload/isolation";
 
+// Writes data: the target database must be named explicitly.
+assertDatabaseTarget();
 const payload = await getPayload({ config });
 try {
     const transactionID = await payload.db.beginTransaction();

@@ -1,4 +1,5 @@
 import { protectSharedMedia } from "@/hooks/readOnlyMedia";
+import { isMediaReadOnly } from "@/lib/payload/isolation";
 import { revalidateRelated, revalidateRelatedDelete } from "@/hooks/revalidate";
 import {
     assignMediatype,
@@ -41,6 +42,8 @@ const imageSizes = [
     },
 ];
 
+const readOnly = isMediaReadOnly();
+
 export const Media: CollectionConfig = {
     slug: "media",
     labels: {
@@ -59,11 +62,23 @@ export const Media: CollectionConfig = {
             "updatedAt",
         ],
     },
-    access: { create: () => false, update: () => false, delete: () => false },
+    // Shared storage: writes are blocked where media must stay read-only.
+    ...(readOnly
+        ? {
+              access: {
+                  create: () => false,
+                  update: () => false,
+                  delete: () => false,
+              },
+          }
+        : {}),
     hooks: {
         afterChange: [revalidateRelated],
         afterDelete: [revalidateRelatedDelete],
-        beforeOperation: [protectSharedMedia, preventDuplicateFilename],
+        beforeOperation: [
+            ...(readOnly ? [protectSharedMedia] : []),
+            preventDuplicateFilename,
+        ],
         beforeValidate: [assignMediatype],
     },
     upload: {

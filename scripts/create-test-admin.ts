@@ -2,11 +2,11 @@ import "dotenv/config";
 import fs from "node:fs";
 import { randomBytes } from "node:crypto";
 import { getPayload } from "payload";
-import { assertIsolatedDatabase } from "../src/lib/payload/isolation";
+import { assertDatabaseTarget } from "../src/lib/payload/isolation";
 import config from "../src/payload.config";
 
 // Local test account for the isolated refactor database only.
-assertIsolatedDatabase();
+assertDatabaseTarget();
 const file = ".refactor-test-admin.json";
 const email = "admin-test@denouveau.test";
 const payload = await getPayload({ config });

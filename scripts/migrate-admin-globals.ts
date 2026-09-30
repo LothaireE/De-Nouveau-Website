@@ -2,8 +2,8 @@ import "dotenv/config";
 import fs from "node:fs";
 import { createHash } from "node:crypto";
 import pg from "pg";
-import { assertIsolatedDatabase } from "../src/lib/payload/isolation";
-assertIsolatedDatabase();
+import { assertDatabaseTarget } from "../src/lib/payload/isolation";
+assertDatabaseTarget();
 const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
 await client.connect();
 try {
