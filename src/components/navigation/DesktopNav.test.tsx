@@ -86,4 +86,12 @@ describe("DesktopNav", () => {
 
         expect(menuButton).toHaveAttribute("aria-expanded", "false");
     });
+
+    it("links to the legal notice at the bottom of the menu", () => {
+        const link = screen.getByRole("link", {
+            name: "Mentions légales",
+            hidden: true,
+        });
+        expect(link).toHaveAttribute("href", "/mentions-legales");
+    });
 });
