@@ -52,7 +52,9 @@ const ProjectGallery = ({ projects }: { projects: Project[] }) => {
     return (
         // <section className="bg-studio-white px-6 py-16 text-studio-black md:px-10">
         <section className="bg-studio-white text-studio-black">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+            <div
+                className={`grid grid-cols-1 ${projects.length === 1 ? "" : projects.length === 2 ? "sm:grid-cols-2" : projects.length === 3 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-4"}`}
+            >
                 {projects.map((project) => (
                     <SingleProject key={project.id} project={project} />
                 ))}

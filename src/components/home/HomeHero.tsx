@@ -7,7 +7,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_WHITE_CROPPED.svg";
+const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_RED_02.svg";
 
 export default function HomeHero({ content }: { content: Page | null }) {
     const sectionRef = useRef<HTMLElement | null>(null);

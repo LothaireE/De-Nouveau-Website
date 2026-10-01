@@ -1,0 +1,10 @@
+ALTER TABLE "agency_info" ADD COLUMN "legal_company_name" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_legal_form" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_share_capital" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_siret" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_rcs" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_vat_number" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_architects_registration" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_insurer" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_insurance_details" varchar;
+ALTER TABLE "agency_info" ADD COLUMN "legal_publication_director" varchar;

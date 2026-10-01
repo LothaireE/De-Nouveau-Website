@@ -1,15 +1,21 @@
+import { isAdminField } from "@/access";
 import type { CollectionConfig } from "payload";
 
 export const Users: CollectionConfig = {
     slug: "users",
+    labels: {
+        singular: "Utilisateur",
+        plural: "Utilisateurs",
+    },
     admin: {
+        group: "Réglages du site",
         useAsTitle: "email",
     },
     auth: true,
     fields: [
         {
             name: "firstName",
-            label: "First name",
+            label: "Prénom",
             type: "text",
             admin: {
                 width: 50,
@@ -18,22 +24,22 @@ export const Users: CollectionConfig = {
 
         {
             name: "lastName",
-            label: "Last name",
+            label: "Nom",
             type: "text",
         },
 
         {
             name: "role",
-            label: "Role",
+            label: "Rôle",
             type: "select",
             defaultValue: "editor",
             options: [
                 {
-                    label: "Admin",
+                    label: "Administrateur",
                     value: "admin",
                 },
                 {
-                    label: "Editor",
+                    label: "Éditeur",
                     value: "editor",
                 },
             ],
@@ -41,9 +47,8 @@ export const Users: CollectionConfig = {
                 readOnly: true,
             },
             access: {
-                update: ({ req }) => {
-                    return req.user?.role === "admin";
-                },
+                create: isAdminField,
+                update: isAdminField,
             },
         },
 
@@ -55,14 +60,14 @@ export const Users: CollectionConfig = {
 
         {
             name: "isActive",
-            label: "Active account",
+            label: "Compte actif",
             type: "checkbox",
             defaultValue: true,
         },
 
         {
             name: "lastLogin",
-            label: "Last login",
+            label: "Dernière connexion",
             type: "date",
             admin: {
                 readOnly: true,

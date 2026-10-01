@@ -4,6 +4,8 @@ import type { NextConfig } from "next";
 const r2Hostname: string = process.env.R2_PUBLIC_HOSTNAME || "";
 
 const nextConfig: NextConfig = {
+    // Dev only: let the admin load its dev assets from 127.0.0.1 as well as localhost.
+    allowedDevOrigins: ["127.0.0.1"],
     images: {
         qualities: [75, 80, 90],
         remotePatterns: [

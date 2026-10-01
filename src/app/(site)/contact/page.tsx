@@ -1,15 +1,12 @@
-import { createMetadata } from "@/library/seo";
-import { getPage } from "@/library/payload/fetchers";
+import { getPageMetadata } from "@/lib/payload/metadata";
+import { getPage } from "@/lib/payload/fetchers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MediaImage from "@/components/media/MediaImage";
 
-export const metadata = createMetadata({
-    title: "Contacter De Nouveau",
-    description: "Bienvenue sur la page contact de De Nouveau",
-    path: "/contact",
-    locale: "fr_FR",
-});
+export async function generateMetadata() {
+    return getPageMetadata(SLUG);
+}
 
 const SLUG = "contact";
 
