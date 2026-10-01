@@ -15,7 +15,7 @@ export default function MobileNav({
 }) {
     const [open, setOpen] = useState(false);
 
-    const navClassName = ` fixed right-0 top-0 z-50 block text-sm md:hidden`;
+    const navClassName = ` fixed right-0 top-0 z-50 block text-small md:hidden`;
 
     const panelClassName = ` fixed right-0 top-0 overflow-hidden text-studio-black transition-[width,height,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
         open
@@ -34,10 +34,10 @@ export default function MobileNav({
     }`;
 
     const mainLinkClassName =
-        "block text-4xl font-medium leading-none tracking-[-0.04em] text-studio-black transition-colors hover:text-studio-red-muted";
+        "block text-heading font-medium text-studio-black transition-colors hover:text-studio-red-muted";
 
     const projectLinkClassName =
-        "group block pb-2 text-studio-moss transition-colors hover:text-studio-red-muted";
+        "group block pb-2 text-studio-black/60 transition-colors hover:text-studio-red-muted";
 
     return (
         <aside className={navClassName}>
@@ -83,7 +83,7 @@ export default function MobileNav({
                                         onClick={() => setOpen(false)}
                                         className={projectLinkClassName}
                                     >
-                                        <span className="block truncate text-lg leading-tight">
+                                        <span className="block truncate text-lead">
                                             {project.title}
                                         </span>
                                     </Link>
@@ -95,7 +95,7 @@ export default function MobileNav({
                     <Link
                         href={legalNavItem.href}
                         onClick={() => setOpen(false)}
-                        className="mt-auto block self-start pt-10 text-xs text-studio-black/60 transition-colors hover:text-studio-black"
+                        className="mt-auto block self-start pt-10 text-label text-studio-black/60 transition-colors hover:text-studio-black"
                     >
                         {legalNavItem.label}
                     </Link>

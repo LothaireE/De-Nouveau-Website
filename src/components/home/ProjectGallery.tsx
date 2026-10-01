@@ -20,16 +20,14 @@ const SingleProject = ({ project }: { project: Project }) => {
 
             <div className="absolute inset-0 bg-linear-to-t from-studio-black/80 via-studio-black/20 to-transparent group-hover:backdrop-blur-[2px]" />
             <div className="absolute inset-x-0 bottom-0 p-5 text-studio-white">
-                <p className="mb-2 text-xs uppercase tracking-wide text-studio-clay">
+                <p className="mb-2 text-label uppercase tracking-wide text-studio-clay">
                     {project.location}
                 </p>
 
-                <h2 className="text-xl font-medium leading-none tracking-[-0.03em] md:text-2xl">
-                    {project.title}
-                </h2>
+                <h2 className="text-lead font-medium">{project.title}</h2>
 
                 <div className="mt-4 max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-out group-hover:max-h-48 group-hover:opacity-100 ">
-                    <div className="space-y-1 text-xs uppercase tracking-wide text-studio-white">
+                    <div className="space-y-1 text-label uppercase tracking-wide text-studio-white">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>{project.client}</p>}
                         {project.projectStatus && (
@@ -38,7 +36,7 @@ const SingleProject = ({ project }: { project: Project }) => {
                     </div>
 
                     {project.shortDescription && (
-                        <p className="mt-4 text-sm leading-relaxed text-studio-cream">
+                        <p className="mt-4 text-small text-studio-cream">
                             {project.shortDescription}
                         </p>
                     )}

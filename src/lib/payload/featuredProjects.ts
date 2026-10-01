@@ -1,11 +1,11 @@
 import type { HomePage, Project } from "@/payload-types";
 import { getPayloadClient } from "./payload";
-import { getAllProjects } from "./projects";
 
-export async function getHomeProjects(
+/** Featured projects in the chosen order; none when nothing is selected. */
+export async function getFeaturedProjects(
     selection?: HomePage["featuredProjects"],
 ): Promise<Project[]> {
-    if (!selection?.length) return getAllProjects();
+    if (!selection?.length) return [];
     const ids = [
         ...new Set(
             selection

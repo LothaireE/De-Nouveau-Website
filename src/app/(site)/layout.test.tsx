@@ -9,13 +9,9 @@ vi.mock("next/image", () => ({
 }));
 
 vi.mock("next/font/google", () => ({
-    Geist: vi.fn(() => ({
-        variable: "mocked-geist-sans-variable",
-        className: "mocked-geist-sans-class",
-    })),
-    Geist_Mono: vi.fn(() => ({
-        variable: "mocked-geist-mono-variable",
-        className: "mocked-geist-mono-class",
+    Roboto: vi.fn(() => ({
+        variable: "mocked-roboto-variable",
+        className: "mocked-roboto-class",
     })),
 }));
 
