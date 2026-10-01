@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockFind = vi.fn();
 
-vi.mock("@/library/payload/client", () => ({
+vi.mock("@/lib/payload/payload", () => ({
     getPayloadClient: async () => ({ find: mockFind }),
 }));
 

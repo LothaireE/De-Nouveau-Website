@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getSitemapProjects } from "@/library/payload/fetchers";
+import { getSitemapProjects } from "@/lib/payload/fetchers";
 import { SITE_URL } from "@/library/seo";
 
 const staticRoutes: MetadataRoute.Sitemap = [

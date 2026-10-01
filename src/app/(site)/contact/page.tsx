@@ -1,15 +1,12 @@
-import { createMetadata } from "@/library/seo";
-import { getPage } from "@/library/payload/fetchers";
+import { getPageMetadata } from "@/lib/payload/metadata";
+import { getPage } from "@/lib/payload/fetchers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import MediaImage from "@/components/media/MediaImage";
 
-export const metadata = createMetadata({
-    title: "Contacter De Nouveau",
-    description: "Bienvenue sur la page contact de De Nouveau",
-    path: "/contact",
-    locale: "fr_FR",
-});
+export async function generateMetadata() {
+    return getPageMetadata(SLUG);
+}
 
 const SLUG = "contact";
 
@@ -48,7 +45,7 @@ export default async function ContactPage() {
                                         {page.email && (
                                             <Link
                                                 href={`mailto:${page.email}`}
-                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
+                                                className="whitespace-nowrap text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter transition hover:text-studio-red-muted"
                                             >
                                                 {page.email}
                                             </Link>
@@ -57,7 +54,7 @@ export default async function ContactPage() {
                                         {page.phone && (
                                             <Link
                                                 href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
+                                                className="text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                             >
                                                 {page.phone}
                                             </Link>
@@ -67,7 +64,7 @@ export default async function ContactPage() {
 
                                 {page.address && page.address.length > 0 && (
                                     <ContactBlock title="Adresse">
-                                        <span className="whitespace-pre-line text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere">
+                                        <span className="whitespace-pre-line text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere">
                                             {page.address}
                                         </span>
                                     </ContactBlock>
@@ -89,7 +86,7 @@ export default async function ContactPage() {
                                                                 ""
                                                             }
                                                             rel="noopener noreferrer"
-                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
+                                                            className="text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                                         >
                                                             {socialMedia.label}
                                                         </a>

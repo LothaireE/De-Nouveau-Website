@@ -1,6 +1,6 @@
 import LoadingLogo from "@/components/LoadingLogo";
-import { getAllProjects, getPage } from "@/library/payload/fetchers";
-import { createMetadata } from "@/library/seo";
+import { getHomeProjects, getPage } from "@/lib/payload/fetchers";
+import { getPageMetadata } from "@/lib/payload/metadata";
 import { Page } from "@/payload-types";
 import dynamic from "next/dynamic";
 
@@ -18,18 +18,15 @@ const ProjectGallery = dynamic(
     },
 );
 
-export const metadata = createMetadata({
-    title: "De Nouveau",
-    description: "Studio d'architecture De Nouveau",
-    path: "/",
-    locale: "fr_FR",
-});
+export async function generateMetadata() {
+    return getPageMetadata(SLUG);
+}
 
 const SLUG = "home";
 
 export default async function Home() {
     const pageContent = await getPage(SLUG);
-    const projects = await getAllProjects();
+    const projects = await getHomeProjects(pageContent?.featuredProjects);
 
     return (
         <main>

@@ -1,3 +1,6 @@
+import { protectSharedMedia } from "@/hooks/readOnlyMedia";
+import { isMediaReadOnly } from "@/lib/payload/isolation";
+import { revalidateRelated, revalidateRelatedDelete } from "@/hooks/revalidate";
 import {
     assignMediatype,
     preventDuplicateFilename,
@@ -39,21 +42,43 @@ const imageSizes = [
     },
 ];
 
+const readOnly = isMediaReadOnly();
+
 export const Media: CollectionConfig = {
     slug: "media",
+    labels: {
+        singular: "Média",
+        plural: "Médias",
+    },
     admin: {
-        useAsTitle: "alt", // Caption would be better but waiting for client approval for mandatory Caption
+        group: "Projets",
+        // The file name is always filled, unlike the optional alt text and caption.
+        useAsTitle: "filename",
         defaultColumns: [
             "filename",
+            "caption",
             "mediaType",
             "project",
-            "caption",
-            "createdAt",
             "updatedAt",
         ],
     },
+    // Shared storage: writes are blocked where media must stay read-only.
+    ...(readOnly
+        ? {
+              access: {
+                  create: () => false,
+                  update: () => false,
+                  delete: () => false,
+              },
+          }
+        : {}),
     hooks: {
-        beforeOperation: [preventDuplicateFilename],
+        afterChange: [revalidateRelated],
+        afterDelete: [revalidateRelatedDelete],
+        beforeOperation: [
+            ...(readOnly ? [protectSharedMedia] : []),
+            preventDuplicateFilename,
+        ],
         beforeValidate: [assignMediatype],
     },
     upload: {
@@ -81,8 +106,9 @@ export const Media: CollectionConfig = {
             relationTo: "projects",
             admin: {
                 position: "sidebar",
+                readOnly: true,
                 description:
-                    "Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).",
+                    "Renseigné automatiquement lorsque le média est utilisé dans un projet (couverture, galerie, plans).",
             },
         },
         {
@@ -103,7 +129,7 @@ export const Media: CollectionConfig = {
         },
         {
             name: "poster",
-            label: "Video poster",
+            label: "Image d’attente de la vidéo",
             type: "upload",
             relationTo: "media",
             filterOptions: {

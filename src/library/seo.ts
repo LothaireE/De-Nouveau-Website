@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { normalizeSeoText } from "./seoContent";
 
 export const SITE_URL = "https://www.denouveau.fr";
 export const DEFAULT_OG_IMAGE = "/DE_NOUVEAU/PNG/og-default-de-nouveau.png";
@@ -12,12 +13,14 @@ type SeoParams = {
 };
 
 export function createMetadata({
-    title,
-    description,
+    title: rawTitle,
+    description: rawDescription,
     path,
     locale,
     image = DEFAULT_OG_IMAGE,
 }: SeoParams): Metadata {
+    const title = normalizeSeoText(rawTitle);
+    const description = normalizeSeoText(rawDescription);
     const url = new URL(path, SITE_URL).toString();
     const imageUrl = image.startsWith("http")
         ? image

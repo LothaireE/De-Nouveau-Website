@@ -1,67 +1,36 @@
 import {
-    assignProjectToMedia,
-    formatSlug,
-    revalidateFrontend,
-} from "@/library/payload/hooks";
+    authenticatedOrPublished,
+    canUpdateProject,
+    isAdminField,
+} from "@/access";
+import { createSeoFields } from "@/fields/seo";
+import { revalidateProject, revalidateProjectDelete } from "@/hooks/revalidate";
+import { createSlugField } from "@/fields/slug";
+import { isMediaReadOnly } from "@/lib/payload/isolation";
+import { assignProjectToMedia } from "@/library/payload/hooks";
 import type { CollectionConfig } from "payload";
-
-async function revalidateProjectRoutes(slug: string) {
-    await Promise.all([
-        revalidateFrontend(`/${slug}`),
-        revalidateFrontend("/"),
-        revalidateFrontend("/sitemap.xml"),
-    ]);
-}
 
 export const Projects: CollectionConfig = {
     slug: "projects",
-    access: {
-        read: ({ req: { user } }) => {
-            // return true;
-            if (user) {
-                return true;
-            }
-            return {
-                _status: {
-                    equals: "published",
-                },
-            };
-        },
-
-        update: ({ req: { user } }) => {
-            // return true;
-            if (!user) return false;
-
-            if (user.role === "admin") return true;
-
-            return {
-                _status: {
-                    equals: "published",
-                },
-            };
-        },
-    },
+    access: { read: authenticatedOrPublished, update: canUpdateProject },
     versions: {
         drafts: true,
     },
     hooks: {
+        // Linking media to their project writes to the media, so it is skipped
+        // where the shared storage is read-only (refactor worktree).
         afterChange: [
-            assignProjectToMedia,
-            async ({ doc }) => {
-                await revalidateProjectRoutes(doc.slug);
-            },
+            ...(isMediaReadOnly() ? [] : [assignProjectToMedia]),
+            revalidateProject,
         ],
-        afterDelete: [
-            async ({ doc }) => {
-                await revalidateProjectRoutes(doc.slug);
-            },
-        ],
+        afterDelete: [revalidateProjectDelete],
     },
     labels: {
-        singular: "Project",
-        plural: "Projects",
+        singular: "Projet",
+        plural: "Projets",
     },
     admin: {
+        group: "Projets",
         useAsTitle: "title",
         // defaultColumns: ["title", "status", "featured", "order"],
         defaultColumns: [
@@ -76,55 +45,43 @@ export const Projects: CollectionConfig = {
     fields: [
         {
             name: "projectLayout",
-            label: "Project layout",
+            label: "Mise en page",
             type: "select",
             required: true,
             defaultValue: "default",
             options: [
-                { label: "Default", value: "default" },
-                { label: "Editorial", value: "editorial" },
-                { label: "Gallery focused", value: "galleryFocused" },
-                { label: "Minimal", value: "minimal" },
+                { label: "Classique", value: "default" },
+                { label: "Éditoriale", value: "editorial" },
+                { label: "Galerie", value: "galleryFocused" },
+                { label: "Minimale", value: "minimal" },
             ],
             admin: {
                 description:
-                    "Définit la mise en page du projet côté site : Default - page projet classique | Editorial - texte et images alternées | Gallery focused - galerie dominante, peu de texte | Minimal - titre et quelques images, très peu d’infos",
+                    "Classique : page projet standard. Éditoriale : textes et images alternés. Galerie : images dominantes, peu de texte. Minimale : titre et quelques images.",
             },
         },
         {
             name: "title",
-            label: "Title",
+            label: "Titre",
             type: "text",
             required: true,
         },
-        {
-            name: "slug",
-            label: "Slug",
-            type: "text",
-            unique: true,
-            required: true,
-            access: {
-                update: ({ req }) => {
-                    return req.user?.role === "admin";
-                },
-            },
+        createSlugField({
+            access: { update: isAdminField },
             admin: {
                 position: "sidebar",
                 description:
                     "Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.",
             },
-            hooks: {
-                beforeValidate: [formatSlug("title")],
-            },
-        },
+        }),
         {
             name: "visibility",
-            label: "Visibility",
+            label: "Visibilité",
             type: "radio",
             defaultValue: "show",
             options: [
-                { label: "Show", value: "show" },
-                { label: "Hidden", value: "hidden" },
+                { label: "Visible", value: "show" },
+                { label: "Masqué", value: "hidden" },
             ],
             admin: {
                 position: "sidebar",
@@ -135,7 +92,7 @@ export const Projects: CollectionConfig = {
 
         {
             name: "coverImage",
-            label: "Cover image",
+            label: "Image de couverture",
             type: "upload",
             relationTo: "media",
             required: true,
@@ -147,12 +104,13 @@ export const Projects: CollectionConfig = {
         },
         {
             name: "galleryMedia",
-            label: "Gallerie images et vidéos",
+            label: "Galerie d’images et de vidéos",
             type: "array",
+            labels: { singular: "Média", plural: "Médias" },
             fields: [
                 {
                     name: "media",
-                    label: "Media",
+                    label: "Média",
                     type: "upload",
                     relationTo: "media",
                     filterOptions: {
@@ -163,66 +121,69 @@ export const Projects: CollectionConfig = {
                 },
                 {
                     name: "layout",
+                    label: "Format",
                     type: "select",
                     defaultValue: "auto",
                     options: [
                         {
-                            label: "Auto",
+                            label: "Automatique",
                             value: "auto",
                         },
                         {
-                            label: "Portrait",
+                            label: "Vertical",
                             value: "portrait",
                         },
                         {
-                            label: "Landscape",
+                            label: "Horizontal",
                             value: "landscape",
                         },
                         {
-                            label: "Square",
+                            label: "Carré",
                             value: "square",
                         },
                         {
-                            label: "Full width",
+                            label: "Pleine largeur",
                             value: "full",
                         },
                     ],
                     admin: {
                         description:
-                            "Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur",
+                            "Automatique : le format est détecté. Choisir un autre format seulement pour forcer l’affichage.",
                     },
                 },
             ],
         },
         {
             name: "shortDescription",
-            label: "Short description",
+            label: "Description courte",
             type: "textarea",
             required: true,
             maxLength: 300,
         },
         {
             name: "longDescription",
-            label: "Long description",
+            label: "Description détaillée",
             type: "richText",
         },
         {
             name: "location",
-            label: "Location",
+            label: "Lieu",
             type: "text",
         },
         {
             name: "year",
-            label: "Year",
+            label: "Année",
             type: "number",
-            defaultValue: new Date().getFullYear(),
+            // Evaluated when a project is created, not when the server starts.
+            defaultValue: () => new Date().getFullYear(),
         },
         {
             name: "categories",
-            label: "Categories",
+            label: "Catégories",
             type: "relationship",
             relationTo: "categories",
             hasMany: true,
+            admin: { hidden: true },
         },
         {
             name: "surface",
@@ -236,35 +197,20 @@ export const Projects: CollectionConfig = {
         },
         {
             name: "projectStatus",
-            label: "Project status",
+            label: "Statut du projet",
             type: "radio",
             defaultValue: "délivré",
             options: [
-                { label: "Completed", value: "délivré" },
-                { label: "In progress", value: "en cours" },
+                { label: "Livré", value: "délivré" },
+                { label: "En cours", value: "en cours" },
                 { label: "Concept", value: "concept" },
             ],
-        },
-        {
-            name: "seoTitle",
-            label: "Legacy SEO title",
-            type: "text",
-            admin: {
-                hidden: true,
-            },
-        },
-        {
-            name: "seoDescription",
-            label: "Legacy SEO description",
-            type: "textarea",
-            admin: {
-                hidden: true,
-            },
         },
         {
             name: "plans",
             label: "Plans / Dessins",
             type: "array",
+            labels: { singular: "Plan", plural: "Plans" },
             maxRows: 3,
             admin: {
                 description:
@@ -273,6 +219,7 @@ export const Projects: CollectionConfig = {
             fields: [
                 {
                     name: "image",
+                    label: "Image",
                     type: "upload",
                     relationTo: "media",
                     filterOptions: {
@@ -283,33 +230,34 @@ export const Projects: CollectionConfig = {
                 },
                 {
                     name: "layout",
+                    label: "Format",
                     type: "select",
                     defaultValue: "auto",
                     options: [
                         {
-                            label: "Auto",
+                            label: "Automatique",
                             value: "auto",
                         },
                         {
-                            label: "Portrait",
+                            label: "Vertical",
                             value: "portrait",
                         },
                         {
-                            label: "Landscape",
+                            label: "Horizontal",
                             value: "landscape",
                         },
                         {
-                            label: "Square",
+                            label: "Carré",
                             value: "square",
                         },
                         {
-                            label: "Full width",
+                            label: "Pleine largeur",
                             value: "full",
                         },
                     ],
                     admin: {
                         description:
-                            "Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur",
+                            "Automatique : le format est détecté. Choisir un autre format seulement pour forcer l’affichage.",
                     },
                 },
             ],
@@ -324,5 +272,6 @@ export const Projects: CollectionConfig = {
                     "Description des plans et dessins : listes, paragraphes, etc.",
             },
         },
+        ...createSeoFields(true),
     ],
 };
