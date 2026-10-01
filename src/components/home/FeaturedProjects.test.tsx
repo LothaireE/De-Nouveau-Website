@@ -45,4 +45,17 @@ describe("FeaturedProjects", () => {
             row.lastElementChild?.className.includes("md:order-1");
         expect(rows.map(textSide)).toEqual([false, true, false]);
     });
+
+    it("places the arrow on the image side, pointing toward the image", () => {
+        render(<FeaturedProjects projects={[1, 2].map(project)} />);
+        const [imageLeft, imageRight] = screen.getAllByRole("link");
+
+        const arrowLeft = imageLeft.querySelector("svg");
+        expect(imageLeft.firstElementChild).toBe(arrowLeft);
+        expect(arrowLeft?.style.rotate).toBe("180deg");
+
+        const arrowRight = imageRight.querySelector("svg");
+        expect(imageRight.lastElementChild).toBe(arrowRight);
+        expect(arrowRight?.style.rotate).toBe("");
+    });
 });

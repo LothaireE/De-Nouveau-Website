@@ -63,8 +63,21 @@ export default function FeaturedProjects({
                                 aria-label={`Voir le projet ${project.title}`}
                                 className="group mt-8 inline-flex items-center gap-3 text-body font-medium transition-colors hover:text-studio-red-muted"
                             >
-                                Voir le projet
-                                <Arrow className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                {/* The arrow sits on the image side and points toward it. */}
+                                {reversed ? (
+                                    <>
+                                        Voir le projet
+                                        <Arrow className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Arrow
+                                            rotation={180}
+                                            className="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1"
+                                        />
+                                        Voir le projet
+                                    </>
+                                )}
                             </Link>
                         </div>
                     </article>
