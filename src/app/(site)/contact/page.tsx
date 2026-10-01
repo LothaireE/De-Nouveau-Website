@@ -45,7 +45,7 @@ export default async function ContactPage() {
                                         {page.email && (
                                             <Link
                                                 href={`mailto:${page.email}`}
-                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
+                                                className="whitespace-nowrap text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter transition hover:text-studio-red-muted"
                                             >
                                                 {page.email}
                                             </Link>
@@ -54,7 +54,7 @@ export default async function ContactPage() {
                                         {page.phone && (
                                             <Link
                                                 href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                                className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
+                                                className="text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                             >
                                                 {page.phone}
                                             </Link>
@@ -64,7 +64,7 @@ export default async function ContactPage() {
 
                                 {page.address && page.address.length > 0 && (
                                     <ContactBlock title="Adresse">
-                                        <span className="whitespace-pre-line text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere">
+                                        <span className="whitespace-pre-line text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere">
                                             {page.address}
                                         </span>
                                     </ContactBlock>
@@ -86,7 +86,7 @@ export default async function ContactPage() {
                                                                 ""
                                                             }
                                                             rel="noopener noreferrer"
-                                                            className="text-[clamp(1.75rem,8.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
+                                                            className="text-[clamp(1rem,7.5vw,2.25rem)] font-medium leading-none tracking-tighter wrap-anywhere transition hover:text-studio-red-muted"
                                                         >
                                                             {socialMedia.label}
                                                         </a>

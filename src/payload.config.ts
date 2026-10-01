@@ -65,6 +65,8 @@ const config = buildConfig({
         outputFile: path.resolve(dirname, "payload-types.ts"),
     },
     db: postgresAdapter({
+        // Never sync the schema automatically: in development Payload would
+        // otherwise alter whichever database DATABASE_URL points to.
         push: false,
         disableCreateDatabase: true,
         pool: {
