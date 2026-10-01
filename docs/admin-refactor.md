@@ -180,7 +180,7 @@ La page `/mentions-legales` est générée automatiquement à partir de cette fi
 reprennent les coordonnées communes. Un champ vide n’est pas affiché, et une
 section sans contenu disparaît. L’hébergeur (Vercel) est une information
 technique maintenue dans le code (`SITE_HOSTING`), pas dans l’admin.
-Un lien discret « Mentions légales » figure en bas de toutes les pages.
+Un lien discret « Mentions légales » figure en bas des menus de navigation (ordinateur et mobile).
 La page n’est pas ajoutée au sitemap. La sauvegarde de la fiche invalide déjà
 le cache de tout le site, cette page comprise.
 

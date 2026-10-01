@@ -4,7 +4,6 @@ import "../globals.css";
 import DesktopNav from "@/components/navigation/DesktopNav";
 import { getNavProjects, getAgencyInfo } from "@/lib/payload/fetchers";
 import MobileNav from "@/components/navigation/MobileNav";
-import SiteFooter from "@/components/SiteFooter";
 import { staticPageSeo } from "@/library/seoContent";
 import { createMetadata } from "@/library/seo";
 import JsonLd from "@/components/seo/JsonLd";
@@ -44,7 +43,6 @@ export default async function RootLayout({
                     <MobileNav projects={navProjects} />
                 </div>
                 {children}
-                <SiteFooter />
             </body>
         </html>
     );

@@ -4,7 +4,7 @@ import type { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { type FocusEvent, type KeyboardEvent, useRef, useState } from "react";
-import { frNavItems } from "@/library/navItems";
+import { frNavItems, legalNavItem } from "@/library/navItems";
 
 const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_RED_03.svg";
 
@@ -67,13 +67,13 @@ export default function DesktopNav({
 
     const navClassName = `overflow-hidden border-studio-sand/50 text-studio-black transition-[width,height,margin,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
         open
-            ? "h-screen w-[46rem] p-6 bg-studio-white/90 shadow-xl backdrop-blur-sm"
+            ? "flex h-screen w-[46rem] flex-col p-6 bg-studio-white/90 shadow-xl backdrop-blur-sm"
             : "mr-4 mt-4 h-18 w-18 p-2 shadow-none backdrop-blur-none"
     }`;
 
     const logoImageClassName = `block text-small font-medium uppercase text-studio-black max-w-14 h-auto transition-rotate duration-500 ease-out  ${open ? "rotate-0" : "rotate-450"}`;
 
-    const contentClassName = `mt-16 transition-[width,height,margin,padding] duration-500 ease-out ${
+    const contentClassName = `mt-16 flex flex-1 flex-col transition-[width,height,margin,padding] duration-500 ease-out ${
         open
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-4 opacity-0"
@@ -155,6 +155,14 @@ export default function DesktopNav({
                             </div>
                         </div>
                     </div>
+
+                    <Link
+                        href={legalNavItem.href}
+                        onClick={closeMenu}
+                        className="mt-auto block self-start pt-10 text-label text-studio-black/60 transition-colors hover:text-studio-black"
+                    >
+                        {legalNavItem.label}
+                    </Link>
                 </div>
             </nav>
         </aside>
