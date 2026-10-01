@@ -14,18 +14,18 @@ export default function MinimalProjectLayout({
     return (
         <main className="bg-studio-white px-3 py-16 text-studio-black md:px-10">
             <header className="mb-16">
-                <h1 className="w-full max-w-full md:max-w-4xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
+                <h1 className="w-full max-w-full md:max-w-4xl text-display font-medium text-studio-black">
                     {project.title}
                 </h1>
 
-                <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
+                <div className="mt-8 space-y-1 text-small uppercase tracking-wide text-studio-red-muted">
                     {project.year && <p>{project.year}</p>}
                     {project.location && <p>{project.location}</p>}
                     {project.projectStatus && <p>{project.projectStatus}</p>}
                 </div>
 
                 {project.shortDescription && (
-                    <p className="mt-8 max-w-xl text-base leading-relaxed text-studio-moss">
+                    <p className="mt-8 max-w-xl text-body text-studio-black">
                         {project.shortDescription}
                     </p>
                 )}
@@ -113,11 +113,11 @@ export default function MinimalProjectLayout({
 
                     {project.planDetails && (
                         <div className="mx-auto mt-14 max-w-2xl border-t border-studio-sand/40 pt-10">
-                            <p className="mb-6 text-sm uppercase tracking-wide text-studio-red-muted">
+                            <p className="mb-6 text-small uppercase tracking-wide text-studio-red-muted">
                                 Détails des plans
                             </p>
 
-                            <div className="text-base leading-relaxed text-studio-moss">
+                            <div className="text-body text-studio-black">
                                 <RichText data={project.planDetails} />
                             </div>
                         </div>
@@ -125,7 +125,7 @@ export default function MinimalProjectLayout({
                 </section>
             )}
 
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-red-muted">
+            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-small text-studio-red-muted">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
             </footer>

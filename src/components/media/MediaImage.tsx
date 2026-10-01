@@ -92,7 +92,7 @@ export default function MediaImage({
             />
             {withCaption && media.caption?.trim() && (
                 <div className="absolute bottom-4 left-4 z-10">
-                    <p className="text-xs px-1 uppercase tracking-wide text-studio-white backdrop-blur-xs bg-black/10">
+                    <p className="text-label px-1 uppercase tracking-wide text-studio-white backdrop-blur-xs bg-black/10">
                         {media.caption}
                     </p>
                 </div>
