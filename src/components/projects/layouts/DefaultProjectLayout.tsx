@@ -25,11 +25,11 @@ export default function DefaultProjectLayout({
                 />
 
                 <div className="pb-6">
-                    <h1 className="max-w-2xl text-5xl font-medium leading-none tracking-[-0.04em] text-studio-black md:text-7xl">
+                    <h1 className="max-w-2xl text-display font-medium text-studio-black">
                         {project.title}
                     </h1>
 
-                    <div className="mt-8 space-y-1 text-sm uppercase tracking-wide text-studio-red-muted">
+                    <div className="mt-8 space-y-1 text-small uppercase tracking-wide text-studio-red-muted">
                         {project.year && <p>{project.year}</p>}
                         {project.client && <p>Client {project.client}</p>}
                         {project.location && <p>{project.location}</p>}
@@ -38,14 +38,14 @@ export default function DefaultProjectLayout({
                         )}
                     </div>
 
-                    <p className="mt-8 max-w-xl text-base leading-relaxed text-studio-moss">
+                    <p className="mt-8 max-w-xl text-body text-studio-black">
                         {project.shortDescription}
                     </p>
                 </div>
             </section>
 
             {project.longDescription && (
-                <section className="mx-auto my-24 max-w-2xl text-base leading-relaxed text-studio-moss">
+                <section className="mx-auto my-24 max-w-2xl text-body text-studio-black">
                     <RichText data={project.longDescription} />
                 </section>
             )}
@@ -173,12 +173,12 @@ export default function DefaultProjectLayout({
                         <div className="max-w-2xl mx-auto mt-10 border-studio-sand/40 pt-10">
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-[220px_1fr]">
                                 <div>
-                                    <p className="text-sm uppercase tracking-wide text-studio-red-muted">
+                                    <p className="text-small uppercase tracking-wide text-studio-red-muted">
                                         Details des plans
                                     </p>
                                 </div>
 
-                                <div className="max-w-2xl text-base leading-relaxed text-studio-moss">
+                                <div className="max-w-2xl text-body text-studio-black">
                                     <RichText data={project.planDetails} />
                                 </div>
                             </div>
@@ -187,7 +187,7 @@ export default function DefaultProjectLayout({
                 </section>
             )}
 
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-sm text-studio-red-muted">
+            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-small text-studio-red-muted">
                 <span>{project.location}</span>
                 <span>{project.year}</span>
             </footer>

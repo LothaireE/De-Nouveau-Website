@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "../globals.css";
 import DesktopNav from "@/components/navigation/DesktopNav";
 import { getNavProjects, getAgencyInfo } from "@/lib/payload/fetchers";
 import MobileNav from "@/components/navigation/MobileNav";
-import SiteFooter from "@/components/SiteFooter";
 import { staticPageSeo } from "@/library/seoContent";
 import { createMetadata } from "@/library/seo";
 import JsonLd from "@/components/seo/JsonLd";
 import { createOrganizationStructuredData } from "@/library/structuredData";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
+// Same typeface as the "Architecture et design" signature of the logo.
+const roboto = Roboto({
+    variable: "--font-roboto",
     subsets: ["latin"],
 });
 
@@ -38,10 +33,7 @@ export default async function RootLayout({
     ]);
 
     return (
-        <html
-            lang={LOCALE}
-            className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-        >
+        <html lang={LOCALE} className={`${roboto.variable} h-full antialiased`}>
             <body className="min-h-full flex flex-col">
                 <JsonLd data={createOrganizationStructuredData(agencyInfo)} />
                 <div className="hidden md:block">
@@ -51,7 +43,6 @@ export default async function RootLayout({
                     <MobileNav projects={navProjects} />
                 </div>
                 {children}
-                <SiteFooter />
             </body>
         </html>
     );

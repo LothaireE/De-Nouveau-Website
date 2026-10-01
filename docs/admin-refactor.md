@@ -130,10 +130,15 @@ vérifie également ces critères lors de la lecture, puis restitue l’ordre ch
 Les références restent des identifiants dans les réponses du Global pour éviter
 d’y inclure le contenu d’un projet devenu brouillon ou masqué.
 
-Une liste vide conserve la galerie habituelle. Une sélection non vide dont
-certains projets deviennent indisponibles affiche uniquement les projets encore
-admissibles, sans les remplacer par d’autres. Trois projets utilisent une grille
-de trois colonnes sur grand écran.
+Sur l’accueil, la sélection s’affiche dans une section « Projets à la une »
+placée entre l’en-tête et la galerie (`src/components/home/FeaturedProjects.tsx`) :
+une rangée par projet, séparée par un filet, avec l’image de couverture sur 7/12
+de la largeur, le titre, la description courte et un lien « Voir le projet ».
+Le côté de l’image alterne d’une rangée à l’autre ; sur mobile, l’image précède
+toujours le texte. Une liste vide masque la section. Une sélection dont certains
+projets deviennent indisponibles affiche uniquement les projets encore
+admissibles, sans les remplacer par d’autres. La galerie qui suit présente tous
+les projets publiés et visibles, qu’ils soient à la une ou non.
 
 La migration additive `20260930_featured_projects.sql`, appliquée par
 `npm run refactor:migrate`, ajoute uniquement `home_page_featured_projects`
@@ -175,7 +180,7 @@ La page `/mentions-legales` est générée automatiquement à partir de cette fi
 reprennent les coordonnées communes. Un champ vide n’est pas affiché, et une
 section sans contenu disparaît. L’hébergeur (Vercel) est une information
 technique maintenue dans le code (`SITE_HOSTING`), pas dans l’admin.
-Un lien discret « Mentions légales » figure en bas de toutes les pages.
+Un lien discret « Mentions légales » figure en bas des menus de navigation (ordinateur et mobile).
 La page n’est pas ajoutée au sitemap. La sauvegarde de la fiche invalide déjà
 le cache de tout le site, cette page comprise.
 

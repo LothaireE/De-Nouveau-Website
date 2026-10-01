@@ -4,7 +4,7 @@ import type { NavProjectItem } from "@/types/Navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { frNavItems } from "@/library/navItems";
+import { frNavItems, legalNavItem } from "@/library/navItems";
 
 const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_RED_03.svg";
 
@@ -15,11 +15,11 @@ export default function MobileNav({
 }) {
     const [open, setOpen] = useState(false);
 
-    const navClassName = ` fixed right-0 top-0 z-50 block text-sm md:hidden`;
+    const navClassName = ` fixed right-0 top-0 z-50 block text-small md:hidden`;
 
     const panelClassName = ` fixed right-0 top-0 overflow-hidden text-studio-black transition-[width,height,padding,background-color,backdrop-filter,box-shadow] duration-500 ease-out ${
         open
-            ? "h-screen w-screen p-6 bg-studio-white/90 shadow-xl backdrop-blur-sm"
+            ? "flex h-screen w-screen flex-col p-6 bg-studio-white/90 shadow-xl backdrop-blur-sm"
             : "h-0 w-0 p-0"
     }`;
 
@@ -27,17 +27,17 @@ export default function MobileNav({
         open ? "rotate-0" : "rotate-180"
     }`;
 
-    const contentClassName = `mt-16 transition-all duration-500 ease-out ${
+    const contentClassName = `mt-16 flex flex-1 flex-col transition-all duration-500 ease-out ${
         open
             ? "translate-y-0 opacity-100"
             : "pointer-events-none translate-y-4 opacity-0"
     }`;
 
     const mainLinkClassName =
-        "block text-4xl font-medium leading-none tracking-[-0.04em] text-studio-black transition-colors hover:text-studio-red-muted";
+        "block text-heading font-medium text-studio-black transition-colors hover:text-studio-red-muted";
 
     const projectLinkClassName =
-        "group block pb-2 text-studio-moss transition-colors hover:text-studio-red-muted";
+        "group block pb-2 text-studio-black/60 transition-colors hover:text-studio-red-muted";
 
     return (
         <aside className={navClassName}>
@@ -83,7 +83,7 @@ export default function MobileNav({
                                         onClick={() => setOpen(false)}
                                         className={projectLinkClassName}
                                     >
-                                        <span className="block truncate text-lg leading-tight">
+                                        <span className="block truncate text-lead">
                                             {project.title}
                                         </span>
                                     </Link>
@@ -91,6 +91,14 @@ export default function MobileNav({
                             </div>
                         </div>
                     </div>
+
+                    <Link
+                        href={legalNavItem.href}
+                        onClick={() => setOpen(false)}
+                        className="mt-auto block self-start pt-10 text-label text-studio-black/60 transition-colors hover:text-studio-black"
+                    >
+                        {legalNavItem.label}
+                    </Link>
                 </div>
             </nav>
         </aside>
