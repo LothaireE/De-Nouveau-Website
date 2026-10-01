@@ -19,8 +19,8 @@ export default function FeaturedProjects({
                 Projets à la une
             </h2>
 
-            {/* Same rule and spacing above every project and after the last one. */}
-            <div className="border-b border-studio-black pb-16 pt-16 md:pb-24 md:pt-24">
+            {/* Each project sits centred between two rules: equal space above and below. */}
+            <div className="border-b border-studio-black pt-16 md:pt-24">
                 {projects.map((project, index) => {
                     const href = `/${project.slug}`;
                     const reversed = index % 2 === 1;
@@ -28,7 +28,7 @@ export default function FeaturedProjects({
                     return (
                         <article
                             key={project.id}
-                            className="grid grid-cols-1 gap-6 border-t border-studio-black pt-8 not-first:mt-16 md:grid-cols-12 md:gap-10 md:pt-10 md:not-first:mt-24"
+                            className="grid grid-cols-1 gap-6 border-t border-studio-black py-12 md:grid-cols-12 md:gap-10 md:py-17"
                         >
                             {/* The image repeats the text link, so it stays out of the tab order. */}
                             <Link
@@ -65,7 +65,6 @@ export default function FeaturedProjects({
                                     aria-label={`Voir le projet ${project.title}`}
                                     className="group mt-8 inline-flex items-center gap-3 text-body font-medium transition-colors hover:text-studio-red-muted"
                                 >
-                                    {/* The arrow sits on the image side and points toward it. */}
                                     {reversed ? (
                                         <>
                                             Voir le projet
