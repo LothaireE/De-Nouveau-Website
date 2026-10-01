@@ -67,11 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    projects: Project;
     media: Media;
+    users: User;
     pages: Page;
     categories: Category;
-    projects: Project;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,11 +79,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
-    projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -93,8 +93,18 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'home-page': HomePage;
+    'about-page': AboutPage;
+    'contact-page': ContactPage;
+    'agency-info': AgencyInfo;
+  };
+  globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+    'agency-info': AgencyInfoSelect<false> | AgencyInfoSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -125,34 +135,98 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "projects".
  */
-export interface User {
+export interface Project {
   id: number;
-  firstName?: string | null;
-  lastName?: string | null;
-  role?: ('admin' | 'editor') | null;
-  bio?: string | null;
-  isActive?: boolean | null;
-  lastLogin?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
+  /**
+   * Classique : page projet standard. Éditoriale : textes et images alternés. Galerie : images dominantes, peu de texte. Minimale : titre et quelques images.
+   */
+  projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
+  title: string;
+  /**
+   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.
+   */
+  slug: string;
+  /**
+   * Définit si le projet est visible ou non sur le site.
+   */
+  visibility?: ('show' | 'hidden') | null;
+  coverImage: number | Media;
+  galleryMedia?:
     | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
+        media?: (number | null) | Media;
+        /**
+         * Automatique : le format est détecté. Choisir un autre format seulement pour forcer l’affichage.
+         */
+        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
+        id?: string | null;
       }[]
     | null;
-  password?: string | null;
-  collection: 'users';
+  shortDescription: string;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  location?: string | null;
+  year?: number | null;
+  categories?: (number | Category)[] | null;
+  surface?: string | null;
+  client?: string | null;
+  projectStatus?: ('délivré' | 'en cours' | 'concept') | null;
+  /**
+   * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
+   */
+  plans?:
+    | {
+        image?: (number | null) | Media;
+        /**
+         * Automatique : le format est détecté. Choisir un autre format seulement pour forcer l’affichage.
+         */
+        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Description des plans et dessins : listes, paragraphes, etc.
+   */
+  planDetails?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
+  seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
+  seoDescription?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -162,7 +236,7 @@ export interface Media {
   id: number;
   mediaType?: ('image' | 'video') | null;
   /**
-   * Sauf indications contraires, il est recommandé d'ignorer ce champ car lorsque non renseigné, l'image sera automatiquement associée à un projet lors de la création ou de la mise à jour de celui ci (hero, galerie, plans).
+   * Renseigné automatiquement lorsque le média est utilisé dans un projet (couverture, galerie, plans).
    */
   project?: (number | null) | Project;
   /**
@@ -223,95 +297,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects".
- */
-export interface Project {
-  id: number;
-  /**
-   * Définit la mise en page du projet côté site : Default - page projet classique | Editorial - texte et images alternées | Gallery focused - galerie dominante, peu de texte | Minimal - titre et quelques images, très peu d’infos
-   */
-  projectLayout: 'default' | 'editorial' | 'galleryFocused' | 'minimal';
-  title: string;
-  /**
-   * Ce champ définit l’URL publique du projet (slug). Il est généré automatiquement à partir du titre lors de la sauvegarde. Ne le modifiez que si vous avez un besoin spécifique. Utilisez uniquement des lettres minuscules, chiffres et tirets. Évitez les espaces, accents, caractères spéciaux et modifications fréquentes afin de ne pas casser les liens existants. Seul un administrateur peut modifier ce champ.
-   */
-  slug: string;
-  /**
-   * Définit si le projet est visible ou non sur le site.
-   */
-  visibility?: ('show' | 'hidden') | null;
-  coverImage: number | Media;
-  galleryMedia?:
-    | {
-        media?: (number | null) | Media;
-        /**
-         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
-         */
-        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
-        id?: string | null;
-      }[]
-    | null;
-  shortDescription: string;
-  longDescription?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  location?: string | null;
-  year?: number | null;
-  categories?: (number | Category)[] | null;
-  surface?: string | null;
-  client?: string | null;
-  projectStatus?: ('délivré' | 'en cours' | 'concept') | null;
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  /**
-   * Ajouter jusqu’à 3 plans (ex : plan masse, plan RDC, plan étage) qui seront affichés dans une section dédiée du projet.
-   */
-  plans?:
-    | {
-        image?: (number | null) | Media;
-        /**
-         * Auto - détection automatique du format | Portrait - media verticale | Landscape - media horizontale | Square - media carrée | Full width - media pleine largeur
-         */
-        layout?: ('auto' | 'portrait' | 'landscape' | 'square' | 'full') | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Description des plans et dessins : listes, paragraphes, etc.
-   */
-  planDetails?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -323,6 +308,37 @@ export interface Category {
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  role?: ('admin' | 'editor') | null;
+  bio?: string | null;
+  isActive?: boolean | null;
+  lastLogin?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -354,7 +370,7 @@ export interface Page {
   } | null;
   portrait?: (number | null) | Media;
   /**
-   * Image ou vidéo hero. MP4/WebM recommandé pour les vidéos. Max 4MB pour les vidéos.
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
    */
   heroMedia?: (number | null) | Media;
   email?: string | null;
@@ -363,19 +379,16 @@ export interface Page {
   socialMedias?:
     | {
         /**
-         * Provide a full url (ex: https://www.instagram.com/).
+         * Adresse complète (ex. : https://www.instagram.com/…).
          */
         link?: string | null;
         /**
-         * Label used as a placeholder for the link.
+         * Texte affiché à la place du lien (ex. : Instagram).
          */
         label?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   awards?:
     | {
         name?: string | null;
@@ -383,9 +396,6 @@ export interface Page {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Available on about page
-   */
   studioTeam?:
     | {
         name?: string | null;
@@ -421,12 +431,16 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'projects';
+        value: number | Project;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null)
     | ({
         relationTo: 'pages';
@@ -435,10 +449,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'categories';
         value: number | Category;
-      } | null)
-    | ({
-        relationTo: 'projects';
-        value: number | Project;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -484,31 +494,42 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "projects_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  firstName?: T;
-  lastName?: T;
-  role?: T;
-  bio?: T;
-  isActive?: T;
-  lastLogin?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface ProjectsSelect<T extends boolean = true> {
+  projectLayout?: T;
+  title?: T;
+  slug?: T;
+  visibility?: T;
+  coverImage?: T;
+  galleryMedia?:
     | T
     | {
+        media?: T;
+        layout?: T;
         id?: T;
-        createdAt?: T;
-        expiresAt?: T;
       };
+  shortDescription?: T;
+  longDescription?: T;
+  location?: T;
+  year?: T;
+  categories?: T;
+  surface?: T;
+  client?: T;
+  projectStatus?: T;
+  plans?:
+    | T
+    | {
+        image?: T;
+        layout?: T;
+        id?: T;
+      };
+  planDetails?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -579,6 +600,34 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  bio?: T;
+  isActive?: T;
+  lastLogin?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
@@ -628,45 +677,6 @@ export interface CategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "projects_select".
- */
-export interface ProjectsSelect<T extends boolean = true> {
-  projectLayout?: T;
-  title?: T;
-  slug?: T;
-  visibility?: T;
-  coverImage?: T;
-  galleryMedia?:
-    | T
-    | {
-        media?: T;
-        layout?: T;
-        id?: T;
-      };
-  shortDescription?: T;
-  longDescription?: T;
-  location?: T;
-  year?: T;
-  categories?: T;
-  surface?: T;
-  client?: T;
-  projectStatus?: T;
-  seoTitle?: T;
-  seoDescription?: T;
-  plans?:
-    | T
-    | {
-        image?: T;
-        layout?: T;
-        id?: T;
-      };
-  planDetails?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -704,6 +714,452 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  title: string;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Adresse complète (ex. : https://www.instagram.com/…).
+         */
+        link?: string | null;
+        /**
+         * Texte affiché à la place du lien (ex. : Instagram).
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Sans sélection, la galerie habituelle est affichée. Un projet masqué ou dépublié disparaît de cette sélection sur le site.
+   */
+  featuredProjects?:
+    | {
+        project?: (number | null) | Project;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
+  seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  title: string;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Adresse complète (ex. : https://www.instagram.com/…).
+         */
+        link?: string | null;
+        /**
+         * Texte affiché à la place du lien (ex. : Instagram).
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
+  seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  title: string;
+  intro?: string | null;
+  /**
+   * Sauter deux lignes pour créer un espace entre les paragraphes.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  portrait?: (number | null) | Media;
+  /**
+   * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
+   */
+  heroMedia?: (number | null) | Media;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Adresse complète (ex. : https://www.instagram.com/…).
+         */
+        link?: string | null;
+        /**
+         * Texte affiché à la place du lien (ex. : Instagram).
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  awards?:
+    | {
+        name?: string | null;
+        year?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  studioTeam?:
+    | {
+        name?: string | null;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Laisser vide pour utiliser le titre automatique.
+   */
+  seoTitle?: string | null;
+  /**
+   * Laisser vide pour utiliser la description automatique.
+   */
+  seoDescription?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Coordonnées et informations légales communes à tout le site.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agency-info".
+ */
+export interface AgencyInfo {
+  id: number;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  socialMedias?:
+    | {
+        /**
+         * Adresse complète (ex. : https://www.instagram.com/…).
+         */
+        link?: string | null;
+        /**
+         * Texte affiché à la place du lien (ex. : Instagram).
+         */
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  legal?: {
+    companyName?: string | null;
+    /**
+     * Ex. : SARL d’architecture
+     */
+    legalForm?: string | null;
+    /**
+     * Ex. : 10 000 €
+     */
+    shareCapital?: string | null;
+    /**
+     * 14 chiffres
+     */
+    siret?: string | null;
+    /**
+     * Ex. : RCS Paris 123 456 789
+     */
+    rcs?: string | null;
+    vatNumber?: string | null;
+    /**
+     * Conseil régional et numéro d’inscription. Ex. : Conseil régional d’Île-de-France, n° S12345
+     */
+    architectsRegistration?: string | null;
+    insurer?: string | null;
+    /**
+     * Adresse de l’assureur, numéro de contrat et couverture géographique.
+     */
+    insuranceDetails?: string | null;
+    /**
+     * Prénom et nom de la personne responsable du contenu du site.
+     */
+    publicationDirector?: string | null;
+  };
+  initialized?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  content?: T;
+  portrait?: T;
+  heroMedia?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  featuredProjects?:
+    | T
+    | {
+        project?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  content?: T;
+  portrait?: T;
+  heroMedia?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  title?: T;
+  intro?: T;
+  content?: T;
+  portrait?: T;
+  heroMedia?: T;
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  awards?:
+    | T
+    | {
+        name?: T;
+        year?: T;
+        id?: T;
+      };
+  studioTeam?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        id?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agency-info_select".
+ */
+export interface AgencyInfoSelect<T extends boolean = true> {
+  email?: T;
+  phone?: T;
+  address?: T;
+  socialMedias?:
+    | T
+    | {
+        link?: T;
+        label?: T;
+        id?: T;
+      };
+  legal?:
+    | T
+    | {
+        companyName?: T;
+        legalForm?: T;
+        shareCapital?: T;
+        siret?: T;
+        rcs?: T;
+        vatNumber?: T;
+        architectsRegistration?: T;
+        insurer?: T;
+        insuranceDetails?: T;
+        publicationDirector?: T;
+      };
+  initialized?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -8,7 +8,7 @@ const mockNotFound = vi.fn();
 
 const MockMediaImage = () => <div>Mocked MediaImage Component</div>;
 
-vi.mock("@/library/payload/fetchers", () => ({
+vi.mock("@/lib/payload/fetchers", () => ({
     getPage: () => mockGetPage(),
 }));
 

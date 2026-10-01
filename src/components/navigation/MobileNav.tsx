@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { frNavItems } from "@/library/navItems";
 
-const LOGO_BLACK_SRC = "/DE_NOUVEAU/SVG/AAAA_BLACK_02.svg";
+const LOGO_SRC = "/DE_NOUVEAU/SVG/DE_NOUVEAU_RED_03.svg";
 
 export default function MobileNav({
     projects,
@@ -49,7 +49,7 @@ export default function MobileNav({
                 className="fixed right-4 top-4 z-50"
             >
                 <Image
-                    src={LOGO_BLACK_SRC}
+                    src={LOGO_SRC}
                     alt="Logo De Nouveau"
                     className={logoImageClassName}
                     width={56}

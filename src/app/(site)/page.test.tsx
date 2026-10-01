@@ -3,12 +3,12 @@ import { describe, expect, it, vi } from "vitest";
 
 import Page from "../../app/(site)/page";
 
-vi.mock("@/library/payload/fetchers", () => ({
+vi.mock("@/lib/payload/fetchers", () => ({
     getPage: vi.fn().mockResolvedValue({
         title: "Homepage",
     }),
 
-    getAllProjects: vi.fn().mockResolvedValue([
+    getHomeProjects: vi.fn().mockResolvedValue([
         {
             id: "1",
             title: "Projet test",

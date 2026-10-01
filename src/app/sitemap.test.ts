@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockGetSitemapProjects = vi.fn();
 
-vi.mock("@/library/payload/fetchers", () => ({
+vi.mock("@/lib/payload/fetchers", () => ({
     getSitemapProjects: () => mockGetSitemapProjects(),
 }));
 

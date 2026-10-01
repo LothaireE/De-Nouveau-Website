@@ -4,7 +4,12 @@ import { getMediaUrl } from "@/library/utils";
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 
-function getPublicSocialLinks(page: Page | null) {
+type AgencyCoordinates = Pick<
+    Page,
+    "email" | "phone" | "address" | "socialMedias"
+>;
+
+function getPublicSocialLinks(page: AgencyCoordinates | null) {
     return (page?.socialMedias ?? []).flatMap((socialMedia) => {
         if (!socialMedia.link) return [];
 
@@ -19,7 +24,9 @@ function getPublicSocialLinks(page: Page | null) {
     });
 }
 
-export function createOrganizationStructuredData(contactPage: Page | null) {
+export function createOrganizationStructuredData(
+    contactPage: AgencyCoordinates | null,
+) {
     const sameAs = getPublicSocialLinks(contactPage);
 
     return {
@@ -28,7 +35,8 @@ export function createOrganizationStructuredData(contactPage: Page | null) {
         "@id": ORGANIZATION_ID,
         name: "De Nouveau",
         url: SITE_URL,
-        logo: `${SITE_URL}/DE_NOUVEAU/SVG/DE_NOUVEAU_BLACK.svg`,
+        // Google expects a raster logo; keep the existing PNG until a red version exists.
+        logo: `${SITE_URL}/DE_NOUVEAU/PNG/DE_NOUVEAU_BLACK.png`,
         description: "Studio d'architecture et de design De Nouveau",
         knowsAbout: ["Architecture", "Design architectural"],
         ...(contactPage?.email ? { email: contactPage.email } : {}),
