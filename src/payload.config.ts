@@ -34,6 +34,18 @@ const config = buildConfig({
         user: Users.slug,
         meta: {
             titleSuffix: isolated ? "— Refactor isolé" : "— De Nouveau",
+            icons: [{ rel: "icon", type: "image/png", url: "/icon.png" }],
+        },
+        // Light only: the studio palette (cream, black, red) has no dark variant.
+        theme: "light",
+        components: {
+            graphics: {
+                Logo: "@/components/admin/AdminLogo#AdminLogo",
+                Icon: "@/components/admin/AdminIcon#AdminIcon",
+            },
+            providers: [
+                "@/components/admin/AdminFontProvider#AdminFontProvider",
+            ],
         },
         // date-fns pattern, rendered with the French locale: 28 septembre 2026, 11:39
         dateFormat: "d MMMM yyyy, HH:mm",
