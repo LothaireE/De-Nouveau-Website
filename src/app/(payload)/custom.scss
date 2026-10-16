@@ -1,0 +1,26 @@
+// De Nouveau palette for the Payload admin (light theme only).
+// Payload's own styles live in the payload-default layer, so these win.
+:root {
+    --color-base-0: #faf9f4; // studio white: page background
+    --color-base-50: #f2f0ea; // studio cream: cards, hover
+    --color-base-1000: #050505; // studio black
+    --theme-input-bg: #ffffff; // fields stay white for contrast
+    --accessibility-outline: 2px solid #9e2e1f; // studio red muted
+    // Rich text is shown in Roboto on the site: edit it in the same typeface.
+    --font-serif: var(--font-body);
+    // Roboto once AdminFontProvider has set --font-roboto on <html>.
+    --font-body: var(
+        --font-roboto,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        "Helvetica Neue",
+        Arial,
+        sans-serif
+    );
+}
+
+a:hover {
+    color: #9e2e1f;
+}
