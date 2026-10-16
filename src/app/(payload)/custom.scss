@@ -1,0 +1,13 @@
+// De Nouveau palette for the Payload admin (light theme only).
+// Payload's own styles live in the payload-default layer, so these win.
+:root {
+    --color-base-0: #faf9f4; // studio white: page background
+    --color-base-50: #f2f0ea; // studio cream: cards, hover
+    --color-base-1000: #050505; // studio black
+    --theme-input-bg: #ffffff; // fields stay white for contrast
+    --accessibility-outline: 2px solid #9e2e1f; // studio red muted
+}
+
+a:hover {
+    color: #9e2e1f;
+}
