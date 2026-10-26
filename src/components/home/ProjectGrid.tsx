@@ -42,7 +42,9 @@ export default function ProjectGrid({ projects }: { projects: Project[] }) {
                                 {project.shortDescription && (
                                     <>
                                         {" — "}
-                                        <em>{project.shortDescription}</em>
+                                        <span className="font-light">
+                                            {project.shortDescription}
+                                        </span>
                                     </>
                                 )}
                             </h3>

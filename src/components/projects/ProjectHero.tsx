@@ -48,7 +48,7 @@ export default function ProjectHero({ project }: { project: Project }) {
             </Link>
 
             <div className="absolute bottom-7 left-4 right-4 z-10 sm:left-6 md:bottom-14 lg:left-10">
-                <h1 className="pr-[0.12em] text-lead font-bold uppercase italic">
+                <h1 className="text-lead font-light uppercase">
                     {project.title}
                 </h1>
                 {meta.length > 0 && (

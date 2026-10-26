@@ -25,7 +25,7 @@ export default function NextProject({ project }: { project: Project }) {
                 <p className="mb-1.5 text-small uppercase tracking-wide">
                     Projet suivant
                 </p>
-                <h2 className="fill-text fill-text-white pr-[0.12em] text-heading font-bold uppercase italic">
+                <h2 className="fill-text fill-text-white text-heading font-light uppercase">
                     {project.title}
                 </h2>
             </div>
