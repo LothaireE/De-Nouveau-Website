@@ -1,115 +1,60 @@
 import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import type { Project } from "@/payload-types";
 import { ProjectRenderer } from "./ProjectsRenderer";
-import { vi, it, describe, expect } from "vitest";
-import { Project } from "@/payload-types";
 
-const MockDefaultProjectLayout = ({ project }: { project: Project }) => (
-    <div data-testid="default-layout">{project.title}</div>
-);
-
-const MockEditorialProjectLayout = ({ project }: { project: Project }) => (
-    <div data-testid="editorial-layout">{project.title}</div>
-);
-
-const MockGalleryFocusedProjectLayout = ({ project }: { project: Project }) => (
-    <div data-testid="gallery-focused-layout">{project.title}</div>
-);
-
-const MockMinimalProjectLayout = ({ project }: { project: Project }) => (
-    <div data-testid="minimal-layout">{project.title}</div>
-);
-
-vi.mock("./layouts/DefaultProjectLayout", () => ({
-    default: ({ project }: { project: Project }) => (
-        <MockDefaultProjectLayout project={project} />
-    ),
+const { stub } = vi.hoisted(() => ({
+    stub: (testId: string) => ({
+        default: ({ project }: { project: Project }) => (
+            <div data-testid={testId}>{project.title}</div>
+        ),
+    }),
 }));
 
-vi.mock("./layouts/EditorialProjectLayout", () => ({
-    default: ({ project }: { project: Project }) => (
-        <MockEditorialProjectLayout project={project} />
-    ),
-}));
+vi.mock("./layouts/DefaultProjectLayout", () => stub("default-layout"));
+vi.mock("./layouts/EditorialProjectLayout", () => stub("editorial-layout"));
+vi.mock("./layouts/GalleryFocusedProjectLayout", () =>
+    stub("gallery-focused-layout"),
+);
+vi.mock("./layouts/MinimalProjectLayout", () => stub("minimal-layout"));
+vi.mock("./ProjectHero", () => stub("hero"));
+vi.mock("./ProjectSummary", () => stub("summary"));
+vi.mock("./ProjectPlans", () => stub("plans"));
+vi.mock("./NextProject", () => stub("next"));
 
-vi.mock("./layouts/GalleryFocusedProjectLayout", () => ({
-    default: ({ project }: { project: Project }) => (
-        <MockGalleryFocusedProjectLayout project={project} />
-    ),
-}));
+const baseProject = { id: 1, title: "Test Project" } as Project;
 
-vi.mock("./layouts/MinimalProjectLayout", () => ({
-    default: ({ project }: { project: Project }) => (
-        <MockMinimalProjectLayout project={project} />
-    ),
-}));
+describe("ProjectRenderer", () => {
+    it.each([
+        ["default", "default-layout"],
+        ["editorial", "editorial-layout"],
+        ["galleryFocused", "gallery-focused-layout"],
+        ["minimal", "minimal-layout"],
+    ] as const)("uses the %s gallery layout", (projectLayout, testId) => {
+        render(<ProjectRenderer project={{ ...baseProject, projectLayout }} />);
 
-const baseProject: Partial<Project> = {
-    id: 1,
-    title: "Test Project",
-};
-
-describe("ProjectRenderer Component", () => {
-    it("Calls DefaultProjectLayout when project has default project layout props", () => {
-        const { getByTestId } = render(
-            <ProjectRenderer
-                project={
-                    { ...baseProject, projectLayout: "default" } as Project
-                }
-            />,
-        );
-
-        expect(getByTestId("default-layout")).toBeInTheDocument();
-        expect(screen.getByText("Test Project")).toBeInTheDocument();
+        expect(screen.getByTestId(testId)).toBeInTheDocument();
     });
 
-    it("Calls EditorialProjectLayout when project has editorial project layout props", () => {
-        const { getByTestId } = render(
-            <ProjectRenderer
-                project={
-                    { ...baseProject, projectLayout: "editorial" } as Project
-                }
-            />,
-        );
+    it("falls back to the default gallery layout", () => {
+        render(<ProjectRenderer project={baseProject} />);
 
-        expect(getByTestId("editorial-layout")).toBeInTheDocument();
-        expect(screen.getByText("Test Project")).toBeInTheDocument();
+        expect(screen.getByTestId("default-layout")).toBeInTheDocument();
     });
 
-    it("Calls GalleryFocusedPjectLayout when project has gallery focused layout props", () => {
-        const { getByTestId } = render(
-            <ProjectRenderer
-                project={
-                    {
-                        ...baseProject,
-                        projectLayout: "galleryFocused",
-                    } as Project
-                }
-            />,
-        );
+    it("wraps the gallery with the shared hero, summary and plans, in order", () => {
+        const { container } = render(<ProjectRenderer project={baseProject} />);
 
-        expect(getByTestId("gallery-focused-layout")).toBeInTheDocument();
-        expect(screen.getByText("Test Project")).toBeInTheDocument();
+        const order = [...container.querySelectorAll("[data-testid]")].map(
+            (element) => element.getAttribute("data-testid"),
+        );
+        expect(order).toEqual(["hero", "summary", "default-layout", "plans"]);
     });
 
-    it("Calls MinimalProjectLayout when project has minimal project layout props", () => {
-        const { getByTestId } = render(
-            <ProjectRenderer
-                project={
-                    { ...baseProject, projectLayout: "minimal" } as Project
-                }
-            />,
-        );
+    it("links to the next project only when there is one", () => {
+        const next = { id: 2, title: "Suivant" } as Project;
+        render(<ProjectRenderer project={baseProject} nextProject={next} />);
 
-        expect(getByTestId("minimal-layout")).toBeInTheDocument();
-        expect(screen.getByText("Test Project")).toBeInTheDocument();
-    });
-
-    it("Calls DefaultProjectLayout when project does not have layout props", () => {
-        const { getByTestId } = render(
-            <ProjectRenderer project={{ ...baseProject } as Project} />,
-        );
-
-        expect(getByTestId("default-layout")).toBeInTheDocument();
-        expect(screen.getByText("Test Project")).toBeInTheDocument();
+        expect(screen.getByTestId("next")).toHaveTextContent("Suivant");
     });
 });

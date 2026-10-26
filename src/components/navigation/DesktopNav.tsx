@@ -79,11 +79,9 @@ export default function DesktopNav({
             : "pointer-events-none translate-y-4 opacity-0"
     }`;
 
-    const mainLinkClassName =
-        "block text-heading font-medium text-studio-black transition-colors hover:text-studio-red-muted";
+    const mainLinkClassName = "fill-text block text-heading font-medium";
 
-    const projectLinkClassName =
-        "group block pb-2 text-studio-black/60 transition-colors hover:text-studio-red-muted";
+    const projectLinkClassName = "fill-text fill-text-muted block pb-2";
 
     return (
         <aside
@@ -159,7 +157,7 @@ export default function DesktopNav({
                     <Link
                         href={legalNavItem.href}
                         onClick={closeMenu}
-                        className="mt-auto block self-start pt-10 text-label text-studio-black/60 transition-colors hover:text-studio-black"
+                        className="mt-auto block self-start pt-10 text-label fill-text fill-text-muted"
                     >
                         {legalNavItem.label}
                     </Link>

@@ -1,190 +1,53 @@
-import MediaImage from "@/components/media/MediaImage";
-import MediaVideo from "@/components/media/MediaVideo";
 import type { Project } from "@/payload-types";
-import { RichText } from "@payloadcms/richtext-lexical/react";
-import { getMediaItemClass, getMediaImageProps } from "../ProjectsRenderer";
+import ProjectMedia from "../ProjectMedia";
 
+/**
+ * Éditoriale: one full-width image, a pair, then the remaining images one by
+ * one, alternating sides with open space around them.
+ */
 export default function EditorialProjectLayout({
     project,
 }: {
     project: Project;
 }) {
     const medias = project.galleryMedia ?? [];
-    const firstMedia = medias[0];
-    const middleMedias = medias.slice(1, 3);
-    const remainingMedias = medias.slice(3);
+
+    if (!medias.length) return null;
+
+    const [first, ...rest] = medias;
+    // A single image after the first one cannot form a pair.
+    const pair = rest.length >= 2 ? rest.slice(0, 2) : [];
+    const remaining = rest.slice(pair.length);
+    const alt = (index: number) => `${project.title} ${index + 1}`;
 
     return (
-        <main className="bg-studio-white px-3 py-16 text-studio-black md:px-10">
-            <section className="grid min-h-[75vh] grid-cols-1 gap-10 md:grid-cols-2 md:items-end">
-                <MediaImage
-                    media={project.coverImage}
-                    size="hero"
-                    variant="half"
-                    priority={true}
-                    quality={95}
-                    className="h-auto w-full object-cover"
-                />
+        <section aria-label="Galerie" className="flex flex-col gap-1.5">
+            <ProjectMedia item={first} wide alt={alt(0)} />
 
-                <div className="pb-6">
-                    <h1 className="max-w-xl text-display font-medium text-studio-black">
-                        {project.title}
-                    </h1>
-
-                    <div className="mt-8 space-y-1 text-small uppercase tracking-wide text-studio-red-muted">
-                        {project.year && <p>{project.year}</p>}
-                        {project.client && <p>Client {project.client}</p>}
-                        {project.location && <p>{project.location}</p>}
-                        {project.projectStatus && (
-                            <p>Projet {project.projectStatus}</p>
-                        )}
-                        {project.surface && <p>Surface {project.surface}</p>}
-                    </div>
-
-                    <p className="mt-8 max-w-xl text-body text-studio-black">
-                        {project.shortDescription}
-                    </p>
-                </div>
-            </section>
-            {project.longDescription && (
-                <section className="mx-auto my-24 max-w-2xl text-body text-studio-black">
-                    <RichText data={project.longDescription} />
-                </section>
-            )}
-
-            {firstMedia?.media && typeof firstMedia.media !== "number" ? (
-                <figure
-                    className={`mx-auto my-24 max-w-5xl ${getMediaItemClass(firstMedia.layout ?? "auto")}`}
-                >
-                    {firstMedia.media.mediaType === "video" ? (
-                        <MediaVideo media={firstMedia.media} />
-                    ) : (
-                        <MediaImage
-                            media={firstMedia.media}
-                            {...getMediaImageProps(firstMedia.layout ?? "auto")}
-                            fallbackAlt={project.title}
-                            quality={90}
+            {pair.length > 0 && (
+                <div className="grid grid-cols-1 gap-1.5 md:grid-cols-2">
+                    {pair.map((item, index) => (
+                        <ProjectMedia
+                            key={item.id ?? index}
+                            item={{ ...item, layout: "auto" }}
+                            alt={alt(index + 1)}
                         />
-                    )}
-                </figure>
-            ) : null}
-            {middleMedias.length > 0 && (
-                <section className="mx-auto my-24 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
-                    {middleMedias.map((item, index) => {
-                        const { media, layout } = item;
-
-                        if (!media || typeof media === "number") return null;
-
-                        const imageProps = getMediaImageProps(layout ?? "auto");
-
-                        return (
-                            <figure
-                                key={item.id ?? index}
-                                className={getMediaItemClass(layout ?? "auto")}
-                            >
-                                {media.mediaType === "video" ? (
-                                    <MediaVideo media={media} />
-                                ) : (
-                                    <MediaImage
-                                        media={media}
-                                        size={imageProps.size}
-                                        variant={imageProps.variant}
-                                        quality={90}
-                                        className={imageProps.className}
-                                        fallbackAlt={project.title}
-                                    />
-                                )}
-                            </figure>
-                        );
-                    })}
-                </section>
+                    ))}
+                </div>
             )}
 
-            {remainingMedias.length > 0 && (
-                <section className="mx-auto my-24 max-w-5xl space-y-20">
-                    {remainingMedias.map((item, index) => {
-                        const { media, layout } = item;
-
-                        if (!media || typeof media === "number") return null;
-
-                        const imageProps = getMediaImageProps(layout ?? "auto");
-
-                        return (
-                            <figure
-                                key={item.id ?? index}
-                                className={`${index % 2 === 0 ? "mr-auto" : "ml-auto"} ${getMediaItemClass(layout ?? "auto")}`}
-                            >
-                                {media.mediaType === "video" ? (
-                                    <MediaVideo media={media} />
-                                ) : (
-                                    <MediaImage
-                                        media={media}
-                                        size={imageProps.size}
-                                        variant={imageProps.variant}
-                                        quality={90}
-                                        fallbackAlt={`${project.title} ${index + 1}`}
-                                        className={imageProps.className}
-                                    />
-                                )}
-                            </figure>
-                        );
-                    })}
-                </section>
+            {remaining.length > 0 && (
+                <div className="flex flex-col gap-16 px-4 py-16 sm:px-6 md:gap-24 md:py-24 lg:px-10">
+                    {remaining.map((item, index) => (
+                        <ProjectMedia
+                            key={item.id ?? index}
+                            item={{ ...item, layout: "auto" }}
+                            alt={alt(index + 1 + pair.length)}
+                            className={`w-full md:w-1/2 ${index % 2 === 0 ? "md:mr-auto" : "md:ml-auto"}`}
+                        />
+                    ))}
+                </div>
             )}
-
-            {project.plans && project.plans.length > 0 && (
-                <section className="mx-auto my-24 max-w-5xl border-t border-studio-sand/60 pt-16">
-                    <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-                        {project.plans.map((item, index) => {
-                            const { image, layout } = item;
-
-                            if (!image || typeof image === "number")
-                                return null;
-
-                            const imageProps = getMediaImageProps(
-                                layout ?? "auto",
-                            );
-
-                            return (
-                                <figure
-                                    key={item.id ?? index}
-                                    className={`${index % 2 === 0 ? "mr-auto" : "ml-auto"} ${getMediaItemClass(layout ?? "auto")}`}
-                                >
-                                    <MediaImage
-                                        media={image}
-                                        size={imageProps.size}
-                                        variant={imageProps.variant}
-                                        fallbackAlt={`Plan ${project.title} ${index + 1}`}
-                                        quality={90}
-                                        className={imageProps.className.replace(
-                                            "object-cover",
-                                            "object-contain",
-                                        )}
-                                    />
-                                </figure>
-                            );
-                        })}
-                    </div>
-
-                    {project.planDetails && (
-                        <div className="mx-auto mt-16 max-w-2xl border-t border-studio-sand/40 pt-10">
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-[180px_1fr]">
-                                <p className="text-small uppercase tracking-wide text-studio-red-muted">
-                                    Détails des plans
-                                </p>
-
-                                <div className="text-body text-studio-black">
-                                    <RichText data={project.planDetails} />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </section>
-            )}
-            <footer className="mx-auto mt-24 flex max-w-5xl justify-between border-t border-studio-sand/60 pt-6 text-small text-studio-red-muted">
-                <span>{project.location}</span>
-                <span>{project.year}</span>
-            </footer>
-        </main>
+        </section>
     );
 }
