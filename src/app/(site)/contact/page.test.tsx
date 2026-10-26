@@ -1,11 +1,9 @@
 import { render } from "@testing-library/react";
 import { contactPageMockData } from "@/tests/mocks/testData";
-import { describe, vi, it, expect } from "vitest";
+import { describe, vi, it, expect, beforeEach } from "vitest";
 
 const mockGetPage = vi.fn();
 const mockNotFound = vi.fn();
-
-const MockMediaImage = () => <div>Mocked MediaImage Component</div>;
 
 vi.mock("@/lib/payload/fetchers", () => ({
     getPage: () => mockGetPage(),
@@ -15,102 +13,80 @@ vi.mock("next/navigation", () => ({
     notFound: () => mockNotFound(),
 }));
 
-vi.mock("@/components/media/MediaImage", () => ({
-    default: () => <MockMediaImage />,
+vi.mock("next/image", () => ({
+    default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={String(props.src)} alt={props.alt ?? ""} />
+    ),
 }));
 
 import Page from "./page";
 
 describe("Contact Page", () => {
-    it("renders contact page sections calling the appropriate functions", async () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it("shows the address, phone and e-mail, then the social links", async () => {
         mockGetPage.mockResolvedValue(contactPageMockData);
-        const ContactPage = await Page();
 
-        const { getByText, getByRole } = render(ContactPage);
-
-        expect(getByText("Mocked MediaImage Component")).toBeInTheDocument();
-
-        expect(getByText("Contact")).toBeInTheDocument();
+        const { getByText, getByRole } = render(await Page());
 
         expect(
-            getByRole("link", { name: "jean.renaud@example.com" }),
-        ).toHaveAttribute("href", "mailto:jean.renaud@example.com");
-
+            getByRole("heading", { level: 1, name: "Contact" }),
+        ).toBeInTheDocument();
+        expect(getByText("45B Rue de la Villette")).toBeInTheDocument();
         expect(getByRole("link", { name: "+33626828153" })).toHaveAttribute(
             "href",
             "tel:+33626828153",
         );
-        expect(getByText("Adresse")).toBeInTheDocument();
-        expect(getByText("45B Rue de la Villette")).toBeInTheDocument();
-
-        expect(getByText("Nous suivre")).toBeInTheDocument();
-
+        expect(
+            getByRole("link", { name: "jean.renaud@example.com" }),
+        ).toHaveAttribute("href", "mailto:jean.renaud@example.com");
         expect(getByRole("link", { name: "Instagram" })).toHaveAttribute(
             "href",
             "https://www.instagram.com/",
         );
     });
 
+    it("keeps the details in address, phone, e-mail order", async () => {
+        mockGetPage.mockResolvedValue(contactPageMockData);
+
+        const { container } = render(await Page());
+
+        const lines = [...container.querySelector("address")!.children].map(
+            (line) => line.textContent?.trim(),
+        );
+        expect(lines).toEqual([
+            "45B Rue de la Villette",
+            "+33626828153",
+            "jean.renaud@example.com",
+        ]);
+    });
+
     it.each([null, undefined, ""])(
-        "hides the contact block when both contact details are %s",
+        "drops the details group when address, phone and e-mail are %s",
         async (missingValue) => {
             mockGetPage.mockResolvedValue({
                 ...contactPageMockData,
                 email: missingValue,
                 phone: missingValue,
+                address: missingValue,
             });
 
-            const { queryByText, queryByRole, getByText, container } = render(
-                await Page(),
-            );
+            const { container, getByRole } = render(await Page());
 
-            expect(queryByText("Contact")).not.toBeInTheDocument();
+            expect(container.querySelector("address")).not.toBeInTheDocument();
             expect(
-                queryByRole("link", { name: contactPageMockData.email! }),
-            ).not.toBeInTheDocument();
-            expect(
-                queryByRole("link", { name: contactPageMockData.phone! }),
-            ).not.toBeInTheDocument();
-            expect(getByText("Adresse")).toBeInTheDocument();
-            expect(getByText("Nous suivre")).toBeInTheDocument();
-            expect(container.querySelector("p:empty")).not.toBeInTheDocument();
-        },
-    );
-
-    it.each([
-        {
-            email: "hello@example.com",
-            phone: null,
-            name: "hello@example.com",
-            href: "mailto:hello@example.com",
-        },
-        {
-            email: null,
-            phone: "+33 6 26 82 81 53",
-            name: "+33 6 26 82 81 53",
-            href: "tel:+33626828153",
-        },
-    ])(
-        "keeps the contact block with only $name",
-        async ({ email, phone, name, href }) => {
-            mockGetPage.mockResolvedValue({
-                ...contactPageMockData,
-                email,
-                phone,
-            });
-
-            const { getByText, getByRole } = render(await Page());
-
-            expect(getByText("Contact")).toBeInTheDocument();
-            expect(getByRole("link", { name })).toHaveAttribute("href", href);
+                getByRole("link", { name: "Instagram" }),
+            ).toBeInTheDocument();
         },
     );
 
     it("renders not found when page is not found", async () => {
         mockGetPage.mockResolvedValue(null);
-        const ContactPage = await Page();
 
-        render(ContactPage);
+        await Page();
 
         expect(mockNotFound).toHaveBeenCalledTimes(1);
     });
