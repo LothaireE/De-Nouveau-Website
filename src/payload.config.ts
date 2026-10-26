@@ -46,6 +46,7 @@ const config = buildConfig({
             providers: [
                 "@/components/admin/AdminFontProvider#AdminFontProvider",
             ],
+            afterLogin: ["@/components/admin/BackToSite#BackToSite"],
         },
         // date-fns pattern, rendered with the French locale: 28 septembre 2026, 11:39
         dateFormat: "d MMMM yyyy, HH:mm",

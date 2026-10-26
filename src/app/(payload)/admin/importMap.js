@@ -25,6 +25,7 @@ import { SeoPreview as SeoPreview_4c7afb572ddc29943378234c0fe6a0ae } from '@/com
 import { CopyAgencyContact as CopyAgencyContact_8a9d40e3c48ecb26fa202a0d3aca7ea2 } from '@/components/admin/CopyAgencyContact'
 import { AdminIcon as AdminIcon_d500ae2ad98a0a33d640ae0ac1a3417c } from '@/components/admin/AdminIcon'
 import { AdminLogo as AdminLogo_b80a86fce1072afc84cd6a430a965697 } from '@/components/admin/AdminLogo'
+import { BackToSite as BackToSite_de6306b5d9a1760ce264dc95af80fe72 } from '@/components/admin/BackToSite'
 import { AdminFontProvider as AdminFontProvider_03453a4c3913642f8d90852f836b5684 } from '@/components/admin/AdminFontProvider'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -58,6 +59,7 @@ export const importMap = {
   "@/components/admin/CopyAgencyContact#CopyAgencyContact": CopyAgencyContact_8a9d40e3c48ecb26fa202a0d3aca7ea2,
   "@/components/admin/AdminIcon#AdminIcon": AdminIcon_d500ae2ad98a0a33d640ae0ac1a3417c,
   "@/components/admin/AdminLogo#AdminLogo": AdminLogo_b80a86fce1072afc84cd6a430a965697,
+  "@/components/admin/BackToSite#BackToSite": BackToSite_de6306b5d9a1760ce264dc95af80fe72,
   "@/components/admin/AdminFontProvider#AdminFontProvider": AdminFontProvider_03453a4c3913642f8d90852f836b5684,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
