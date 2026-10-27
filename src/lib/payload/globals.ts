@@ -22,10 +22,14 @@ export const getPage = cache(async (slug: string): Promise<SitePage | null> => {
         });
         // An auto-created empty row is not editorial content. Never merge fields:
         // an editor can deliberately clear an optional field in a populated Global.
+        // Contact details come from the agency unless the page asks for its own
+        // ("custom"), where an empty field stays empty and is not shown.
+        const ownContact =
+            "contactDetails" in doc && doc.contactDetails === "custom";
         if (doc.title?.trim())
             return {
                 ...doc,
-                ...(await getAgencyInfo()),
+                ...(ownContact ? {} : await getAgencyInfo()),
                 title: doc.title,
                 slug,
                 pageType: mapping.pageType,

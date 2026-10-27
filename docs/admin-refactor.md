@@ -150,6 +150,12 @@ Le Global « Informations de l’agence », dans « Réglages du site », centra
 
 Les anciens champs restent en base dans Pages et les Globals de pages, mais sont masqués dans l’admin. La migration additive `20260930_agency_info.sql` crée uniquement deux tables. Après `npm run refactor:migrate`, exécuter `node --import tsx scripts/copy-agency-info.ts` dans l’environnement isolé avant de démarrer le site. La copie transactionnelle privilégie Contact pour les coordonnées, complète les valeurs absentes depuis les autres pages et rassemble les liens sociaux sans doublon. Elle vérifie que les sources restent identiques et ne remplace jamais une fiche déjà initialisée, même vidée volontairement.
 
+### Coordonnées de la page Contact
+
+La page Contact affiche par défaut les coordonnées de « Informations de l’agence ». Le champ « Coordonnées affichées » du Global Contact permet de choisir « Personnaliser pour cette page » : les champs e-mail, téléphone, adresse et réseaux sociaux de la page (conservés en base depuis la refonte de l’admin) réapparaissent alors. Le bouton « Copier les informations de l’agence » les pré-remplit ; on peut ensuite les modifier ou les vider. Un champ vide n’est pas affiché sur le site. Les mentions légales utilisent toujours les informations de l’agence.
+
+La migration additive `20261026_contact_details.sql`, générée hors connexion par `scripts/prepare-contact-details-schema.ts` puis appliquée par `npm run refactor:migrate`, crée uniquement le type `enum_contact_page_contact_details` et la colonne `contact_page.contact_details` (valeur par défaut `agency`, donc aucun changement visible tant que rien n’est modifié dans l’admin).
+
 ## Administration en français
 
 L’interface Payload est configurée en français uniquement (`i18n` dans

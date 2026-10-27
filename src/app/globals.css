@@ -62,9 +62,59 @@
     --text-heading: clamp(1.5rem, 1.1rem + 1.8vw, 2.75rem); /* 24 → 44px */
     --text-heading--line-height: 1.05;
     --text-heading--letter-spacing: -0.03em;
+    --text-statement: clamp(
+        1.625rem,
+        1.1rem + 2.2vw,
+        3.25rem
+    ); /* 26 → 52px — contact details */
+    --text-statement--line-height: 1.1;
+    --text-statement--letter-spacing: -0.03em;
     --text-display: clamp(3rem, 2.2rem + 3.4vw, 4.5rem); /* 48 → 72px */
     --text-display--line-height: 1;
     --text-display--letter-spacing: -0.04em;
+}
+
+/* Hover: text fills with the studio orange from the bottom up.
+   `fill-text` goes on the text; it reacts to its own hover/focus or to a
+   `fill-trigger` ancestor (a card or tile link). The resting colour is
+   --fill-base: black by default, `fill-text-white` on photos,
+   `fill-text-muted` for secondary text. */
+@layer components {
+    .fill-text {
+        color: transparent;
+        background-image: linear-gradient(
+            to top,
+            var(--studio-red) 50%,
+            var(--fill-base, var(--studio-black)) 50%
+        );
+        background-size: 100% 200%;
+        background-repeat: no-repeat;
+        background-position: 0 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        transition: background-position 0.55s cubic-bezier(0.6, 0, 0.2, 1);
+    }
+
+    .fill-text:hover,
+    .fill-text:focus-visible,
+    .fill-trigger:hover .fill-text,
+    .fill-trigger:focus-visible .fill-text {
+        background-position: 0 100%;
+    }
+
+    .fill-text-white {
+        --fill-base: var(--studio-white);
+    }
+
+    .fill-text-muted {
+        --fill-base: color-mix(in srgb, var(--studio-black) 60%, transparent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .fill-text {
+            transition: none;
+        }
+    }
 }
 
 /*  base styles */

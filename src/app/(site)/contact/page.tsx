@@ -2,7 +2,8 @@ import { getPageMetadata } from "@/lib/payload/metadata";
 import { getPage } from "@/lib/payload/fetchers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import MediaImage from "@/components/media/MediaImage";
+import LogoSplit from "@/components/layout/LogoSplit";
+import HeroNav from "@/components/navigation/HeroNav";
 
 export async function generateMetadata() {
     return getPageMetadata(SLUG);
@@ -10,109 +11,71 @@ export async function generateMetadata() {
 
 const SLUG = "contact";
 
-function ContactBlock({
-    title,
-    children,
-}: {
-    title: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <div>
-            <p className="mb-3 text-label text-studio-black/60">{title}</p>
-            <div className="flex flex-col gap-2">{children}</div>
-        </div>
-    );
-}
-
 export default async function ContactPage() {
     const page = await getPage(SLUG);
 
     if (!page) return notFound();
 
-    const imageSrc = !page.portrait || typeof page.portrait !== "number";
+    const socials = (page.socialMedias ?? []).filter((item) => item.link);
+    const hasDetails = Boolean(page.address || page.phone || page.email);
 
     return (
-        <main className="min-h-screen bg-studio-white text-studio-black">
-            <section className="grid min-h-screen grid-cols-1 md:grid-cols-5">
-                <div className="flex min-h-screen min-w-0 flex-col justify-center px-5 pb-16 pt-32 md:col-span-3 md:px-12 md:pb-24">
-                    <div className="grid min-w-0">
-                        {/* <div className="grid gap-16 md:gap-24"> */}
-                        <div className="grid min-w-0 gap-10 text-small md:justify-center">
-                            <div className="space-y-10">
-                                {(page.email || page.phone) && (
-                                    <ContactBlock title="Contact">
-                                        {page.email && (
-                                            <Link
-                                                href={`mailto:${page.email}`}
-                                                className="whitespace-nowrap text-heading font-medium transition hover:text-studio-red-muted"
-                                            >
-                                                {page.email}
-                                            </Link>
-                                        )}
+        <main className="bg-studio-white text-studio-black">
+            <HeroNav variant="page" />
 
-                                        {page.phone && (
-                                            <Link
-                                                href={`tel:${page.phone.replace(/\s/g, "")}`}
-                                                className="text-heading font-medium wrap-anywhere transition hover:text-studio-red-muted"
-                                            >
-                                                {page.phone}
-                                            </Link>
-                                        )}
-                                    </ContactBlock>
-                                )}
+            <LogoSplit fillScreen className="text-statement font-medium">
+                <h1 className="sr-only">{page.title?.trim() || "Contact"}</h1>
 
-                                {page.address && page.address.length > 0 && (
-                                    <ContactBlock title="Adresse">
-                                        <span className="whitespace-pre-line text-heading font-medium wrap-anywhere">
-                                            {page.address}
-                                        </span>
-                                    </ContactBlock>
-                                )}
-                            </div>
+                {/* Two groups, as on the MEP footer: details, then social links. */}
+                <div className="flex flex-col gap-[2.2em]">
+                    {hasDetails && (
+                        <address className="flex flex-col items-start not-italic">
+                            {page.address && (
+                                <span className="whitespace-pre-line wrap-anywhere">
+                                    {page.address}
+                                </span>
+                            )}
+                            {page.phone && (
+                                <Link
+                                    href={`tel:${page.phone.replace(/\s/g, "")}`}
+                                    className="fill-text"
+                                >
+                                    {page.phone}
+                                </Link>
+                            )}
+                            {page.email && (
+                                <Link
+                                    href={`mailto:${page.email}`}
+                                    className="fill-text wrap-anywhere"
+                                >
+                                    {page.email}
+                                </Link>
+                            )}
+                        </address>
+                    )}
 
-                            {page.socialMedias &&
-                                page.socialMedias.length > 0 && (
-                                    <div className="space-y-10">
-                                        <ContactBlock title="Nous suivre">
-                                            <div className="flex flex-wrap gap-4">
-                                                {page.socialMedias?.map(
-                                                    (socialMedia) => (
-                                                        <a
-                                                            key={socialMedia.id}
-                                                            target="_blank"
-                                                            href={
-                                                                socialMedia.link ??
-                                                                ""
-                                                            }
-                                                            rel="noopener noreferrer"
-                                                            className="text-heading font-medium wrap-anywhere transition hover:text-studio-red-muted"
-                                                        >
-                                                            {socialMedia.label}
-                                                        </a>
-                                                    ),
-                                                )}
-                                            </div>
-                                        </ContactBlock>
-                                    </div>
-                                )}
-                        </div>
-                    </div>
+                    {socials.length > 0 && (
+                        <ul
+                            aria-label="Réseaux sociaux"
+                            className="flex flex-col items-start"
+                        >
+                            {socials.map((socialMedia) => (
+                                <li key={socialMedia.id ?? socialMedia.link}>
+                                    <a
+                                        href={socialMedia.link ?? ""}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="fill-text capitalize"
+                                    >
+                                        {socialMedia.label?.trim() ||
+                                            socialMedia.link}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
-
-                <div className="relative hidden min-h-screen md:block md:col-span-2">
-                    {imageSrc ? (
-                        <MediaImage
-                            media={page.portrait}
-                            fallbackAlt={page.title}
-                            priority
-                            size="large"
-                            variant="half"
-                            className="h-full w-full object-cover object-center"
-                        />
-                    ) : null}
-                </div>
-            </section>
+            </LogoSplit>
         </main>
     );
 }

@@ -110,6 +110,39 @@ export const getSingleProject = cache(async function getSingleProject(
     }
 });
 
+/** The visible project after `slug` in the site order, wrapping to the first. */
+export const getNextProject = cache(async function getNextProject(
+    slug: string,
+): Promise<Project | null> {
+    try {
+        const payload = await getPayloadClient();
+
+        const result = await payload.find({
+            collection: "projects",
+            where: {
+                and: [
+                    { _status: { equals: "published" } },
+                    { visibility: { equals: "show" } },
+                ],
+            },
+            select: { title: true, slug: true, coverImage: true },
+            sort: "order",
+            limit: 100,
+            depth: 1,
+        });
+
+        const projects = result.docs as Project[];
+        const index = projects.findIndex((project) => project.slug === slug);
+
+        if (index === -1 || projects.length < 2) return null;
+
+        return projects[(index + 1) % projects.length];
+    } catch (error) {
+        console.error(`Error fetching the project after "${slug}":`, error);
+        return null;
+    }
+});
+
 export async function getNavProjects(): Promise<NavProjectItem[]> {
     try {
         const payload = await getPayloadClient();

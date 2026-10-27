@@ -1,5 +1,5 @@
 import { ProjectRenderer } from "@/components/projects/ProjectsRenderer";
-import { getSingleProject } from "@/lib/payload/fetchers";
+import { getNextProject, getSingleProject } from "@/lib/payload/fetchers";
 import { getMediaUrl } from "@/library/utils";
 import { getProjectSeo } from "@/library/seoContent";
 import { createMetadata } from "@/library/seo";
@@ -43,14 +43,17 @@ export async function generateMetadata({
 export default async function SingleProjectPage({ params }: ProjectPageProps) {
     const { slug } = await params;
 
-    const project = await getSingleProject(slug);
+    const [project, nextProject] = await Promise.all([
+        getSingleProject(slug),
+        getNextProject(slug),
+    ]);
 
     if (!project) return notFound();
 
     return (
-        <div>
+        <>
             <JsonLd data={createProjectStructuredData(project)} />
-            <ProjectRenderer project={project} />
-        </div>
+            <ProjectRenderer project={project} nextProject={nextProject} />
+        </>
     );
 }
