@@ -20,6 +20,7 @@ try {
         "20260930_featured_projects",
         "20260930_agency_info",
         "20260930_agency_legal_info",
+        "20261026_contact_details",
     ]) {
         const migration = fs.readFileSync(`src/migrations/${name}.sql`, "utf8");
         if (

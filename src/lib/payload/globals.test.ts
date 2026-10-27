@@ -46,6 +46,36 @@ describe("Global page reads", () => {
         });
         expect(find).not.toHaveBeenCalled();
     });
+    it("shows the agency contact details by default", async () => {
+        findGlobal.mockResolvedValue({
+            id: 3,
+            title: "Contact",
+            contactDetails: "agency",
+            email: "old-page@example.com",
+            phone: "+33 1 00 00 00 00",
+        });
+        expect(await getPage("contact")).toMatchObject({
+            email: "shared@example.com",
+            phone: null,
+        });
+    });
+    it("keeps the page's own contact details when personalised, empty ones included", async () => {
+        findGlobal.mockResolvedValue({
+            id: 3,
+            title: "Contact",
+            contactDetails: "custom",
+            email: "page@example.com",
+            phone: null,
+            address: "",
+            socialMedias: [],
+        });
+        expect(await getPage("contact")).toMatchObject({
+            email: "page@example.com",
+            phone: null,
+            address: "",
+            socialMedias: [],
+        });
+    });
     it("does not hide infrastructure errors as empty content", async () => {
         findGlobal.mockRejectedValue(new Error("database unavailable"));
         await expect(getPage("home")).rejects.toThrow("database unavailable");

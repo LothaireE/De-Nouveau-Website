@@ -777,7 +777,7 @@ export interface HomePage {
       }[]
     | null;
   /**
-   * Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Sans sélection, la galerie habituelle est affichée. Un projet masqué ou dépublié disparaît de cette sélection sur le site.
+   * Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Ils ouvrent la grille des projets de l’accueil, dans cet ordre. Un projet masqué ou dépublié disparaît de cette sélection sur le site.
    */
   featuredProjects?:
     | {
@@ -899,6 +899,10 @@ export interface ContactPage {
    * Image ou vidéo en haut de la page d’accueil. Vidéo : MP4 ou WebM, 4 Mo maximum. Les vidéos plus lourdes ne sont pas proposées.
    */
   heroMedia?: (number | null) | Media;
+  /**
+   * En mode personnalisé, un champ laissé vide n’est pas affiché sur la page Contact.
+   */
+  contactDetails?: ('agency' | 'custom') | null;
   email?: string | null;
   phone?: string | null;
   address?: string | null;
@@ -1097,6 +1101,7 @@ export interface ContactPageSelect<T extends boolean = true> {
   content?: T;
   portrait?: T;
   heroMedia?: T;
+  contactDetails?: T;
   email?: T;
   phone?: T;
   address?: T;
