@@ -7,6 +7,7 @@ const mockNotFound = vi.fn();
 
 vi.mock("@/lib/payload/fetchers", () => ({
     getSingleProject: () => mockGetSingleProject(),
+    getNextProject: vi.fn().mockResolvedValue(null),
 }));
 
 vi.mock("next/navigation", () => ({

@@ -8,7 +8,7 @@ export const featuredProjectsField: ArrayField = {
     labels: { singular: "Projet à la une", plural: "Projets à la une" },
     admin: {
         description:
-            "Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Sans sélection, la galerie habituelle est affichée. Un projet masqué ou dépublié disparaît de cette sélection sur le site.",
+            "Choisissez jusqu’à 3 projets et réordonnez les lignes par glisser-déposer. Ils ouvrent la grille des projets de l’accueil, dans cet ordre. Un projet masqué ou dépublié disparaît de cette sélection sur le site.",
     },
     validate: (rows) => {
         if (!rows) return true;

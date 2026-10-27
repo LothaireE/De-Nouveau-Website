@@ -1,23 +1,16 @@
 import LoadingLogo from "@/components/LoadingLogo";
-import FeaturedProjects from "@/components/home/FeaturedProjects";
+import ProjectGrid from "@/components/home/ProjectGrid";
 import {
     getAllProjects,
     getFeaturedProjects,
     getPage,
 } from "@/lib/payload/fetchers";
 import { getPageMetadata } from "@/lib/payload/metadata";
-import { Page } from "@/payload-types";
+import type { Page } from "@/payload-types";
 import dynamic from "next/dynamic";
 
 const HomeHero = dynamic<{ content: Page | null }>(
     () => import("@/components/home/HomeHero"),
-    {
-        loading: () => <LoadingLogo />,
-    },
-);
-
-const ProjectGallery = dynamic(
-    () => import("@/components/home/ProjectGallery"),
     {
         loading: () => <LoadingLogo />,
     },
@@ -36,13 +29,17 @@ export default async function Home() {
         getAllProjects(),
     ]);
 
+    // The grid lists every project, featured ones first, in their chosen order.
+    const featuredIds = new Set(featuredProjects.map((project) => project.id));
+    const gridProjects = [
+        ...featuredProjects,
+        ...projects.filter((project) => !featuredIds.has(project.id)),
+    ];
+
     return (
         <main>
-            <section>
-                <HomeHero content={pageContent} />
-                <FeaturedProjects projects={featuredProjects} />
-                <ProjectGallery projects={projects} />
-            </section>
+            <HomeHero content={pageContent} />
+            <ProjectGrid projects={gridProjects} />
         </main>
     );
 }
