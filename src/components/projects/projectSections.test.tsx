@@ -129,6 +129,20 @@ describe("ProjectMedia", () => {
         );
     });
 
+    it("opens images in the lightbox, with the uncropped large size", () => {
+        vi.stubEnv("NEXT_PUBLIC_S3_PUBLIC_DEV_URL", "https://media.test");
+        render(<ProjectMedia item={square} alt="Vue" />);
+        vi.unstubAllEnvs();
+
+        const trigger = screen.getByRole("button", {
+            name: "Agrandir : Patio extérieur avec table de jardin",
+        });
+        expect(trigger).toHaveAttribute(
+            "data-lightbox-src",
+            "https://media.test/media/cover-large.webp",
+        );
+    });
+
     it("plays videos", () => {
         render(<ProjectMedia item={video} alt="Vue" />);
 
