@@ -240,10 +240,13 @@ export interface Media {
    */
   project?: (number | null) | Project;
   /**
-   * Important pour l'accessibilité et le référencement. Doit décrire le contenu de l'image de manière concise et précise.
+   * Affichée sur le site : donne le contexte en quelques mots (60 caractères max). « Suggestion » propose une légende à relire et corriger avant d'enregistrer.
+   */
+  caption?: string | null;
+  /**
+   * Important pour l'accessibilité et le référencement. Décrit ce qu'on voit, sans répéter la légende (125 caractères max). « Suggestion » propose un texte à relire et corriger avant d'enregistrer.
    */
   alt?: string | null;
-  caption?: string | null;
   /**
    * Image affichée pendant le chargement de la vidéo ou si la vidéo ne se charge pas.
    */
@@ -538,8 +541,8 @@ export interface ProjectsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   mediaType?: T;
   project?: T;
-  alt?: T;
   caption?: T;
+  alt?: T;
   poster?: T;
   prefix?: T;
   updatedAt?: T;
