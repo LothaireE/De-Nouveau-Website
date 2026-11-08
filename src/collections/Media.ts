@@ -5,7 +5,11 @@ import {
     assignMediatype,
     preventDuplicateFilename,
 } from "@/library/payload/hooks";
+import { suggestMediaTextEndpoint } from "@/lib/ai/suggestEndpoint";
 import type { CollectionConfig } from "payload";
+
+const SuggestField =
+    "@/components/admin/MediaTextSuggestField#MediaTextSuggestField";
 
 const mimeTypes = [
     "image/jpeg",
@@ -72,6 +76,8 @@ export const Media: CollectionConfig = {
               },
           }
         : {}),
+    // Read-only: works even where media writes are blocked.
+    endpoints: [suggestMediaTextEndpoint],
     hooks: {
         afterChange: [revalidateRelated],
         afterDelete: [revalidateRelatedDelete],
@@ -111,6 +117,17 @@ export const Media: CollectionConfig = {
                     "Renseigné automatiquement lorsque le média est utilisé dans un projet (couverture, galerie, plans).",
             },
         },
+        // Caption first: the alt suggestion reuses it and must not repeat it.
+        {
+            name: "caption",
+            label: "Légende",
+            type: "text",
+            admin: {
+                description:
+                    "Affichée sur le site : donne le contexte en quelques mots (60 caractères max). « Suggestion » propose une légende à relire et corriger avant d'enregistrer.",
+                components: { Field: SuggestField },
+            },
+        },
         {
             name: "alt",
             label: "Texte alternatif",
@@ -119,13 +136,9 @@ export const Media: CollectionConfig = {
                 condition: (_, siblingData) =>
                     siblingData.mediaType !== "video",
                 description:
-                    "Important pour l'accessibilité et le référencement. Doit décrire le contenu de l'image de manière concise et précise.",
+                    "Important pour l'accessibilité et le référencement. Décrit ce qu'on voit, sans répéter la légende (125 caractères max). « Suggestion » propose un texte à relire et corriger avant d'enregistrer.",
+                components: { Field: SuggestField },
             },
-        },
-        {
-            name: "caption",
-            label: "Légende",
-            type: "text",
         },
         {
             name: "poster",
